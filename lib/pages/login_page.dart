@@ -114,11 +114,8 @@ class _UserLoginInputState extends State<UserLoginInput> {
   final loginPasswordController = TextEditingController();
 
   void _userCodeChangeListener(){
-    print(_loginData.leerlingnummer);
-    print(loginUserCodeController.text);
     if(loginUserCodeController.text.length == 6 && _loginData.leerlingnummer != loginUserCodeController.text){
       _loginData.leerlingnummer = loginUserCodeController.text;
-      print(loginUserCodeController.text);
       widget.callBack();
     }
   }
@@ -133,7 +130,6 @@ class _UserLoginInputState extends State<UserLoginInput> {
   @override
   Widget build(BuildContext context) {
     var progressIndicator = widget.isLoading ? LinearProgressIndicator() : Container();
-    print(widget.isLoading);
 
     return Container(
         //padding: EdgeInsets.symmetric(),
