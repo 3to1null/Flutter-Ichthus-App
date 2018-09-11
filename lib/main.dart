@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'pages/login_page.dart';
 
+
+
 void main() => runApp(new IchthusApp());
 
 class IchthusApp extends StatelessWidget {
@@ -11,7 +13,8 @@ class IchthusApp extends StatelessWidget {
     return new MaterialApp(
       title: 'ICV App',
       theme: new ThemeData(
-        primarySwatch: Colors.indigo,
+        primarySwatch: Colors.blue,
+        accentColor: Colors.orangeAccent
       ),
       home: LoginPage(),
     );
