@@ -1,6 +1,38 @@
 import 'package:flutter/material.dart';
 
+import '../functions/request.dart';
+
+class _LoginData {
+  String leerlingnummer = '';
+  String password = '';
+}
+
+var _loginData = _LoginData();
+
 class LoginPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ActualLoginPage();
+  }
+}
+
+class ActualLoginPage extends StatefulWidget {
+  @override
+  _ActualLoginPageState createState() => _ActualLoginPageState();
+}
+
+class _ActualLoginPageState extends State<ActualLoginPage> {
+    var isLoading = false;
+    var name = "Leerlingnummer";
+
+  void resolveUsercode() async {
+    final userName = await getDataFromAPI('/resolve/ln', {'q': _loginData.leerlingnummer});
+    setState(() {
+          name = userName;
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -32,13 +64,13 @@ class LoginPage extends StatelessWidget {
           ];
         },
         body: Center(
-          child: UserLoginInput(),
+          child: UserLoginInput(isLoading, name, resolveUsercode),
         ),
       ),
       bottomNavigationBar: BottomAppBar(
         color: Colors.white,
         child: InkWell(
-          onTap: (){print('test');},
+          onTap: (){resolveUsercode();},
           child: FractionallySizedBox(
             widthFactor: 1.0,
             child: SizedBox(
@@ -64,30 +96,50 @@ class LoginPage extends StatelessWidget {
   }
 }
 
-class _LoginData {
-  String leerlingnummer = '';
-  String password = '';
-}
 
 class UserLoginInput extends StatefulWidget {
+  final bool isLoading;
+  final dynamic name;
+  final dynamic callBack;
+  UserLoginInput(this.isLoading, this.name, this.callBack);
+
+
   @override
   _UserLoginInputState createState() => _UserLoginInputState();
 }
 
 class _UserLoginInputState extends State<UserLoginInput> {
-  bool isLoading = true;
 
   final loginUserCodeController = TextEditingController();
   final loginPasswordController = TextEditingController();
 
+  void _userCodeChangeListener(){
+    print(_loginData.leerlingnummer);
+    print(loginUserCodeController.text);
+    if(loginUserCodeController.text.length == 6 && _loginData.leerlingnummer != loginUserCodeController.text){
+      _loginData.leerlingnummer = loginUserCodeController.text;
+      print(loginUserCodeController.text);
+      widget.callBack();
+    }
+  }
+
+  @override
+  void initState(){
+    super.initState();
+    loginUserCodeController.addListener(_userCodeChangeListener);
+  }
+  
+
   @override
   Widget build(BuildContext context) {
-    var progressIndicator = isLoading ? LinearProgressIndicator() : Container();
+    var progressIndicator = widget.isLoading ? LinearProgressIndicator() : Container();
+    print(widget.isLoading);
 
     return Container(
         //padding: EdgeInsets.symmetric(),
         child: ListView(
       children: <Widget>[
+        progressIndicator,
         Container(
             padding: EdgeInsets.symmetric(horizontal: 30.0),
             child: Row(
@@ -105,7 +157,7 @@ class _UserLoginInputState extends State<UserLoginInput> {
                         .body1
                         .copyWith(fontSize: 16.0),
                     decoration: InputDecoration(
-                        labelText: "Leerlingnummer",
+                        labelText: widget.name == null ? "Leerlingnummer" : widget.name,
                         contentPadding: EdgeInsets.all(2.5)),
                   ),
                 ),
@@ -138,8 +190,10 @@ class _UserLoginInputState extends State<UserLoginInput> {
     ));
   }
 
+
   @override
   void dispose() {
+    loginUserCodeController.removeListener(_userCodeChangeListener);
     loginUserCodeController.dispose();
     loginPasswordController.dispose();
     super.dispose();
