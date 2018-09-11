@@ -22,26 +22,46 @@ class ActualLoginPage extends StatefulWidget {
 }
 
 class _ActualLoginPageState extends State<ActualLoginPage> {
-    var isLoading = false;
-    var name = "Leerlingnummer";
+  bool isLoading = false;
+  var name = "Leerlingnummer";
 
   void resolveUsercode() async {
-    final userName = await getDataFromAPI('/resolve/ln', {'q': _loginData.leerlingnummer});
+    var userName;
+    if (_loginData.leerlingnummer != null) {
+      userName =
+          await getDataFromAPI('/resolve/ln', {'q': _loginData.leerlingnummer});
+    } else {
+      userName = null;
+    }
     setState(() {
-          name = userName;
+      name = userName;
     });
   }
 
+  void checkCredentials() async {
+    setState(() {
+      isLoading = true;
+    });
+    Map<String, String> credentials = {
+      "userCode": _loginData.leerlingnummer.toString(),
+      "password": _loginData.password.toString()
+    };
+    var response = await postDataToAPI('/login', credentials);
+    print(response);
+    setState(() {
+      isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
-
     return Scaffold(
       body: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
             SliverAppBar(
+              //expandedHeight: 200.0,
               expandedHeight: screenHeight * 0.26,
               elevation: 2.0,
               forceElevated: true,
@@ -61,6 +81,7 @@ class _ActualLoginPageState extends State<ActualLoginPage> {
                     colorBlendMode: BlendMode.overlay,
                   )),
             ),
+            //LinearProgressIndicator(),
           ];
         },
         body: Center(
@@ -68,34 +89,18 @@ class _ActualLoginPageState extends State<ActualLoginPage> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        color: Colors.white,
-        child: InkWell(
-          onTap: (){resolveUsercode();},
-          child: FractionallySizedBox(
-            widthFactor: 1.0,
-            child: SizedBox(
-              height: 48.0,
-              child: Padding(
-                padding: EdgeInsets.only(right: 5.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    Text(
-                      "LOG IN",
-                      style: Theme.of(context).textTheme.body2.copyWith(color: Theme.of(context).primaryColor),
-                      ),
-                    Icon(Icons.navigate_next, color: Theme.of(context).primaryColor),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
+          color: Colors.white,
+          child: AnimatedCrossFade(
+            duration: Duration(milliseconds: 300),
+            firstChild: LoginButton(checkCredentials),
+            secondChild: LoginButtonLoading(),
+            crossFadeState: !isLoading
+                ? CrossFadeState.showFirst
+                : CrossFadeState.showSecond,
+          )),
     );
   }
 }
-
 
 class UserLoginInput extends StatefulWidget {
   final bool isLoading;
@@ -103,39 +108,44 @@ class UserLoginInput extends StatefulWidget {
   final dynamic callBack;
   UserLoginInput(this.isLoading, this.name, this.callBack);
 
-
   @override
   _UserLoginInputState createState() => _UserLoginInputState();
 }
 
 class _UserLoginInputState extends State<UserLoginInput> {
-
   final loginUserCodeController = TextEditingController();
   final loginPasswordController = TextEditingController();
 
-  void _userCodeChangeListener(){
-    if(loginUserCodeController.text.length == 6 && _loginData.leerlingnummer != loginUserCodeController.text){
+  void _userCodeChangeListener() {
+    if (loginUserCodeController.text.length == 6 &&
+        _loginData.leerlingnummer != loginUserCodeController.text) {
       _loginData.leerlingnummer = loginUserCodeController.text;
+      widget.callBack();
+    } else if (loginUserCodeController.text.length != 6) {
+      _loginData.leerlingnummer = null;
       widget.callBack();
     }
   }
 
+  void _passwordChangeListener(){
+    if (loginPasswordController.text != _loginData.password){
+      _loginData.password = loginPasswordController.text;
+    }
+  }
+
   @override
-  void initState(){
+  void initState() {
     super.initState();
     loginUserCodeController.addListener(_userCodeChangeListener);
+    loginPasswordController.addListener(_passwordChangeListener);
   }
-  
 
   @override
   Widget build(BuildContext context) {
-    var progressIndicator = widget.isLoading ? LinearProgressIndicator() : Container();
-
     return Container(
         //padding: EdgeInsets.symmetric(),
         child: ListView(
       children: <Widget>[
-        progressIndicator,
         Container(
             padding: EdgeInsets.symmetric(horizontal: 30.0),
             child: Row(
@@ -145,6 +155,7 @@ class _UserLoginInputState extends State<UserLoginInput> {
                 Expanded(
                   flex: 10,
                   child: TextField(
+                    keyboardType: TextInputType.number,
                     maxLength: 6,
                     maxLines: 1,
                     controller: loginUserCodeController,
@@ -153,7 +164,9 @@ class _UserLoginInputState extends State<UserLoginInput> {
                         .body1
                         .copyWith(fontSize: 16.0),
                     decoration: InputDecoration(
-                        labelText: widget.name == null ? "Leerlingnummer" : widget.name,
+                        labelText: widget.name == null
+                            ? "Leerlingnummer"
+                            : widget.name,
                         contentPadding: EdgeInsets.all(2.5)),
                   ),
                 ),
@@ -186,12 +199,63 @@ class _UserLoginInputState extends State<UserLoginInput> {
     ));
   }
 
-
   @override
   void dispose() {
     loginUserCodeController.removeListener(_userCodeChangeListener);
     loginUserCodeController.dispose();
     loginPasswordController.dispose();
     super.dispose();
+  }
+}
+
+class LoginButtonLoading extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 64.0,
+      child: Center(
+        child: CircularProgressIndicator(
+          strokeWidth: 4.0,
+        ),
+      ),
+    );
+  }
+}
+
+class LoginButton extends StatelessWidget {
+  final dynamic loginCallBack;
+
+  LoginButton(this.loginCallBack);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        loginCallBack();
+      },
+      child: FractionallySizedBox(
+        widthFactor: 1.0,
+        child: SizedBox(
+          height: 48.0,
+          child: Padding(
+            padding: EdgeInsets.only(right: 5.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Text(
+                  "LOG IN",
+                  style: Theme.of(context)
+                      .textTheme
+                      .body2
+                      .copyWith(color: Theme.of(context).primaryColor),
+                ),
+                Icon(Icons.navigate_next,
+                    color: Theme.of(context).primaryColor),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
