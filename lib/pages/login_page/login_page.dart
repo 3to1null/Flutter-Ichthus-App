@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 
 import '../../functions/request.dart';
+import 'store_login_response_data.dart';
 
 import '../schedule_page/schedule_page.dart';
 
@@ -15,6 +16,7 @@ var _loginData = _LoginData();
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    
     return ActualLoginPage();
   }
 }
@@ -51,11 +53,14 @@ class _ActualLoginPageState extends State<ActualLoginPage> {
     };
     var response = await postDataToAPI('/login', credentials);
     final Map loginResponseData =  json.decode(response);
-    
+    if(loginResponseData["success"]){
+      storeLoginResponseData(loginResponseData);
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SchedulePage()));
+    }else{
     setState(() {
       isLoading = false;
     });
-    //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SchedulePage()));
+    }
   }
 
   @override
@@ -79,8 +84,8 @@ class _ActualLoginPageState extends State<ActualLoginPage> {
                         color: Colors.white,
                         fontSize: 22.0,
                       )),
-                  background: Image.network(
-                    "https://bia.nl/wp-content/uploads/2017/08/ichthus1.jpg",
+                  background: Image.asset(
+                    "lib/img/ichthusBG.jpg",
                     fit: BoxFit.cover,
                     color: Colors.black54,
                     colorBlendMode: BlendMode.overlay,
