@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
 
-import '../functions/request.dart';
+import '../../functions/request.dart';
+
+import '../schedule_page/schedule_page.dart';
 
 class _LoginData {
   String leerlingnummer = '';
@@ -47,10 +50,12 @@ class _ActualLoginPageState extends State<ActualLoginPage> {
       "password": _loginData.password.toString()
     };
     var response = await postDataToAPI('/login', credentials);
-    print(response);
+    final Map loginResponseData =  json.decode(response);
+    
     setState(() {
       isLoading = false;
     });
+    //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SchedulePage()));
   }
 
   @override
