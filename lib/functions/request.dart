@@ -13,7 +13,7 @@ String transformMapToString(Map data){
   return dataString;
 }
 
-getDataFromAPI(String path, [Map data]) async {
+Future<String> getDataFromAPI(String path, [Map data]) async {
   String requestURL = baseURL + path;
   if(data != null){
     String dataString = transformMapToString(data);
@@ -24,9 +24,9 @@ getDataFromAPI(String path, [Map data]) async {
   //return response;
 }
 
-postDataToAPI(String path, Map data) async {
+Future<String> postDataToAPI(String path, Map data) async {
   String requestURL = baseURL + path;
-  final test = await post(requestURL, body: data);
-  print(test.body);
+  final Response response = await post(requestURL, body: data);
+  return response.body;
 }
 
