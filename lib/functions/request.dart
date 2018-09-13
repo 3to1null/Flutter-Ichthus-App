@@ -1,6 +1,10 @@
 import 'package:http/http.dart';
 import 'dart:async';
 
+import '../models/user_model.dart';
+
+UserModel userModel = UserModel();
+
 const String baseURL= "http://192.168.2.7:8000/ichthus";
 
 String transformMapToString(Map data){
@@ -13,8 +17,18 @@ String transformMapToString(Map data){
   return dataString;
 }
 
-Future<String> getDataFromAPI(String path, [Map data]) async {
+Map addDefaultEntries(Map data){
+  data["__sessionID"] = userModel.sessionID;
+  data["__key"] = userModel.sessionKey;
+  data["__userCode"] = userModel.userCode;
+  return data;
+}
+
+Future<String> getDataFromAPI(String path, Map data, {bool useSessionData: true}) async {
   String requestURL = baseURL + path;
+  if(useSessionData){
+    data = addDefaultEntries(data);
+  }
   if(data != null){
     String dataString = transformMapToString(data);
     requestURL += dataString;
@@ -24,8 +38,11 @@ Future<String> getDataFromAPI(String path, [Map data]) async {
   //return response;
 }
 
-Future<String> postDataToAPI(String path, Map data) async {
+Future<String> postDataToAPI(String path, Map data, {bool useSessionData: true}) async {
   String requestURL = baseURL + path;
+  if(useSessionData){
+    data = addDefaultEntries(data);
+  }
   final Response response = await post(requestURL, body: data);
   return response.body;
 }
