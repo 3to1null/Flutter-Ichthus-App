@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserModel {
   static final UserModel _userModel = new UserModel._internal();
@@ -29,6 +30,19 @@ class UserModel {
 
   String toJSONString(){
     return json.encode(toMap());
+  }
+
+  populateFromStorage([SharedPreferences prefs]) {
+    // if(prefs == null){
+    //   SharedPreferences prefs = await SharedPreferences.getInstance();
+    // }
+    Map data = json.decode(prefs.getString("userModel"));
+    userCode = data["userCode"];
+    userName = data["userName"];
+    userGroup = data["userGroup"];
+    sessionID = data["sessionID"];
+    sessionKey = data["sessionKey"];
+    isLoggedIn = true;
   }
 
 }

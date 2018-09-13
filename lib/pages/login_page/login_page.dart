@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
+import 'dart:async';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../functions/request.dart';
 import 'store_login_response_data.dart';
+
+import '../../models/user_model.dart';
 
 import '../schedule_page/schedule_page.dart';
 
@@ -62,6 +66,11 @@ class _ActualLoginPageState extends State<ActualLoginPage> {
       isLoading = false;
     });
     }
+  }
+
+  @override
+  void initState(){
+    super.initState();
   }
 
   @override

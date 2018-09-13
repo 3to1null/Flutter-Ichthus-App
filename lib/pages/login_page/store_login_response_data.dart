@@ -9,5 +9,7 @@ void storeLoginResponseData(Map loginData) async{
   userModel.sessionID = loginData['sessionID'];
   userModel.sessionKey = loginData['key'];
   userModel.isLoggedIn = true;
-  //SharedPreferences prefs = await SharedPreferences.getInstance();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setBool("isLoggedIn", true);
+  prefs.setString("userModel", userModel.toJSONString());
 }
