@@ -12,7 +12,6 @@ class UserModel {
   String userCode;
   String userName;
   String userGroup;
-  String password;
   String sessionID;
   String sessionKey;
   bool isLoggedIn; 
@@ -22,7 +21,6 @@ class UserModel {
       "userCode": userCode,
       "userName": userName,
       "userGroup": userGroup,
-      "password": password,
       "sessionID": sessionID,
       "sessionKey": sessionKey,
       "isLoggedIn": isLoggedIn
