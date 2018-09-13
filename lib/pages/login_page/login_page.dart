@@ -34,7 +34,7 @@ class _ActualLoginPageState extends State<ActualLoginPage> {
     var userName;
     if (_loginData.leerlingnummer != null) {
       userName =
-          await getDataFromAPI('/resolve/ln', {'q': _loginData.leerlingnummer});
+          await getDataFromAPI('/resolve/ln', {'q': _loginData.leerlingnummer}, useSessionData: false);
     } else {
       userName = null;
     }
@@ -51,9 +51,10 @@ class _ActualLoginPageState extends State<ActualLoginPage> {
       "userCode": _loginData.leerlingnummer.toString(),
       "password": _loginData.password.toString()
     };
-    var response = await postDataToAPI('/login', credentials);
+    var response = await postDataToAPI('/login', credentials, useSessionData: false);
     final Map loginResponseData =  json.decode(response);
     if(loginResponseData["success"]){
+      loginResponseData["userCode"] = credentials["userCode"];
       storeLoginResponseData(loginResponseData);
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SchedulePage()));
     }else{
