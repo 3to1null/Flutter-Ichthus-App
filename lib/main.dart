@@ -17,7 +17,7 @@ class IchthusApp extends StatelessWidget {
       title: 'ICV App',
       theme: new ThemeData(
         primarySwatch: Colors.blue,
-        accentColor: Colors.orangeAccent
+        accentColor: Colors.orangeAccent,
       ),
       home: isLoggedIn ? SchedulePage() : LoginPage(),
     );
