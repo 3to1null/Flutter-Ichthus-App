@@ -6,7 +6,6 @@ void storeLoginResponseData(Map loginData) async{
   userModel.userCode = loginData['userCode'];
   userModel.userName = loginData['userName'];
   userModel.userGroup = loginData['userGroup'];
-  userModel.password = loginData['password'];
   userModel.sessionID = loginData['sessionID'];
   userModel.sessionKey = loginData['key'];
   userModel.isLoggedIn = true;
