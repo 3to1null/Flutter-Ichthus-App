@@ -4,6 +4,7 @@ import '../../functions/get_week_number.dart';
 
 import '../drawer/drawer.dart';
 import 'schedule_widget_tab_wrapper.dart';
+import '../../widgets/loading_animation.dart';
 
 import 'get_schedule.dart';
 
@@ -63,7 +64,7 @@ class _SchedulePageState extends State<SchedulePage> {
               ),
             ];
           },
-          body: hasLoaded ? ScheduleTabWrapper(scheduleData) : Container(),
+          body: hasLoaded ? ScheduleTabWrapper(scheduleData) : LoadingAnimation(),
         ),
       ),
     );

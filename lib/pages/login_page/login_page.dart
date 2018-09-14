@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
-import 'dart:async';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../functions/request.dart';
 import 'store_login_response_data.dart';
 
-import '../../models/user_model.dart';
+import '../../widgets/loading_animation.dart';
 
 import '../schedule_page/schedule_page.dart';
 
@@ -20,7 +18,6 @@ var _loginData = _LoginData();
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    
     return ActualLoginPage();
   }
 }
@@ -37,8 +34,9 @@ class _ActualLoginPageState extends State<ActualLoginPage> {
   void resolveUsercode() async {
     var userName;
     if (_loginData.leerlingnummer != null) {
-      userName =
-          await getDataFromAPI('/resolve/ln', {'q': _loginData.leerlingnummer}, useSessionData: false);
+      userName = await getDataFromAPI(
+          '/resolve/ln', {'q': _loginData.leerlingnummer},
+          useSessionData: false);
     } else {
       userName = null;
     }
@@ -55,21 +53,29 @@ class _ActualLoginPageState extends State<ActualLoginPage> {
       "userCode": _loginData.leerlingnummer.toString(),
       "password": _loginData.password.toString()
     };
-    var response = await postDataToAPI('/login', credentials, useSessionData: false);
-    final Map loginResponseData =  json.decode(response);
-    if(loginResponseData["success"]){
-      loginResponseData["userCode"] = credentials["userCode"];
-      storeLoginResponseData(loginResponseData);
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SchedulePage()));
-    }else{
-    setState(() {
-      isLoading = false;
-    });
+    var response =
+        await postDataToAPI('/login', credentials, useSessionData: false);
+    final Map loginResponseData = json.decode(response);
+    try {
+      if (loginResponseData["success"]) {
+        loginResponseData["userCode"] = credentials["userCode"];
+        storeLoginResponseData(loginResponseData);
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => SchedulePage()));
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
   }
 
@@ -147,8 +153,8 @@ class _UserLoginInputState extends State<UserLoginInput> {
     }
   }
 
-  void _passwordChangeListener(){
-    if (loginPasswordController.text != _loginData.password){
+  void _passwordChangeListener() {
+    if (loginPasswordController.text != _loginData.password) {
       _loginData.password = loginPasswordController.text;
     }
   }
@@ -232,12 +238,8 @@ class LoginButtonLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 64.0,
-      child: Center(
-        child: CircularProgressIndicator(
-          strokeWidth: 4.0,
-        ),
-      ),
+      height: 72.0,
+      child: LoadingAnimation(34.0),
     );
   }
 }
