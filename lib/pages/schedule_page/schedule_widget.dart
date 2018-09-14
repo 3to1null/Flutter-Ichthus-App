@@ -74,11 +74,12 @@ class _ScheduleState extends State<Schedule> {
   Widget build(BuildContext context) {
     return StaggeredGridView.countBuilder(
       crossAxisCount: 31,
+      padding: EdgeInsets.all(0.0),
       itemCount: widget.scheduleData.length + 9 + 6,
       itemBuilder: (BuildContext context, int index) {
         if (index < 6) {
           return Container(
-              color: Theme.of(context).primaryColor,
+              color: Theme.of(context).primaryColorDark,
               child: index > 0
                   ? Center(
                       child: Text(
@@ -96,8 +97,8 @@ class _ScheduleState extends State<Schedule> {
           return Container(
             //color: rowIsOdd ? Colors.blue[200] : Colors.blue[300],
             color: rowIsOdd
-                ? Theme.of(context).primaryColor
-                : Theme.of(context).primaryColor,
+                ? Theme.of(context).primaryColorDark
+                : Theme.of(context).primaryColorDark,
             child: Center(
               child: Text((index ~/ 6 + 1).toString(),
                   style: Theme.of(context)

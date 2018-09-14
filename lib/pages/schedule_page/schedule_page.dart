@@ -37,25 +37,34 @@ class _SchedulePageState extends State<SchedulePage> {
       length: 7,
       initialIndex: 1,
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(userModel.userName),
-          bottom: TabBar(
-            isScrollable: true,
-            //labelColor: Theme.of(context).primaryColor,
-            tabs: <Widget>[
-              Tab(text: "Vorige Week"),
-              Tab(text: "Deze Week"),
-              Tab(text: "Volgende Week"),
-              Tab(text: "Week ${weekNumber + 2}"),
-              Tab(text: "Week ${weekNumber + 3}"),
-              Tab(text: "Week ${weekNumber + 4}"),
-              Tab(text: "Week ${weekNumber + 5}"),
-            ],
-          ),
-        ),
         drawer: CompleteDrawer(),
-        //body: hasLoaded ? Schedule(scheduleData) : Container(),
-        body: hasLoaded ? ScheduleTabWrapper(scheduleData) : Container(),
+        body: NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              new SliverAppBar(
+                title: Text(userModel.userName),
+                forceElevated: true,
+                pinned: true,
+                snap: false,
+                floating: true,
+                bottom: TabBar(
+                  isScrollable: true,
+                  //labelColor: Theme.of(context).primaryColor,
+                  tabs: <Widget>[
+                    Tab(text: "Vorige Week"),
+                    Tab(text: "Deze Week"),
+                    Tab(text: "Volgende Week"),
+                    Tab(text: "Week ${weekNumber + 2}"),
+                    Tab(text: "Week ${weekNumber + 3}"),
+                    Tab(text: "Week ${weekNumber + 4}"),
+                    Tab(text: "Week ${weekNumber + 5}"),
+                  ],
+                ),
+              ),
+            ];
+          },
+          body: hasLoaded ? ScheduleTabWrapper(scheduleData) : Container(),
+        ),
       ),
     );
   }
