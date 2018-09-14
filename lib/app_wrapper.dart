@@ -5,6 +5,7 @@ import 'models/user_model.dart';
 
 import 'pages/schedule_page/schedule_page.dart';
 import 'pages/login_page/login_page.dart';
+import 'widgets/loading_animation.dart';
 
 
 class AppWrapper extends StatelessWidget {
@@ -14,7 +15,7 @@ class AppWrapper extends StatelessWidget {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       if (prefs.getBool("isLoggedIn") != null &&
           prefs.getString("userModel") != null) {
-        return [prefs.getBool("isLoggedIn"), prefs];
+        return [true, prefs];
       }
       return [false];
     }
@@ -29,6 +30,7 @@ class AppWrapper extends StatelessWidget {
       }
     });
 
-    return Container();
+    //Shouldn't be seen in theory, but lets make it fancy anyway.
+    return LoadingAnimation();
   }
 }
