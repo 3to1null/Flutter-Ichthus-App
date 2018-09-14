@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter/rendering.dart';
 import 'app_wrapper.dart';
 
+void main(){
+  debugPaintSizeEnabled=false;
+  runApp(new IchthusApp());
+  }
 
-void main() => runApp(new IchthusApp());
-
-
-class IchthusApp extends StatelessWidget{
-
+class IchthusApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -21,5 +21,3 @@ class IchthusApp extends StatelessWidget{
     );
   }
 }
-
-
