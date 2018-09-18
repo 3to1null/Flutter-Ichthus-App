@@ -5,6 +5,7 @@ import '../../functions/get_week_number.dart';
 import '../drawer/drawer.dart';
 import 'schedule_widget_tab_wrapper.dart';
 import '../../widgets/loading_animation.dart';
+import 'schedule_search.dart';
 
 import 'get_schedule.dart';
 
@@ -18,6 +19,7 @@ class SchedulePage extends StatefulWidget {
 class _SchedulePageState extends State<SchedulePage> {
   UserModel userModel = UserModel();
   bool hasLoaded = false;
+  bool displaySearch = false;
   int weekNumber = getWeekNumber();
   List scheduleData;
 
@@ -34,39 +36,49 @@ class _SchedulePageState extends State<SchedulePage> {
       getSchedule(callBack: getScheduleSetStateCallback);
     }
 
-    return DefaultTabController(
-      length: 7,
-      initialIndex: 1,
-      child: Scaffold(
-        drawer: CompleteDrawer(),
-        body: NestedScrollView(
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return <Widget>[
-              new SliverAppBar(
-                title: Text(userModel.userName),
-                forceElevated: true,
-                pinned: true,
-                snap: false,
-                floating: true,
-                bottom: TabBar(
-                  isScrollable: true,
-                  //labelColor: Theme.of(context).primaryColor,
-                  tabs: <Widget>[
-                    Tab(text: "Vorige Week"),
-                    Tab(text: "Deze Week"),
-                    Tab(text: "Volgende Week"),
-                    Tab(text: "Week ${weekNumber + 2}"),
-                    Tab(text: "Week ${weekNumber + 3}"),
-                    Tab(text: "Week ${weekNumber + 4}"),
-                    Tab(text: "Week ${weekNumber + 5}"),
-                  ],
-                ),
-              ),
-            ];
-          },
-          body: hasLoaded ? ScheduleTabWrapper(scheduleData) : LoadingAnimation(),
-        ),
-      ),
-    );
+    return ScheduleSearch();
+
+    // return DefaultTabController(
+    //   length: 7,
+    //   initialIndex: 1,
+    //   child: Scaffold(
+    //     drawer: CompleteDrawer(),
+    //     body: NestedScrollView(
+    //       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+    //         return <Widget>[
+    //           new SliverAppBar(
+    //             title: Text(userModel.userName),
+    //             forceElevated: true,
+    //             pinned: true,
+    //             snap: false,
+    //             floating: true,
+    //             actions: <Widget>[
+    //               IconButton(
+    //                 icon: Icon(Icons.search),
+    //                 onPressed: (){setState(() {
+    //                                       displaySearch = true;
+    //                                     });},
+    //               )
+    //             ],
+    //             bottom: TabBar(
+    //               isScrollable: true,
+    //               //labelColor: Theme.of(context).primaryColor,
+    //               tabs: <Widget>[
+    //                 Tab(text: "Vorige Week"),
+    //                 Tab(text: "Deze Week"),
+    //                 Tab(text: "Volgende Week"),
+    //                 Tab(text: "Week ${weekNumber + 2}"),
+    //                 Tab(text: "Week ${weekNumber + 3}"),
+    //                 Tab(text: "Week ${weekNumber + 4}"),
+    //                 Tab(text: "Week ${weekNumber + 5}"),
+    //               ],
+    //             ),
+    //           ),
+    //         ];
+    //       },
+    //       body: (hasLoaded ? ScheduleTabWrapper(scheduleData) : LoadingAnimation()),
+    //     ),
+    //   ),
+    // );
   }
 }
