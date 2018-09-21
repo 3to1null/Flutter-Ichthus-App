@@ -17,13 +17,23 @@ class SchedulePage extends StatefulWidget {
 }
 
 class _SchedulePageState extends State<SchedulePage> {
-  final GlobalKey<ScaffoldState> _scheduleScaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scheduleScaffoldKey =
+      GlobalKey<ScaffoldState>();
   final ScheduleSearchDelegate _delegate = ScheduleSearchDelegate();
   UserModel userModel = UserModel();
   bool hasLoaded = false;
-  bool displaySearch = false;
   int weekNumber = getWeekNumber();
+  String titleName;
+  Map currentUserData;
   List scheduleData;
+
+  String setTitleName() {
+    if (currentUserData == null) {
+      return userModel.userName;
+    } else {
+      return currentUserData["name"];
+    }
+  }
 
   void getScheduleSetStateCallback(scheduleResponseData) {
     setState(() {
@@ -32,11 +42,39 @@ class _SchedulePageState extends State<SchedulePage> {
     });
   }
 
+  void setNewSchedule(Map userData) {
+    if(userData == null){return;}
+    setState(() {
+      hasLoaded = false;
+      currentUserData = userData;
+      titleName = setTitleName();
+    });
+    getSchedule(userCode: userData['userCode'], callBack: getScheduleSetStateCallback)
+        .catchError((e) {
+          print(e);
+          _scheduleScaffoldKey.currentState.showSnackBar(SnackBar(
+            content: Text(
+                "Er is iets fout gegaan bij het laden van ${titleName.trim()}'s rooster. Je eigen rooster wordt nu weergegeven."
+                ),
+          ));
+          setNewSchedule({
+            "name": userModel.userName,
+            "userCode": userModel.userCode
+          });
+        });
+  }
+
+  @override
+  void initState() {
+    getSchedule(callBack: getScheduleSetStateCallback);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (!hasLoaded) {
-      getSchedule(callBack: getScheduleSetStateCallback);
-    }
+    // if (!hasLoaded) {
+    //   getSchedule(callBack: getScheduleSetStateCallback);
+    // }
 
     return DefaultTabController(
       length: 7,
@@ -48,7 +86,7 @@ class _SchedulePageState extends State<SchedulePage> {
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               new SliverAppBar(
-                title: Text(userModel.userName),
+                title: Text(titleName != null ? titleName : userModel.userName),
                 //title: TextField(),
                 forceElevated: true,
                 pinned: true,
@@ -57,11 +95,10 @@ class _SchedulePageState extends State<SchedulePage> {
                 leading: IconButton(
                   tooltip: 'Navigatie Menu',
                   icon: AnimatedIcon(
-                    icon: AnimatedIcons.menu_arrow,
-                    color: Colors.white,
-                    progress: _delegate.transitionAnimation
-                  ),
-                  onPressed: (){
+                      icon: AnimatedIcons.menu_arrow,
+                      color: Colors.white,
+                      progress: _delegate.transitionAnimation),
+                  onPressed: () {
                     _scheduleScaffoldKey.currentState.openDrawer();
                   },
                 ),
@@ -74,6 +111,7 @@ class _SchedulePageState extends State<SchedulePage> {
                         context: context,
                         delegate: _delegate,
                       );
+                      setNewSchedule(selected);
                     },
                   )
                 ],

@@ -38,24 +38,28 @@ class ScheduleSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    // TODO: implement buildResults
-    return Container();
+    return buildSuggestions(context);
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
     var future = _getResults(query);
+    
+    void onResultCallback(result){
+      close(context, result);
+    }
+
     return FutureBuilder<List>(
       future: future,
       builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
         switch (snapshot.connectionState){
           case ConnectionState.done:
             dataLastResultsBuild = snapshot.data;
-            return SearchResults(dataLastResultsBuild);
+            return SearchResults(dataLastResultsBuild, onResultCallback);
             break;
           default: 
             if(dataLastResultsBuild != null){
-              return SearchResults(dataLastResultsBuild);
+              return SearchResults(dataLastResultsBuild, onResultCallback);
             }else{
               return LoadingAnimation();
             }

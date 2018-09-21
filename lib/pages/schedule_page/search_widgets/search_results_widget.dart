@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 class SearchResults extends StatelessWidget {
 
   final List data;
+  final onTapCallBack;
 
-  SearchResults(this.data);
+  SearchResults(this.data, this.onTapCallBack);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,11 @@ class SearchResults extends StatelessWidget {
           String name  = item['name'];
           String userCode = item['userCode'];
           return ListTile(
+            //leading: Icon(Icons.offline_pin),
             title: Text(name != '' ? name : userCode),
+            onTap: (){
+              onTapCallBack(item);
+            },
           );
         },
       ),
