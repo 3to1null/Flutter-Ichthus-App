@@ -1,4 +1,4 @@
-package com.example.ichthusapp;
+package nathan.fraignt.me;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
