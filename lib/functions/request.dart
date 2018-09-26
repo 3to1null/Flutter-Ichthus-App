@@ -5,7 +5,7 @@ import '../models/user_model.dart';
 
 UserModel userModel = UserModel();
 
-const String baseURL= "http://206.189.109.161/ichthus";
+const String baseURL= "https://api.fraignt.me/ichthus";
 //const String baseURL= "http://192.168.2.7:8000/ichthus";
 
 String transformMapToString(Map data){
