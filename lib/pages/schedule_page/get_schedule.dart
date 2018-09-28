@@ -79,6 +79,9 @@ Future<List> getSchedule({String userCode: "~me", callBack}) async {
   final List jsonResponse = json.decode(response);
   if(refreshedScheduleOnline){
       _storeSchedule(userCode, jsonResponse);
+  }else{
+    //send request to log on server
+    getDataFromAPI("/st/sc/sh", {"uc": userCode});
   }
   if(callBack != null){
     callBack(jsonResponse);

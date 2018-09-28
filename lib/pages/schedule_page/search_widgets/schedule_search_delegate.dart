@@ -9,10 +9,15 @@ import 'search_results_widget.dart';
 
 class ScheduleSearchDelegate extends SearchDelegate {
   List dataLastResultsBuild;
+  String lastQuery;
 
   Future<List> _getResults(query) async {
+    if(query == lastQuery && dataLastResultsBuild != null){
+      return dataLastResultsBuild;
+    }
     String response = await getDataFromAPI("/search", {"q": query});
     List decodedResponse = json.decode(response);
+    lastQuery = query;
     return decodedResponse;
   }
 
