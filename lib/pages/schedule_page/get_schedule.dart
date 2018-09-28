@@ -6,6 +6,8 @@ import '../../functions/request.dart';
 
 import '../../models/user_model.dart';
 
+bool refreshedScheduleOnline;
+
 Future<bool> _hasOfflineSchedule(String userCode) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String lastLoadedSchedule = prefs.getString("_userScheduleTime$userCode");
@@ -24,8 +26,8 @@ Future<Duration> _getTimeoutTime(String userCode) async {
   String lastLoadedSchedule = prefs.getString("_userScheduleTime$userCode");
   DateTime lastLoadedScheduleTime = DateTime.parse(lastLoadedSchedule);
   DateTime timeNow = DateTime.now();
-  Duration timeSinceLastLoaded = lastLoadedScheduleTime.difference(timeNow);
-  if(timeSinceLastLoaded.inMinutes < 15){
+  Duration timeSinceLastLoaded = timeNow.difference(lastLoadedScheduleTime);
+  if(timeSinceLastLoaded.inMinutes < 100){
     //if lower than 1 second, schedule is not called.
     return Duration(microseconds: 1);
   }else if(timeSinceLastLoaded.inHours < 4){
@@ -43,6 +45,19 @@ void _storeSchedule(String userCode, List schedule) async {
   prefs.setString("_userSchedule$userCode", json.encode(schedule));
 }
 
+Future getScheduleWithTimeout(userCode, timeoutTime) async {
+  var response;
+  refreshedScheduleOnline = true;
+  try{
+    response = await getDataFromAPI("/schedule/get", {"userCode": userCode}).timeout(timeoutTime);
+  }catch(TimeoutException){
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      response = prefs.getString("_userSchedule$userCode");
+      refreshedScheduleOnline = false;
+  }
+  return response;
+}
+
 Future<List> getSchedule({String userCode: "~me", callBack}) async {
   if(userCode == "~me"){
     userCode = UserModel().userCode;
@@ -51,16 +66,20 @@ Future<List> getSchedule({String userCode: "~me", callBack}) async {
   if(await _hasOfflineSchedule(userCode)){
     final Duration timeoutTime = await _getTimeoutTime(userCode);
     if(timeoutTime.inSeconds >= 1){
-      response = await getDataFromAPI("/schedule/get", {"userCode": userCode}).timeout(timeoutTime);
+      response = await getScheduleWithTimeout(userCode, timeoutTime);
     }else{
       SharedPreferences prefs = await SharedPreferences.getInstance();
       response = prefs.getString("_userSchedule$userCode");
+      refreshedScheduleOnline = false;
     }
   }else{
     response = await getDataFromAPI("/schedule/get", {"userCode": userCode});
+    refreshedScheduleOnline = true;
   }
   final List jsonResponse = json.decode(response);
-  _storeSchedule(userCode, jsonResponse);
+  if(refreshedScheduleOnline){
+      _storeSchedule(userCode, jsonResponse);
+  }
   if(callBack != null){
     callBack(jsonResponse);
   }
