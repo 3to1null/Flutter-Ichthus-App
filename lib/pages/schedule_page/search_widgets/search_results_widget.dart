@@ -17,8 +17,10 @@ class SearchResults extends StatelessWidget {
           Map item = data[index];
           String name  = item['name'];
           String userCode = item['userCode'];
+          bool isHistory = (item['h'] ?? false);
+          //bool isStudent = (item['isStudent'] ?? true)
           return ListTile(
-            //leading: Icon(Icons.offline_pin),
+            leading: isHistory ? Icon(Icons.history) : Icon(Icons.person),
             title: Text(name != '' ? name : userCode),
             onTap: (){
               onTapCallBack(item);
