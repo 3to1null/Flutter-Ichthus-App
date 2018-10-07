@@ -40,6 +40,9 @@ class _ActualLoginPageState extends State<ActualLoginPage> {
     } else {
       userName = null;
     }
+    if(userName == ""){
+      userName = "Leerlingnummer";
+    }
     setState(() {
       name = userName;
     });
