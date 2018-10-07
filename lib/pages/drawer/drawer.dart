@@ -62,8 +62,10 @@ class _CompleteDrawerState extends State<CompleteDrawer> {
                     }),
                   )
                 : CircleAvatar(
-                    //TODO: Get initials
-                    child: Text("NK"),
+                    child: Text(
+                      userModel.userName.substring(0, 1),
+                      style: Theme.of(context).textTheme.display1.copyWith(color: Colors.white70),
+                      ),
                   ),
           ),
           ListTile(
