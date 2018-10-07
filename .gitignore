@@ -10,3 +10,4 @@ build/
 .idea/
 lib/pages/login_page - Copy.dart
 android/key.properties
+android/app/google-services.json
