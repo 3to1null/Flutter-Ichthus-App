@@ -35,6 +35,18 @@ class _SchedulePageState extends State<SchedulePage> {
     }
   }
 
+  bool isDefaultUser(){
+    try{
+      if(currentUserData["userCode"] != userModel.userCode && currentUserData["userCode"] != "~me"){
+        return true;
+      }else{
+        return false;
+      }
+    }catch(error){
+      return false;
+    }
+  }
+
   void getScheduleSetStateCallback(scheduleResponseData) {
     setState(() {
       scheduleData = scheduleResponseData;
@@ -103,6 +115,17 @@ class _SchedulePageState extends State<SchedulePage> {
                   },
                 ),
                 actions: <Widget>[
+                  // TODO: icon to load default schedule
+                  isDefaultUser() ? IconButton(
+                    tooltip: 'Terug naar eigen rooster',
+                    icon: Icon(Icons.arrow_back),
+                    onPressed: (){
+                      setNewSchedule({
+                        "userCode": userModel.userCode,
+                        "name": userModel.userName
+                      });
+                    },
+                  ) : Container(),
                   IconButton(
                     tooltip: 'Zoeken',
                     icon: Icon(Icons.search),
