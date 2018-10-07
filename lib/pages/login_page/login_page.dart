@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 
 import '../../functions/request.dart';
 import 'store_login_response_data.dart';
@@ -16,13 +18,25 @@ class _LoginData {
 var _loginData = _LoginData();
 
 class LoginPage extends StatelessWidget {
+
+  LoginPage(this.fbAnalytics, this.fbObserver);
+
+  final FirebaseAnalytics fbAnalytics;
+  final FirebaseAnalyticsObserver fbObserver;
+
   @override
   Widget build(BuildContext context) {
-    return ActualLoginPage();
+    return ActualLoginPage(fbAnalytics, fbObserver);
   }
 }
 
 class ActualLoginPage extends StatefulWidget {
+
+  ActualLoginPage(this.fbAnalytics, this.fbObserver);
+
+  final FirebaseAnalytics fbAnalytics;
+  final FirebaseAnalyticsObserver fbObserver;
+
   @override
   _ActualLoginPageState createState() => _ActualLoginPageState();
 }
@@ -64,7 +78,7 @@ class _ActualLoginPageState extends State<ActualLoginPage> {
         loginResponseData["userCode"] = credentials["userCode"];
         storeLoginResponseData(loginResponseData);
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => SchedulePage()));
+            context, MaterialPageRoute(builder: (context) => SchedulePage(widget.fbAnalytics, widget.fbObserver)));
       } else {
         setState(() {
           isLoading = false;

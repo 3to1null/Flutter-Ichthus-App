@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 
 import '../../functions/get_week_number.dart';
 
@@ -12,6 +14,12 @@ import 'get_schedule.dart';
 import '../../models/user_model.dart';
 
 class SchedulePage extends StatefulWidget {
+
+  SchedulePage(this.fbAnalytics, this.fbObserver);
+
+  final FirebaseAnalytics fbAnalytics;
+  final FirebaseAnalyticsObserver fbObserver;
+  
   @override
   _SchedulePageState createState() => _SchedulePageState();
 }
