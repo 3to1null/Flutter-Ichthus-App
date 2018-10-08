@@ -77,8 +77,9 @@ class _ActualLoginPageState extends State<ActualLoginPage> {
       if (loginResponseData["success"]) {
         loginResponseData["userCode"] = credentials["userCode"];
         storeLoginResponseData(loginResponseData);
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => SchedulePage(widget.fbAnalytics, widget.fbObserver)));
+        // Navigator.pushReplacement(
+        //     context, MaterialPageRoute(builder: (context) => SchedulePage(widget.fbAnalytics, widget.fbObserver)));
+        Navigator.pushReplacementNamed(context, '/schedule');
       } else {
         setState(() {
           isLoading = false;

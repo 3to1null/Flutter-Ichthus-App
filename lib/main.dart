@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'app_wrapper.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
+
+import 'app_wrapper.dart';
+import 'pages/schedule_page/schedule_page.dart';
+import 'pages/login_page/login_page.dart';
 
 void main() {
   debugPaintSizeEnabled = false;
@@ -24,10 +27,16 @@ class IchthusApp extends StatelessWidget {
       ),
       navigatorObservers: <NavigatorObserver>[observer],
       //AppWrapper checks if a user is logged in and either starts app or shows the login.
-      home: AppWrapper(
-        analytics,
-        observer,
-      ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => AppWrapper(analytics, observer),
+        '/schedule': (context) => SchedulePage(analytics, observer),
+        '/login': (context) => LoginPage(analytics, observer)
+      },
+      // home: AppWrapper(
+      //   analytics,
+      //   observer,
+      // ),
     );
   }
 }
