@@ -6,6 +6,9 @@ import 'cell_widgets/schedule_top_row_cell_widget.dart';
 import 'cell_widgets/schedule_side_column_cell_widget.dart';
 import 'cell_widgets/schedule_cell_widget.dart';
 
+
+import 'models/appointment.dart';
+
 class Schedule extends StatefulWidget {
   final List scheduleData;
 
@@ -35,7 +38,10 @@ class _ScheduleState extends State<Schedule> {
           } else {
             index = getRealIndex(index);
             appointment = widget.scheduleData[index];
-            return ScheduleCell(index, appointment);
+            if(appointment == false){
+              appointment = {"exists": false};
+            }
+            return ScheduleCell(index, Appointment.fromJson(appointment));
           }
         }
       },

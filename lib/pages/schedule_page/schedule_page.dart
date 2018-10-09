@@ -14,12 +14,11 @@ import 'get_schedule.dart';
 import '../../models/user_model.dart';
 
 class SchedulePage extends StatefulWidget {
-
   SchedulePage(this.fbAnalytics, this.fbObserver);
 
   final FirebaseAnalytics fbAnalytics;
   final FirebaseAnalyticsObserver fbObserver;
-  
+
   @override
   _SchedulePageState createState() => _SchedulePageState();
 }
@@ -43,45 +42,49 @@ class _SchedulePageState extends State<SchedulePage> {
     }
   }
 
-  bool isDefaultUser(){
-    try{
-      if(currentUserData["userCode"] != userModel.userCode && currentUserData["userCode"] != "~me"){
+  bool isDefaultUser() {
+    try {
+      if (currentUserData["userCode"] != userModel.userCode &&
+          currentUserData["userCode"] != "~me") {
         return true;
-      }else{
+      } else {
         return false;
       }
-    }catch(error){
+    } catch (error) {
       return false;
     }
   }
 
   void getScheduleSetStateCallback(scheduleResponseData) {
-    setState(() {
-      scheduleData = scheduleResponseData;
-      hasLoaded = true;
-    });
+    if (!hasLoaded) {
+      setState(() {
+        scheduleData = scheduleResponseData;
+        hasLoaded = true;
+      });
+    }
   }
 
   void setNewSchedule(Map userData) {
-    if(userData == null){return;}
+    if (userData == null) {
+      return;
+    }
     setState(() {
       hasLoaded = false;
       currentUserData = userData;
       titleName = setTitleName();
     });
-    getSchedule(userCode: userData['userCode'], callBack: getScheduleSetStateCallback)
+    getSchedule(
+            userCode: userData['userCode'],
+            callBack: getScheduleSetStateCallback)
         .catchError((e) {
-          print(e);
-          _scheduleScaffoldKey.currentState.showSnackBar(SnackBar(
-            content: Text(
-                "Er is iets fout gegaan bij het laden van ${titleName.trim()}'s rooster. Je eigen rooster wordt nu weergegeven."
-                ),
-          ));
-          setNewSchedule({
-            "name": userModel.userName,
-            "userCode": userModel.userCode
-          });
-        });
+      print(e);
+      _scheduleScaffoldKey.currentState.showSnackBar(SnackBar(
+        content: Text(
+            "Er is iets fout gegaan bij het laden van ${titleName.trim()}'s rooster. Je eigen rooster wordt nu weergegeven."),
+      ));
+      setNewSchedule(
+          {"name": userModel.userName, "userCode": userModel.userCode});
+    });
   }
 
   @override
@@ -92,9 +95,6 @@ class _SchedulePageState extends State<SchedulePage> {
 
   @override
   Widget build(BuildContext context) {
-    // if (!hasLoaded) {
-    //   getSchedule(callBack: getScheduleSetStateCallback);
-    // }
 
     return DefaultTabController(
       length: 7,
@@ -124,16 +124,18 @@ class _SchedulePageState extends State<SchedulePage> {
                 ),
                 actions: <Widget>[
                   // TODO: icon to load default schedule
-                  isDefaultUser() ? IconButton(
-                    tooltip: 'Terug naar eigen rooster',
-                    icon: Icon(Icons.arrow_back),
-                    onPressed: (){
-                      setNewSchedule({
-                        "userCode": userModel.userCode,
-                        "name": userModel.userName
-                      });
-                    },
-                  ) : Container(),
+                  isDefaultUser()
+                      ? IconButton(
+                          tooltip: 'Terug naar eigen rooster',
+                          icon: Icon(Icons.arrow_back),
+                          onPressed: () {
+                            setNewSchedule({
+                              "userCode": userModel.userCode,
+                              "name": userModel.userName
+                            });
+                          },
+                        )
+                      : Container(),
                   IconButton(
                     tooltip: 'Zoeken',
                     icon: Icon(Icons.search),
