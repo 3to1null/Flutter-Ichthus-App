@@ -51,7 +51,7 @@ class _SchedulePageState extends State<SchedulePage> {
         return true;
       }
     } catch (error) {
-      return false;
+      return true;
     }
   }
 
@@ -101,7 +101,7 @@ class _SchedulePageState extends State<SchedulePage> {
       initialIndex: 1,
       child: Scaffold(
         key: _scheduleScaffoldKey,
-        drawer: CompleteDrawer(),
+        drawer: CompleteDrawer(widget.fbAnalytics, widget.fbObserver),
         body: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[

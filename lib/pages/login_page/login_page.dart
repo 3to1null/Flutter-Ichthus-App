@@ -18,7 +18,6 @@ class _LoginData {
 var _loginData = _LoginData();
 
 class LoginPage extends StatelessWidget {
-
   LoginPage(this.fbAnalytics, this.fbObserver);
 
   final FirebaseAnalytics fbAnalytics;
@@ -31,7 +30,6 @@ class LoginPage extends StatelessWidget {
 }
 
 class ActualLoginPage extends StatefulWidget {
-
   ActualLoginPage(this.fbAnalytics, this.fbObserver);
 
   final FirebaseAnalytics fbAnalytics;
@@ -51,10 +49,12 @@ class _ActualLoginPageState extends State<ActualLoginPage> {
       userName = await getDataFromAPI(
           '/resolve/ln', {'q': _loginData.leerlingnummer},
           useSessionData: false);
+      //log event
+      widget.fbAnalytics.logEvent(name: 'usercode_submitted');
     } else {
       userName = null;
     }
-    if(userName == ""){
+    if (userName == "") {
       userName = "Leerlingnummer";
     }
     setState(() {
@@ -63,6 +63,9 @@ class _ActualLoginPageState extends State<ActualLoginPage> {
   }
 
   void checkCredentials() async {
+    //logevent
+    widget.fbAnalytics.logEvent(name: 'credentials_submitted');
+
     setState(() {
       isLoading = true;
     });
@@ -75,6 +78,8 @@ class _ActualLoginPageState extends State<ActualLoginPage> {
     final Map loginResponseData = json.decode(response);
     try {
       if (loginResponseData["success"]) {
+        //log login
+        widget.fbAnalytics.logLogin();
         loginResponseData["userCode"] = credentials["userCode"];
         storeLoginResponseData(loginResponseData);
         // Navigator.pushReplacement(

@@ -6,9 +6,6 @@ import 'package:firebase_analytics/observer.dart';
 
 import 'models/user_model.dart';
 
-import 'pages/schedule_page/schedule_page.dart';
-import 'pages/login_page/login_page.dart';
-
 import 'widgets/loading_animation.dart';
 
 class AppWrapper extends StatelessWidget {
@@ -32,18 +29,8 @@ class AppWrapper extends StatelessWidget {
       if (returnData[0]) {
         UserModel userModel = UserModel();
         userModel.populateFromStorage(returnData[1]);
-        // Navigator.pushReplacement(
-        //     context,
-        //     MaterialPageRoute(
-        //         builder: (context) => SchedulePage(fbAnalytics, fbObserver))
-        // );
         Navigator.pushReplacementNamed(context, '/schedule');
       } else {
-        // Navigator.pushReplacement(
-        //     context,
-        //     MaterialPageRoute(
-        //         builder: (context) => LoginPage(fbAnalytics, fbObserver))
-        // );
         Navigator.pushReplacementNamed(context, '/login');
       }
     });
