@@ -46,9 +46,9 @@ class _SchedulePageState extends State<SchedulePage> {
     try {
       if (currentUserData["userCode"] != userModel.userCode &&
           currentUserData["userCode"] != "~me") {
-        return true;
-      } else {
         return false;
+      } else {
+        return true;
       }
     } catch (error) {
       return false;
@@ -124,7 +124,7 @@ class _SchedulePageState extends State<SchedulePage> {
                 ),
                 actions: <Widget>[
                   // TODO: icon to load default schedule
-                  isDefaultUser()
+                  !isDefaultUser()
                       ? IconButton(
                           tooltip: 'Terug naar eigen rooster',
                           icon: Icon(Icons.arrow_back),
