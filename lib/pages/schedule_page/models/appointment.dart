@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 /// Represents the data of a Model, can be initialized with fromJson() to transform an appointment 
 /// JSON object to an AppointmentModel.
 class Appointment {
@@ -10,6 +12,7 @@ class Appointment {
   final bool cancelled;
   final bool exists;
   final String type;
+  Color color;
 
   /// Uses the map from the schedule list to initialize the AppointmentModel.
   Appointment.fromJson(Map<String, dynamic> json)
