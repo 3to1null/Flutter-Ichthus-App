@@ -31,13 +31,14 @@ class ScheduleCell extends StatelessWidget {
       // try{text1 = appointment['teachers'][0].toString();}catch(e){text1 = "";}
       // try{text2 = appointment['subjects'][0].toString();}catch(e){text2 = "";}
       // try{text3 = appointment['locations'][0].toString();}catch(e){text3 = "";}
-      text1 = appointment.teachers[0];
-      text2 = appointment.subjects[0];
-      text3 = appointment.locations[0];
+      try{text1 = appointment.teachers[0];}catch(e){text1 = "";}
+      try{text2 = appointment.subjects[0];}catch(e){text2 = "";}
+      try{text3 = appointment.locations[0];}catch(e){text3 = "";}
 
       return InkWell(
         onTap: (){
-          _openDetailsDialogPage(context, appointment);
+          //_openDetailsDialogPage(context, appointment);
+          _openDetailsDialogPage(context, Map);
         },
         child: Ink(
           color: appointmentBackgroundColor(appointment, index),
