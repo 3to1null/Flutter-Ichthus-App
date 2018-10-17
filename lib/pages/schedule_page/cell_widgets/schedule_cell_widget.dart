@@ -38,7 +38,6 @@ class ScheduleCell extends StatelessWidget {
       return InkWell(
         onTap: (){
           //_openDetailsDialogPage(context, appointment);
-          _openDetailsDialogPage(context, Map);
         },
         child: Ink(
           color: appointmentBackgroundColor(appointment, index),
