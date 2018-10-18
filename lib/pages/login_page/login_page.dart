@@ -8,7 +8,7 @@ import 'store_login_response_data.dart';
 
 import '../../widgets/loading_animation.dart';
 
-import '../schedule_page/schedule_page.dart';
+import '../../functions/convert_to_bool.dart';
 
 class _LoginData {
   String leerlingnummer = '';
@@ -40,6 +40,8 @@ class ActualLoginPage extends StatefulWidget {
 }
 
 class _ActualLoginPageState extends State<ActualLoginPage> {
+  final GlobalKey<ScaffoldState> _loginPageScaffoldKey =
+      GlobalKey<ScaffoldState>();
   bool isLoading = false;
   var name = "Leerlingnummer";
 
@@ -77,20 +79,25 @@ class _ActualLoginPageState extends State<ActualLoginPage> {
         await postDataToAPI('/login', credentials, useSessionData: false);
     final Map loginResponseData = json.decode(response);
     try {
-      if (loginResponseData["success"]) {
+      if (convertToBool(loginResponseData["success"])) {
         //log login
         widget.fbAnalytics.logLogin();
         loginResponseData["userCode"] = credentials["userCode"];
         storeLoginResponseData(loginResponseData);
-        // Navigator.pushReplacement(
-        //     context, MaterialPageRoute(builder: (context) => SchedulePage(widget.fbAnalytics, widget.fbObserver)));
         Navigator.pushReplacementNamed(context, '/schedule');
       } else {
         setState(() {
           isLoading = false;
         });
       }
+      print(context);
+      _loginPageScaffoldKey.currentState.showSnackBar(SnackBar(
+        content: Text("Leerlingnummer of wachtwoord incorrect."),
+      ));
     } catch (e) {
+      _loginPageScaffoldKey.currentState.showSnackBar(SnackBar(
+        content: Text("Er is iets fout gegaan. Controleer je gegevens en internetverbinding en probeer het opnieuw."),
+      ));
       setState(() {
         isLoading = false;
       });
@@ -106,6 +113,7 @@ class _ActualLoginPageState extends State<ActualLoginPage> {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
+      key: _loginPageScaffoldKey,
       body: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
@@ -130,7 +138,6 @@ class _ActualLoginPageState extends State<ActualLoginPage> {
                     colorBlendMode: BlendMode.overlay,
                   )),
             ),
-            //LinearProgressIndicator(),
           ];
         },
         body: Center(
