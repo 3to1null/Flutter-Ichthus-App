@@ -52,10 +52,6 @@ class IchthusApp extends StatelessWidget {
         '/schedule': (context) => SchedulePage(analytics, observer),
         '/login': (context) => LoginPage(analytics, observer)
       },
-      // home: AppWrapper(
-      //   analytics,
-      //   observer,
-      // ),
     );
   }
 }
