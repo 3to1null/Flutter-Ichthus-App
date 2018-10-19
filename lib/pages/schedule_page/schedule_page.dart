@@ -105,7 +105,7 @@ class _SchedulePageState extends State<SchedulePage> {
         body: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
-              new SliverAppBar(
+              SliverAppBar(
                 title: Text(titleName != null ? titleName : userModel.userName),
                 //title: TextField(),
                 forceElevated: true,
