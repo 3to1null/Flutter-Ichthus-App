@@ -5,8 +5,8 @@ import '../models/user_model.dart';
 
 UserModel userModel = UserModel();
 
-const String baseURL= "https://api.fraignt.me/ichthus";
-//const String baseURL= "http://192.168.2.4:8000/ichthus";
+//const String baseURL= "https://api.fraignt.me/ichthus";
+const String baseURL= "http://192.168.2.4:8000/ichthus";
 
 String transformMapToString(Map data){
   String dataString = "?";
@@ -39,7 +39,7 @@ Future<String> getDataFromAPI(String path, Map data, {bool useSessionData: true}
   //return response;
 }
 
-Future<String> postDataToAPI(String path, Map data, {bool useSessionData: true}) async {
+Future<String> postDataToAPI(String path, Map<String, String> data, {bool useSessionData: true}) async {
   String requestURL = baseURL + path;
   if(useSessionData){
     data = addDefaultEntries(data);
