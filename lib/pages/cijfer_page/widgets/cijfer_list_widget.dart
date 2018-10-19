@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'cijfer_subject_marks.dart';
+
+import '../functions/circle_color.dart';
+
 class CijferList extends StatelessWidget {
   final List<Map<String, dynamic>> cijferListData;
 
@@ -13,24 +17,10 @@ class CijferList extends StatelessWidget {
       padding: EdgeInsets.all(8.0),
       //itemExtent: 20.0,
       itemBuilder: (BuildContext context, int index) {
-
-        Color circleColor(Map<String, dynamic> cijferData){
-          if(cijferData["average"] == '-'){
-            return Colors.green;
-          }else{
-            num average = num.parse(cijferData["average"]);
-            if(average >= 5.5){
-              return Colors.green;
-            }else{
-              return Colors.red;
-            }
-          }
-        }
-
         Map<String, dynamic> cijferData = cijferListData[index];
         return ExpansionTile(
           leading: CircleAvatar(
-              backgroundColor: circleColor(cijferData),
+              backgroundColor: circleColor(cijferData['average']),
               child: Text(
                 cijferData["average"],
                 style: Theme.of(context)
@@ -39,7 +29,7 @@ class CijferList extends StatelessWidget {
                     .copyWith(color: Colors.white),
               )),
           title: Text(cijferData['subject']),
-          children: <Widget>[],
+          children: <Widget>[CijferSubjectMarks(cijferData["cijfers"])],
         );
       },
     );
