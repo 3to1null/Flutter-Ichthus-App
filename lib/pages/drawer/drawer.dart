@@ -30,11 +30,14 @@ class _CompleteDrawerState extends State<CompleteDrawer> {
     drawerDataModel.hasProfilePictureLink = true;
     drawerDataModel.profilePictureUrl = url;
     drawerDataModel.profilePictureHeaders = headers;
-    setState(() {
-      hasProfilePictureLink = true;
-      profilePictureUrl = url;
-      profilePictureHeaders = headers;
-    });
+    // check if the widget still exists.
+    if (context != null) {
+      setState(() {
+        hasProfilePictureLink = true;
+        profilePictureUrl = url;
+        profilePictureHeaders = headers;
+      });
+    }
   }
 
   UserModel userModel = UserModel();
@@ -50,9 +53,7 @@ class _CompleteDrawerState extends State<CompleteDrawer> {
     }
 
     //log draweropen
-    widget.fbAnalytics.logEvent(
-      name: 'drawer_open'
-    );
+    widget.fbAnalytics.logEvent(name: 'drawer_open');
 
     return Drawer(
       child: ListView(
@@ -65,7 +66,7 @@ class _CompleteDrawerState extends State<CompleteDrawer> {
                 ? CircleAvatar(
                     backgroundImage: AdvancedNetworkImage(profilePictureUrl,
                         header: {'Cookie': profilePictureHeaders["Cookie"]},
-                        useDiskCache: false, loadFailedCallback: () {
+                        useDiskCache: true, loadFailedCallback: () {
                       drawerDataModel.hasProfilePictureLink = false;
                       setState(() {
                         hasProfilePictureLink = false;
@@ -83,14 +84,30 @@ class _CompleteDrawerState extends State<CompleteDrawer> {
                   ),
           ),
           ListTile(
+              leading: Icon(Icons.schedule),
+              title: Text("Rooster"),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushReplacementNamed(context, '/schedule');
+                drawerDataModel.currentActivePage = "/schedule";
+              }),
+          ListTile(
+              leading: Icon(Icons.format_list_numbered_rtl),
+              title: Text("Cijfers"),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushReplacementNamed(context, '/cijfers');
+                drawerDataModel.currentActivePage = "/cijfers";
+              }),
+          Divider(),
+          ListTile(
               leading: Icon(Icons.exit_to_app),
               title: Text("Uitloggen"),
               onTap: () {
                 logoutGuider(context);
-              })
+              }),
         ],
       ),
     );
   }
-  
 }

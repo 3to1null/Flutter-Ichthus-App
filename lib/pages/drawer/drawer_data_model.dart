@@ -13,4 +13,6 @@ class DrawerDataModel {
   Map profilePictureHeaders;
   String profilePictureUrl;
 
+  String currentActivePage;
+
 }
