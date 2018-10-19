@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../../../widgets/loading_animation.dart';
+import 'cijfer_list_widget.dart';
+
 import '../functions/get_cijfers.dart';
+
 class CijferListStreamBuilder extends StatelessWidget {
   final int period;
   CijferListStreamBuilder(this.period);
@@ -11,7 +15,12 @@ class CijferListStreamBuilder extends StatelessWidget {
       stream: getCijfers(period),
       builder: (BuildContext context,
           AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
-        return Text(snapshot.toString());
+        switch(snapshot.connectionState){
+          case ConnectionState.none: return LoadingAnimation();
+          case ConnectionState.waiting: return LoadingAnimation();
+          case ConnectionState.active: return (CijferList(snapshot.data));
+          case ConnectionState.done: return (CijferList(snapshot.data));
+        }
       },
     );
   }
