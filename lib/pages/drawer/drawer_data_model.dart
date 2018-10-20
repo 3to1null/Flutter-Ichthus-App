@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class DrawerDataModel {
   static final DrawerDataModel _drawerDataModel = new DrawerDataModel._internal();
 

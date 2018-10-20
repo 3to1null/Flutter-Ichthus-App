@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 import '../functions/circle_color.dart';
 
@@ -16,18 +17,29 @@ class CijferSubjectMarks extends StatelessWidget {
     print(subjectMarks);
     final List subjectMarksList = subjectMarks["list"];
     return ConstrainedBox(
-      constraints: BoxConstraints.tightForFinite(height: 50.0),
+      constraints: BoxConstraints.tightForFinite(
+          height: min(200.0, subjectMarksList.length * 60.0)),
       //TODO: Make a normal vertical indented list
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemExtent: 40.0,
+        child: ListView.builder(
+          physics: ClampingScrollPhysics(),
+          padding: EdgeInsets.all(0.0),
           itemCount: subjectMarksList.length,
           itemBuilder: (BuildContext context, index) {
-            print(subjectMarksList[index]['cijfer']);
-            return CircleAvatar(
-                backgroundColor: circleColor(subjectMarksList[index]['cijfer']));
+            Map subjectMarksItem = subjectMarksList[index];
+            return ListTile(
+              leading: CircleAvatar(
+                  child: Text(
+                    subjectMarksItem['cijfer'],
+                    style: Theme.of(context)
+                        .textTheme
+                        .body2
+                        .copyWith(color: Colors.white),
+                  ),
+                  backgroundColor: circleColor(subjectMarksItem['cijfer'])),
+              title: Text(subjectMarksItem['details']['Beschrijving']),
+            );
           },
         ),
       ),
