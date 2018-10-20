@@ -18,7 +18,7 @@ class CijferSubjectMarks extends StatelessWidget {
     final List subjectMarksList = subjectMarks["list"];
     return ConstrainedBox(
       constraints: BoxConstraints.tightForFinite(
-          height: min(200.0, subjectMarksList.length * 60.0)),
+          height: min(260.0, subjectMarksList.length * 62.0)),
       //TODO: Make a normal vertical indented list
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.0),
@@ -38,7 +38,11 @@ class CijferSubjectMarks extends StatelessWidget {
                         .copyWith(color: Colors.white),
                   ),
                   backgroundColor: circleColor(subjectMarksItem['cijfer'])),
-              title: Text(subjectMarksItem['details']['Beschrijving']),
+              title: Text(
+                subjectMarksItem['details']['Beschrijving'],
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+              ),
             );
           },
         ),
