@@ -7,4 +7,6 @@ class CijferDataModel {
   }
 
   CijferDataModel._internal();
+
+  List<int> periodsLoadedThisRun;
 }

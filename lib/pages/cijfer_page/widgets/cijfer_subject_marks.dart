@@ -15,14 +15,14 @@ class CijferSubjectMarks extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print(subjectMarks);
-    final List subjectMarksList = subjectMarks["list"];
+    final List subjectMarksList = subjectMarks["cijfers"]["list"];
     return ConstrainedBox(
       constraints: BoxConstraints.tightForFinite(
-          height: min(260.0, subjectMarksList.length * 62.0)),
+          height: max(40.0, min(260.0, subjectMarksList.length * 62.0))),
       //TODO: Make a normal vertical indented list
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.0),
-        child: ListView.builder(
+        child: subjectMarksList.length > 0 ? ListView.builder(
           physics: ClampingScrollPhysics(),
           padding: EdgeInsets.all(0.0),
           itemCount: subjectMarksList.length,
@@ -45,7 +45,7 @@ class CijferSubjectMarks extends StatelessWidget {
               ),
             );
           },
-        ),
+        ) : Text("Er zijn nog geen cijfers beschikbaar voor ${subjectMarks["subject"]}"),
       ),
     );
   }

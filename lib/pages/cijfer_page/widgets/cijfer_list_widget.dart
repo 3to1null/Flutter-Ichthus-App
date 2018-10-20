@@ -29,7 +29,7 @@ class CijferList extends StatelessWidget {
                     .copyWith(color: Colors.white),
               )),
           title: Text(cijferData['subject']),
-          children: <Widget>[CijferSubjectMarks(cijferData["cijfers"])],
+          children: <Widget>[CijferSubjectMarks(cijferData)],
         );
       },
     );
