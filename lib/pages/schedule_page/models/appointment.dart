@@ -8,6 +8,8 @@ class Appointment {
   final List<String> locations;
   final List<String> teachers;
   final List<String> groups;
+  final int renderStart;
+  final int renderEnd;
   final bool moved;
   final bool cancelled;
   final bool exists;
@@ -21,6 +23,8 @@ class Appointment {
       locations = List<String>.from(json["locations"] ?? []),
       teachers = List<String>.from(json["teachers"] ?? []),
       groups = List<String>.from(json["groups"] ?? []),
+      renderStart = json["_r_start"] ?? 0,
+      renderEnd = json["_r_end"] ?? 0,
       moved = (json["moved"] ?? false) == true,
       cancelled = (json["cancelled"] ?? false) == true,
       type = json["type"] ?? "",

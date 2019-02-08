@@ -14,7 +14,6 @@ class CijferSubjectMarks extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(subjectMarks);
     final List subjectMarksList = subjectMarks["cijfers"]["list"];
     return ConstrainedBox(
       constraints: BoxConstraints.tightForFinite(
