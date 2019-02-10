@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 
 import 'package:auto_size_text/auto_size_text.dart';
 
+import '../../models/global_model.dart';
 import 'models/appointment.dart';
 
 import 'cell_widgets/schedule_cell_widget.dart';
 
+GlobalModel globalModel = GlobalModel();
+
 const offsetFromTop = 10.0;
 const hourAmount = 12;
-const hourMultiplier = 1.45;
+double hourMultiplier = globalModel.scheduleHourMultiplier;
 const headerHeight = 28.0;
-const hourHeight = 60.0 * hourMultiplier;
+double hourHeight = 60.0 * hourMultiplier;
 
 class Schedule extends StatefulWidget {
   final List scheduleData;
@@ -75,7 +78,7 @@ class _ScheduleState extends State<Schedule>{
           child: AutoSizeText(hourText, textAlign: TextAlign.center, maxLines: 1)
         ));
         returnList.add(Positioned(
-          width: i <2 ? 5.0 : 1.5,
+          width: 2.3,
           top: 60 * hourMultiplier * i + offsetFromTop,
           right: 0.0,
           height: 1,

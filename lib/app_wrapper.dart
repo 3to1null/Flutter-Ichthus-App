@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 
+import 'models/global_model.dart';
 import 'models/user_model.dart';
 
 import 'widgets/loading_animation.dart';
@@ -16,6 +17,9 @@ class AppWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    GlobalModel globalModel = GlobalModel();
+    globalModel.populateFromContext(context);
+    
     Future<List> checkIfAlreadyLoggedIn() async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       if (prefs.getBool("isLoggedIn") != null &&
