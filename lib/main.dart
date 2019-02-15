@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -14,6 +14,7 @@ import 'pages/cijfer_page/cijfer_page.dart';
 import 'pages/login_page/login_page.dart';
 
 void main() {
+  timeDilation = 1.0;
   debugPaintSizeEnabled = false;
   runZoned<Future<Null>>(() async {
     runApp(new IchthusApp());

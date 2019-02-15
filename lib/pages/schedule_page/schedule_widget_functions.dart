@@ -8,13 +8,13 @@ Color appointmentBackgroundColor(Appointment appointment, int index) {
     return hexToColor("b3b3b3");
   } else {
     if (appointment.cancelled) {
-      return hexToColor("ff0000");
-    } else if (appointment.moved) {
-      return hexToColor("ff9900");
+      return hexToColor("e53935");
+    } else if (appointment.moved || appointment.isNew) {
+      return hexToColor("f57f17");
     } else if (appointment.type== "exam") {
       return hexToColor("DCE775");
     } else {
-      return hexToColor("ccccff");
+      return hexToColor("6ea7bc");
     }
   }
 }

@@ -21,7 +21,7 @@ Map<String, String>subjectsMap = {
   "dutl": "Duitse Taal",
   "du": "Duits",
   "anw": "Algemene Natuurwetenschappen",
-  "mo": "Management & Onderneming",
+  "mo": "Management & Organisatie",
   "econ": "Economie",
   "eco": "Economie",
   "ec": "Economie",
@@ -35,7 +35,10 @@ Map<String, String>subjectsMap = {
   "tovo": "Toerusting en Vorming",
   "maat": "Maatschappijleer",
   "mod": "Module",
-  "bg": "Begleiding",
-  "proj": "Project"
-
+  "bg": "Begeleiding",
+  "proj": "Project",
+  "ltc": "Latijnse Taal en Cultuur",
+  "gtc": "Griekse Taal en Cultuur",
+  "la": "Latijn",
+  "gr": "Grieks"
 };
