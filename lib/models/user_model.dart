@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
 /// Singleton(?) class that will have information about the user. It is populated as soon
 /// as the app starts or when the user finishes logging in. It should always be available.
 class UserModel {
@@ -15,9 +16,13 @@ class UserModel {
   String userCode;
   String userName;
   String userGroup;
+
   String sessionID;
   String sessionKey;
+
   Map userProfileInfo;
+  DateTime lastUpdatedProfileInfo;
+
   bool isLoggedIn; 
 
   Map<String, dynamic> toMap(){
@@ -28,6 +33,7 @@ class UserModel {
       "sessionID": sessionID,
       "sessionKey": sessionKey,
       "userProfileInfo": userProfileInfo,
+      "lastUpdatedProfileInfo": lastUpdatedProfileInfo,
       "isLoggedIn": isLoggedIn,
     };
   }
@@ -46,6 +52,7 @@ class UserModel {
     sessionID = data["sessionID"];
     sessionKey = data["sessionKey"];
     userProfileInfo = data["userProfileInfo"];
+    lastUpdatedProfileInfo = data["lastUpdatedProfileInfo"];
     isLoggedIn = true;
   }
 
