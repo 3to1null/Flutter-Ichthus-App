@@ -17,6 +17,7 @@ class UserModel {
   String userGroup;
   String sessionID;
   String sessionKey;
+  Map userProfileInfo;
   bool isLoggedIn; 
 
   Map<String, dynamic> toMap(){
@@ -26,7 +27,8 @@ class UserModel {
       "userGroup": userGroup,
       "sessionID": sessionID,
       "sessionKey": sessionKey,
-      "isLoggedIn": isLoggedIn
+      "userProfileInfo": userProfileInfo,
+      "isLoggedIn": isLoggedIn,
     };
   }
 
@@ -43,6 +45,7 @@ class UserModel {
     userGroup = data["userGroup"];
     sessionID = data["sessionID"];
     sessionKey = data["sessionKey"];
+    userProfileInfo = data["userProfileInfo"];
     isLoggedIn = true;
   }
 
