@@ -23,6 +23,15 @@ class _DetailsPageState extends State<DetailsPage> {
           children: <Widget>[
             Align(
               alignment: Alignment.topLeft,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 24.0),
+                child: BackButton(
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.topLeft,
               child: Container(
                 height: MediaQuery.of(context).size.height * 0.24,
                 padding: EdgeInsets.fromLTRB(24.0, 0, 24.0, 32.0),
@@ -64,6 +73,8 @@ class BottomInformationCard extends StatelessWidget {
       }
       return "";
     }
+
+    print(appointment.extraMessage);
 
     String dateTimeInformation(){
       const List<String> months = ['Januari', 'Februari', 'Maart', 'April', 'Mei',
