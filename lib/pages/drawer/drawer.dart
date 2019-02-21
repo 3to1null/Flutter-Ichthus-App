@@ -3,6 +3,8 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
 
+import '../../functions/get_profile_info.dart';
+import '../profile_page/profile_page.dart';
 import 'get_link_profile_picture.dart';
 import 'logout_guider.dart';
 
@@ -40,7 +42,20 @@ class _CompleteDrawerState extends State<CompleteDrawer> {
     }
   }
 
+    void _openProfilePage(context){
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (BuildContext context){
+        return ProfilePage();
+      }
+    ));
+  }
+
   UserModel userModel = UserModel();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,30 +73,35 @@ class _CompleteDrawerState extends State<CompleteDrawer> {
     return Drawer(
       child: ListView(
         children: <Widget>[
-          UserAccountsDrawerHeader(
-            accountName: Text(userModel.userName),
-            accountEmail:
-                Text("${userModel.userGroup} | ${userModel.userCode}"),
-            currentAccountPicture: hasProfilePictureLink
-                ? CircleAvatar(
-                    backgroundImage: AdvancedNetworkImage(profilePictureUrl,
-                        header: {'Cookie': profilePictureHeaders["Cookie"]},
-                        useDiskCache: true, loadFailedCallback: () {
-                      drawerDataModel.hasProfilePictureLink = false;
-                      setState(() {
-                        hasProfilePictureLink = false;
-                      });
-                    }),
-                  )
-                : CircleAvatar(
-                    child: Text(
-                      userModel.userName.substring(0, 1),
-                      style: Theme.of(context)
-                          .textTheme
-                          .display1
-                          .copyWith(color: Colors.white70),
+          InkWell(
+            onTap: (){_openProfilePage(context);},
+            child: UserAccountsDrawerHeader(
+              accountName: Text(userModel.userName),
+              accountEmail: Text("${userModel.userGroup} | ${userModel.userCode}"),
+              currentAccountPicture: Hero(
+                tag: "ht_drawer_profile_picture",
+                child: hasProfilePictureLink
+                    ? CircleAvatar(
+                        backgroundImage: AdvancedNetworkImage(profilePictureUrl,
+                            header: {'Cookie': profilePictureHeaders["Cookie"]},
+                            useDiskCache: true, loadFailedCallback: () {
+                          drawerDataModel.hasProfilePictureLink = false;
+                          setState(() {
+                            hasProfilePictureLink = false;
+                          });
+                        }),
+                      )
+                    : CircleAvatar(
+                        child: Text(
+                          userModel.userName.substring(0, 1),
+                          style: Theme.of(context)
+                              .textTheme
+                              .display1
+                              .copyWith(color: Colors.white70),
+                        ),
                     ),
-                  ),
+                ),
+              ),
           ),
           ListTile(
               leading: Icon(Icons.schedule),
