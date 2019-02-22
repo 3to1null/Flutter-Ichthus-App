@@ -25,7 +25,8 @@ Map addDefaultEntries(Map data){
   return data;
 }
 
-Future<String> getDataFromAPI(String path, Map data, {bool useSessionData: true}) async {
+/// Sends a GET request to the API on the location of [path] with [data].
+Future<String> getDataFromAPI(String path, Map data, {bool useSessionData: true, bool noPanicOnError: true}) async {
   String requestURL = baseURL + path;
   if(useSessionData){
     data = addDefaultEntries(data);
@@ -34,17 +35,31 @@ Future<String> getDataFromAPI(String path, Map data, {bool useSessionData: true}
     String dataString = transformMapToString(data);
     requestURL += dataString;
   }
-  final response = await get(requestURL);
-  return(response.body);
-  //return response;
+  try{
+    final Response response = await get(requestURL);
+    return(response.body);
+  }catch(e){
+    if(!noPanicOnError){
+      throw(e);
+    }
+  }
+  return "";
 }
 
-Future<String> postDataToAPI(String path, Map<String, String> data, {bool useSessionData: true}) async {
+/// Sends a POST request to the API on the location of [path] with [data].
+Future<String> postDataToAPI(String path, Map<String, String> data, {bool useSessionData: true, bool noPanicOnError: true}) async {
   String requestURL = baseURL + path;
   if(useSessionData){
     data = addDefaultEntries(data);
   }
-  final Response response = await post(requestURL, body: data);
-  return response.body;
+  try{
+    final Response response = await post(requestURL, body: data);
+    return(response.body);
+  }catch(e){
+    if(!noPanicOnError){
+      throw(e);
+    }
+  }
+  return "";
 }
 
