@@ -69,12 +69,13 @@ class BottomInformationCard extends StatelessWidget {
 
     String displayExtraInformation(){
       if(appointment.cancelled){
-        return "Deze les is uitgevallen";
+        return "Deze les is uitgevallen.";
+      }
+      if(appointment.extraMessage.isNotEmpty){
+        return appointment.extraMessage;
       }
       return "";
     }
-
-    print(appointment.extraMessage);
 
     String dateTimeInformation(){
       const List<String> months = ['Januari', 'Februari', 'Maart', 'April', 'Mei',

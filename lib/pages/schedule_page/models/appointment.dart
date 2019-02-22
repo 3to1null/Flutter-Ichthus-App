@@ -20,6 +20,7 @@ class Appointment {
   final bool cancelled;
   final bool exists;
   final String type;
+  final String extraMessage;
 
   Color color;
 
@@ -40,8 +41,7 @@ class Appointment {
       moved = (json["moved"] ?? false) == true,
       isNew = (json["new"] ?? false) == true,
       cancelled = (json["cancelled"] ?? false) == true,
+      exists = json["exists"] == false ? false : true,
       type = json["type"] ?? "",
-      exists = json["exists"] == false ? false : true;
-
-
+      extraMessage = json["changeDescription"] ?? json["remark"] ?? "";
 }
