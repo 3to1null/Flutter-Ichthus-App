@@ -1,8 +1,9 @@
-bool convertToBool(value, {bool defaultTo: false}){
+///Tries to convert the [value] to a Boolean. 
+bool convertToBool(value, {bool defaultsTo: false}){
   if(value is bool){
     return value;
   }
-  if(defaultTo){
+  if(defaultsTo){
     if(value == "False" || value == "false"){
       return false;
     }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'hex_to_int.dart';
 
+/// Converts the [hexCode] to a flutter Color.
 Color hexToColor(String hexCode) {
   if (hexCode.startsWith("#")) {
     hexCode.substring(1);

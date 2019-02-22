@@ -1,4 +1,5 @@
-//TODO: Probably need to change the math in this function.
+// TODO: Probably need to change the math in this function.
+/// Gets the number of the current week.
 int getWeekNumber() {
   final date = DateTime.now();
   final startOfYear = new DateTime(date.year, 1, 1, 0, 0);

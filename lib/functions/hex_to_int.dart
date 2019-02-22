@@ -1,3 +1,4 @@
+/// Converts a [hex] value to an integer.
 int hexToInt(String hex) {
   int val = 0;
   int len = hex.length;
