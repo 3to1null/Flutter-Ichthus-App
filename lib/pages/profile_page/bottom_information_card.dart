@@ -16,7 +16,6 @@ class BottomInformationCardState extends State<BottomInformationCard> {
 
   @override
   Widget build(BuildContext context) {
-    String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(

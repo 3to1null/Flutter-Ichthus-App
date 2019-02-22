@@ -2,10 +2,8 @@ import 'dart:convert';
 import 'dart:async';
 
 import 'request.dart';
-import '../models/global_model.dart';
 
-GlobalModel globalModel = GlobalModel();
-
+/// Gets the profileinfo of logged in user.
 Future<Map> getProfileInfo() async {
   if(userModel.userProfileInfo != null && userModel.userProfileInfo.isNotEmpty
    && DateTime.now().difference(userModel.lastUpdatedProfileInfo).inHours < 4){
