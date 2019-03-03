@@ -33,7 +33,7 @@ class UserModel {
       "sessionID": sessionID,
       "sessionKey": sessionKey,
       "userProfileInfo": userProfileInfo,
-      "lastUpdatedProfileInfo": lastUpdatedProfileInfo,
+      "lastUpdatedProfileInfo": lastUpdatedProfileInfo.toString(),
       "isLoggedIn": isLoggedIn,
     };
   }
@@ -45,6 +45,7 @@ class UserModel {
 
   /// Populates the model from sharedprefs. It takes an instance of SharedPreferences so the function is not async.
   populateFromStorage([SharedPreferences prefs]) {
+
     Map data = json.decode(prefs.getString("userModel"));
     userCode = data["userCode"];
     userName = data["userName"];
@@ -52,7 +53,7 @@ class UserModel {
     sessionID = data["sessionID"];
     sessionKey = data["sessionKey"];
     userProfileInfo = data["userProfileInfo"];
-    lastUpdatedProfileInfo = data["lastUpdatedProfileInfo"];
+    lastUpdatedProfileInfo = data["lastUpdatedProfileInfo"] != null ? DateTime.tryParse(data["lastUpdatedProfileInfo"]) : null;
     isLoggedIn = true;
   }
 

@@ -5,10 +5,6 @@ import 'package:firebase_analytics/observer.dart';
 import '../drawer/drawer.dart';
 import 'widgets/cijfer_list_widget_tab_wrapper.dart';
 
-import '../../models/user_model.dart';
-
-import 'functions/get_cijfers.dart';
-
 class CijferPage extends StatefulWidget {
   CijferPage(this.fbAnalytics, this.fbObserver);
 

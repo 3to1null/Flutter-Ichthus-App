@@ -5,7 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../functions/request.dart';
 
 import '../models/cijfer_data_model.dart';
-import '../../../models/user_model.dart';
 
 CijferDataModel _cijferDataModel = CijferDataModel();
 

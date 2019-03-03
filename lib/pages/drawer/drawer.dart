@@ -3,7 +3,6 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
 
-import '../../functions/get_profile_info.dart';
 import '../profile_page/profile_page.dart';
 import 'get_link_profile_picture.dart';
 import 'logout_guider.dart';

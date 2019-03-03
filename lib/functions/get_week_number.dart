@@ -1,4 +1,3 @@
-// TODO: Probably need to change the math in this function.
 /// Gets the number of the current week.
 int getWeekNumber() {
   final date = DateTime.now();
