@@ -25,6 +25,7 @@ Future<Map> getProfileInfo() async {
     returnData = json.decode(response);
     userModel.userProfileInfo = returnData;
     userModel.lastUpdatedProfileInfo = DateTime.now();
+    userModel.userGroup = userModel.userProfileInfo['Klas'];
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("userModel", userModel.toJSONString());

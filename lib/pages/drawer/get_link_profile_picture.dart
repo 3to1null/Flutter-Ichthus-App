@@ -13,6 +13,7 @@ void getLinkToProfilePicture(callBackToSetState) async {
   var url = jsonResponse['picture']["URL"];
   
   userModel.userProfileInfo = jsonResponse['info'];
+  userModel.userGroup = userModel.userProfileInfo['Klas'];
   userModel.lastUpdatedProfileInfo = DateTime.now();
 
   callBackToSetState(headers, url);
