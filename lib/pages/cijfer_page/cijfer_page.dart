@@ -26,7 +26,6 @@ class _CijferPageState extends State<CijferPage> {
   Widget build(BuildContext context) {
     int userGroupNumber;
     try{
-      print(userModel.userGroup);
       userGroupNumber = int.parse(userModel.userGroup.substring(1,2));
     }catch(e){
       print(e);

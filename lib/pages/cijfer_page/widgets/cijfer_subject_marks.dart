@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
+import 'cijfers_detail_sheet.dart';
+
+import '../../../functions/random_string.dart';
 import '../functions/circle_color.dart';
 
 class CijferSubjectMarks extends StatelessWidget {
-  // final Map<String, List<Map<String, dynamic>>> subjectMarks;
-
-  // CijferSubjectMarks(subjectMarks)
-  //     : subjectMarks =
-  //           Map<String, List<Map<String, dynamic>>>.from(subjectMarks);
   final Map subjectMarks;
   CijferSubjectMarks(this.subjectMarks);
+
+  // void _openMarksDetailPage(Map subjectMarksItem, context, String uniqueHeroTag){
+  //   Navigator.of(context).push(MaterialPageRoute(
+  //     builder: (BuildContext context){
+  //       return MarksDetailPage(subjectMarksItem, uniqueHeroTag);
+  //     }
+  //   ));
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +24,6 @@ class CijferSubjectMarks extends StatelessWidget {
     return ConstrainedBox(
       constraints: BoxConstraints.tightForFinite(
           height: max(40.0, min(260.0, subjectMarksList.length * 62.0))),
-      //TODO: Make a normal vertical indented list
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.0),
         child: subjectMarksList.length > 0 ? ListView.builder(
@@ -42,6 +47,7 @@ class CijferSubjectMarks extends StatelessWidget {
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
               ),
+              onTap: (){openMarksBottomSheet(context, subjectMarksItem);},
             );
           },
         ) : Text("Er zijn nog geen cijfers beschikbaar voor ${subjectMarks["subject"]}"),
