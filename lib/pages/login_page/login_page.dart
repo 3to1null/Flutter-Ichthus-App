@@ -89,11 +89,10 @@ class _ActualLoginPageState extends State<ActualLoginPage> {
         setState(() {
           isLoading = false;
         });
+        _loginPageScaffoldKey.currentState.showSnackBar(SnackBar(
+          content: Text("Leerlingnummer of wachtwoord incorrect."),
+        ));
       }
-      print(context);
-      _loginPageScaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text("Leerlingnummer of wachtwoord incorrect."),
-      ));
     } catch (e) {
       _loginPageScaffoldKey.currentState.showSnackBar(SnackBar(
         content: Text("Er is iets fout gegaan. Controleer je gegevens en internetverbinding en probeer het opnieuw."),

@@ -12,6 +12,7 @@ import 'search_widgets/schedule_search_delegate.dart';
 import 'get_schedule.dart';
 
 import '../../models/user_model.dart';
+import '../../models/global_model.dart';
 
 class SchedulePage extends StatefulWidget {
   SchedulePage(this.fbAnalytics, this.fbObserver);
@@ -27,7 +28,10 @@ class _SchedulePageState extends State<SchedulePage> {
   final GlobalKey<ScaffoldState> _scheduleScaffoldKey =
       GlobalKey<ScaffoldState>();
   final ScheduleSearchDelegate _delegate = ScheduleSearchDelegate();
+
   UserModel userModel = UserModel();
+  GlobalModel globalModel = GlobalModel();
+
   bool hasLoaded = false;
   int weekNumber = getWeekNumber();
   String titleName;
@@ -56,7 +60,7 @@ class _SchedulePageState extends State<SchedulePage> {
   }
 
   void getScheduleSetStateCallback(scheduleResponseData) {
-    if (!hasLoaded) {
+    if (!hasLoaded && context != null) {
       setState(() {
         scheduleData = scheduleResponseData;
         hasLoaded = true;
@@ -73,11 +77,19 @@ class _SchedulePageState extends State<SchedulePage> {
       currentUserData = userData;
       titleName = setTitleName();
     });
+
+    if(userData['userCode'] != userModel.userCode){
+      if(globalModel.availableUserSchedulesOffline.contains(userData)){
+        globalModel.availableUserSchedulesOffline.remove(userData);
+      }
+      globalModel.availableUserSchedulesOffline.insert(0, userData);
+      globalModel.saveToStorage();
+    }
+
     getSchedule(
             userCode: userData['userCode'],
             callBack: getScheduleSetStateCallback)
         .catchError((e) {
-      print(e);
       _scheduleScaffoldKey.currentState.showSnackBar(SnackBar(
         content: Text(
             "Er is iets fout gegaan bij het laden van ${titleName.trim()}'s rooster. Je eigen rooster wordt nu weergegeven."),

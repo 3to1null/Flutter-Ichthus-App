@@ -9,9 +9,9 @@ class SearchResults extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+
+    return data != null ? Container(
         child: ListView.builder(
-        //NOTE TO SELF: ALWAYS SPECIFY ITEMCOUNT (if possible)
         itemCount: data.length,
         itemBuilder: (BuildContext context, int index){
           Map item = data[index];
@@ -28,6 +28,9 @@ class SearchResults extends StatelessWidget {
           );
         },
       ),
+    ) : Padding(
+      padding: EdgeInsets.all(10.0),
+      child: Text("Er is kon geen verbinding worden gemaakt en er zijn geen opgeslagen roosters van andere mensen."),
     );
   }
 }

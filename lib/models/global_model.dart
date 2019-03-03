@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+
 
 ///Singleton that houses global information and shared variables.
 class GlobalModel {
@@ -13,6 +16,8 @@ class GlobalModel {
   double screenHeight;
   double scheduleHourMultiplier;
 
+  List availableUserSchedulesOffline = [];
+
   ///Populates the model from the context
   populateFromContext(BuildContext context){
     double calculateScheduleHourMultiplier(double screenHeight){
@@ -23,6 +28,17 @@ class GlobalModel {
     }
     screenHeight = MediaQuery.of(context).size.height;
     scheduleHourMultiplier = calculateScheduleHourMultiplier(screenHeight);
+  }
+
+  ///Populates the model from shared prefs
+  populateFromStorage(SharedPreferences prefs){
+    availableUserSchedulesOffline =  json.decode(prefs.getString('availableUserSchedulesOffline') ?? "[]");
+  }
+
+  ///Saves current state to storage
+  saveToStorage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("availableUserSchedulesOffline", json.encode(availableUserSchedulesOffline));
   }
 
 }

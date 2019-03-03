@@ -2,23 +2,43 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:async';
 
+import '../../../models/global_model.dart';
+
 import '../../../functions/request.dart';
+import 'schedule_search_offline.dart';
 
 import '../../../widgets/loading_animation.dart';
 import 'search_results_widget.dart';
 
 class ScheduleSearchDelegate extends SearchDelegate {
+  GlobalModel globalModel = GlobalModel();
   List dataLastResultsBuild;
   String lastQuery;
+  bool lastQueryHadConnection = true;
+  DateTime lastConnectionCheck = DateTime.now();
+  String response;
+  List returnList;
+  Duration timeoutDuration = Duration(milliseconds: 2500);
 
   Future<List> _getResults(query) async {
+    if(!lastQueryHadConnection && DateTime.now().difference(lastConnectionCheck).inMinutes < 2 ){
+      timeoutDuration = Duration(milliseconds: 50);
+    }
     if(query == lastQuery && dataLastResultsBuild != null){
       return dataLastResultsBuild;
     }
-    String response = await getDataFromAPI("/search", {"q": query});
-    List decodedResponse = json.decode(response);
+    try{
+        response = await getDataFromAPI("/search", {"q": query}).timeout(timeoutDuration);
+        returnList = json.decode(response);
+        print("search-online: trying...");
+    }catch(TimeoutException){
+        print("search-online: failed");
+        lastQueryHadConnection = false;
+        returnList = globalModel.availableUserSchedulesOffline.where((userData) => foundQueryResult(userData, query)).toList();
+    }
+    print("search-online: done");
     lastQuery = query;
-    return decodedResponse;
+    return returnList;
   }
 
   @override
@@ -28,7 +48,6 @@ class ScheduleSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildLeading(BuildContext context) {
-    // TODO: implement buildLeading
     return IconButton(
       tooltip: 'Terug',
       icon: AnimatedIcon(

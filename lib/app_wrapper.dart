@@ -33,6 +33,7 @@ class AppWrapper extends StatelessWidget {
       if (returnData[0]) {
         UserModel userModel = UserModel();
         userModel.populateFromStorage(returnData[1]);
+        globalModel.populateFromStorage(returnData[1]);
         Navigator.pushReplacementNamed(context, '/schedule');
       } else {
         Navigator.pushReplacementNamed(context, '/login');
