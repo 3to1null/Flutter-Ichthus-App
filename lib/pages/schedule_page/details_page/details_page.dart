@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import '../models/appointment.dart';
 import '../schedule_widget_functions.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 import 'subjects_map.dart';
+
+String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
+
 
 class DetailsPage extends StatefulWidget {
   final Appointment appointment;
@@ -65,8 +68,6 @@ class BottomInformationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
-
     String displayExtraInformation(){
       if(appointment.cancelled){
         return "Deze les is uitgevallen.";
@@ -140,10 +141,24 @@ class BottomInformationCard extends StatelessWidget {
                   (appointment.groups.join(', ')).toUpperCase()
                 ),
               ) : Container(),
+            (appointment.teachers.isNotEmpty) ? OutlineButton(
+              highlightedBorderColor: Colors.transparent,
+              child: Text("Mail leraar"),
+              onPressed: (){_openTeacherMail(appointment.teachers[0], appointment.teachersFullnames[0]);},
+            ) :Container()
             ],
           ),
         ),
       ),
     );
   }
+}
+
+void _openTeacherMail(teacherAbr, teacherFullname) async {
+  teacherFullname =capitalize(teacherFullname);
+  String emailUrl = "mailto:$teacherAbr@ichthuscollege.nl?body=Beste%20$teacherFullname,";
+  if (await canLaunch(emailUrl)) {
+    await launch(emailUrl);
+  }
+
 }
