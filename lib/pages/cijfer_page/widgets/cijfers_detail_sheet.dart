@@ -7,7 +7,6 @@ import '../../../widgets/information_list_tile.dart';
 import '../functions/circle_color.dart';
 
 void openMarksBottomSheet(BuildContext context, Map subjectMarksItem){
-  print(subjectMarksItem);
   showModalBottomSheet(
     context: context,
     builder: (BuildContext context){
