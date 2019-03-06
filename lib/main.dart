@@ -11,6 +11,7 @@ import 'functions/is_in_debug_mode.dart';
 import 'app_wrapper.dart';
 import 'pages/schedule_page/schedule_page.dart';
 import 'pages/cijfer_page/cijfer_page.dart';
+import 'pages/feedback_page/feedback_page.dart';
 import 'pages/login_page/login_page.dart';
 
 void main() {
@@ -53,6 +54,7 @@ class IchthusApp extends StatelessWidget {
         '/': (context) => AppWrapper(analytics, observer),
         '/schedule': (context) => SchedulePage(analytics, observer),
         '/cijfers': (context) => CijferPage(analytics, observer),
+        '/feedback': (context) => FeedbackPage(analytics, observer),
         '/login': (context) => LoginPage(analytics, observer)
       },
     );
