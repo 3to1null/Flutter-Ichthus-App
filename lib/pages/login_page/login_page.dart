@@ -170,7 +170,7 @@ class _ActualLoginPageState extends State<ActualLoginPage> {
           ];
         },
         body: Center(
-          child: UserLoginInput(isLoading, name, resolveUsercode),
+          child: UserLoginInput(isLoading, name, resolveUsercode, widget.fbAnalytics),
         ),
       ),
       bottomNavigationBar: BottomAppBar(
@@ -191,7 +191,8 @@ class UserLoginInput extends StatefulWidget {
   final bool isLoading;
   final dynamic name;
   final dynamic callBack;
-  UserLoginInput(this.isLoading, this.name, this.callBack);
+  final FirebaseAnalytics fbAnalytics;
+  UserLoginInput(this.isLoading, this.name, this.callBack, this.fbAnalytics);
 
   @override
   _UserLoginInputState createState() => _UserLoginInputState();
@@ -284,6 +285,7 @@ class _UserLoginInputState extends State<UserLoginInput> {
         FlatButton(
           child: Align(child: Text("Lees meer over de veiligheid van deze app en je gegevens...", style: Theme.of(context).textTheme.caption.copyWith(fontSize: 12.0)), alignment: Alignment.centerLeft),
           onPressed: (){
+            widget.fbAnalytics.logEvent(name: 'opened_security_info');
             showModalBottomSheet(
               context: context,
               builder: (BuildContext context){

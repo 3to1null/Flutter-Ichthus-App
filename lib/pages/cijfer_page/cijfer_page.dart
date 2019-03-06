@@ -24,6 +24,8 @@ class _CijferPageState extends State<CijferPage> {
 
   @override
   Widget build(BuildContext context) {
+    widget.fbAnalytics.logEvent(name: 'cijferpage_open');
+
     int userGroupNumber;
     try{
       userGroupNumber = int.parse(userModel.userGroup.substring(1,2));

@@ -27,6 +27,9 @@ class _FeedbackPageState extends State<FeedbackPage> {
 
   @override
   Widget build(BuildContext context) {
+
+  widget.fbAnalytics.logEvent(name: 'feedbackpage_open');
+
     return Scaffold(
       drawer: CompleteDrawer(widget.fbAnalytics, widget.fbObserver),
       appBar: AppBar(title: Text('Feedback')),
@@ -45,6 +48,11 @@ class _FeedbackPageState extends State<FeedbackPage> {
             maxLength: 1200,
             onChanged: (String text){
               feedbackMessage = text;
+              if(hasSendFeedback){
+                setState(() {
+                   hasSendFeedback = false; 
+                });
+              }
             },
           ),
           Align(
@@ -57,6 +65,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                 setState(() {
                  hasSendFeedback = true; 
                 });
+                widget.fbAnalytics.logEvent(name: 'feedback_sent');
                 sendFeedback(feedbackMessage);
               },
             ) : Text('Feedback verzonden, bedankt!'),
