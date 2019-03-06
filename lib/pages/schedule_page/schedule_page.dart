@@ -109,6 +109,7 @@ class _SchedulePageState extends State<SchedulePage> {
   Widget build(BuildContext context) {
 
     return DefaultTabController(
+      key: GlobalObjectKey("gk_SchedulePage"),
       length: 7,
       initialIndex: 1,
       child: Scaffold(

@@ -32,6 +32,7 @@ class _CijferPageState extends State<CijferPage> {
       userGroupNumber = 0;
     }
     return DefaultTabController(
+      key: GlobalObjectKey("gk_CijferPage"),
       length: 4,
       initialIndex: userGroupNumber > 3 ? 3 : 0,
       child: Scaffold(
