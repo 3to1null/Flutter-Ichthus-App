@@ -109,9 +109,9 @@ class _ActualLoginPageState extends State<ActualLoginPage> {
     final Map loginResponseData = json.decode(response);
     try {
       if (convertToBool(loginResponseData["success"])) {
-        //log login
         widget.fbAnalytics.logLogin();
         loginResponseData["userCode"] = credentials["userCode"];
+        try{Navigator.pop(GlobalObjectKey("login_sec_modalBottomSheet").currentContext);}catch(e){print(e);}
         storeLoginResponseData(loginResponseData);
         Navigator.pushReplacementNamed(context, '/schedule');
       } else {
@@ -288,6 +288,7 @@ class _UserLoginInputState extends State<UserLoginInput> {
               context: context,
               builder: (BuildContext context){
                 return ListView(
+                  key: GlobalObjectKey('login_sec_modalBottomSheet'),
                   padding: EdgeInsets.all(16.0),
                   children: <Widget>[
                     Text("In het kort", style: Theme.of(context).textTheme.body2),

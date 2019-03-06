@@ -29,10 +29,12 @@ Stream<List<Map<String, dynamic>>> getCijfers(int period) async* {
   if (!_cijferDataModel.periodsLoadedThisRun.contains(period)) {
     String cijfersResponse =
         await postDataToAPI('/marks/get', {"periode": period.toString()});
-    if (cijfersResponse != null) {
+    if (cijfersResponse != null && cijfersResponse != "") {
       _cijferDataModel.periodsLoadedThisRun.add(period);
       yield List<Map<String, dynamic>>.from(json.decode(cijfersResponse));
       prefs.setString("_userMarksPeriod$period", cijfersResponse);
+    }else{
+      yield [{'data': false}];
     }
   }
 }

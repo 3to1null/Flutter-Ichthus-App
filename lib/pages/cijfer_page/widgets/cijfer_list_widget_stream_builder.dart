@@ -18,8 +18,8 @@ class CijferListStreamBuilder extends StatelessWidget {
         switch(snapshot.connectionState){
           case ConnectionState.none: return LoadingAnimation();
           case ConnectionState.waiting: return LoadingAnimation();
-          case ConnectionState.active: return (CijferList(snapshot.data));
-          case ConnectionState.done: return (CijferList(snapshot.data));
+          case ConnectionState.active: return snapshot.data[0]['data'] != false ? CijferList(snapshot.data) : LoadingAnimation();
+          case ConnectionState.done: return snapshot.data[0]['data'] != false ? CijferList(snapshot.data) : LoadingAnimation();
         }
       },
     );
