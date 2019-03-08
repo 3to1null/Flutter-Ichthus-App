@@ -30,8 +30,8 @@ android {
         applicationId "nathan.fraignt.me"
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode 500000
-        versionName "5.0.00"
+        versionCode 500001
+        versionName "5.0.01"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
