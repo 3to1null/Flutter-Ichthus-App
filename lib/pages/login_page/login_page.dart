@@ -14,7 +14,7 @@ import '../../functions/convert_to_bool.dart';
 
 const String sec_msg_short = 
 """
-Zodra jij inlogt wordt je wachtwoord heel even gebruikt om een zermelo-koppelingscode op te halen. Deze is nodig voor het verkrijgen van je rooster. Je wachtwoord word daarna ge-encrypt opgeslagen, de sleutel wordt verwijderd van de server en naar je mobiel gestuurd. 
+Zodra jij inlogt wordt je wachtwoord heel even gebruikt om een zermelo-koppelingscode op te halen. Deze is nodig voor het verkrijgen van je rooster. Je wachtwoord wordt daarna ge-encrypt opgeslagen, de sleutel wordt verwijderd van de server en naar je mobiel gestuurd. 
 Dit betekent dat zowel de server als je telefoon (en dus elke app op je telefoon) niet bij je wachtwoord kan, behalve als jij, via deze app, een verzoek stuurt naar de server. Dit doe je bijvoorbeeld als je je cijfers laadt.
 """;
 
