@@ -7,8 +7,8 @@ import 'logout_guider.dart';
 
 UserModel userModel = UserModel();
 
-//const String baseURL= "https://api.fraignt.me/ichthus";
-const String baseURL= "http://192.168.2.7:8000/ichthus";
+const String baseURL= "https://api.fraignt.me/ichthus";
+//const String baseURL= "http://192.168.2.7:8000/ichthus";
 bool isAlreadyDisplayingLogoutForcer = false;
 
 String transformMapToString(Map data){

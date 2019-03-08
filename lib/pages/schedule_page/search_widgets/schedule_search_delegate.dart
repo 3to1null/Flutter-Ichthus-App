@@ -21,7 +21,7 @@ class ScheduleSearchDelegate extends SearchDelegate {
   Duration timeoutDuration = Duration(milliseconds: 2500);
 
   Future<List> _getResults(query) async {
-    if(!lastQueryHadConnection && DateTime.now().difference(lastConnectionCheck).inMinutes < 2 ){
+    if(!lastQueryHadConnection && DateTime.now().difference(lastConnectionCheck).inMinutes < 1 ){
       timeoutDuration = Duration(milliseconds: 50);
     }
     if(query == lastQuery && dataLastResultsBuild != null){
@@ -30,13 +30,11 @@ class ScheduleSearchDelegate extends SearchDelegate {
     try{
         response = await getDataFromAPI("/search", {"q": query}).timeout(timeoutDuration);
         returnList = json.decode(response);
-        print("search-online: trying...");
     }catch(TimeoutException){
         print("search-online: failed");
         lastQueryHadConnection = false;
         returnList = globalModel.availableUserSchedulesOffline.where((userData) => foundQueryResult(userData, query)).toList();
     }
-    print("search-online: done");
     lastQuery = query;
     return returnList;
   }
