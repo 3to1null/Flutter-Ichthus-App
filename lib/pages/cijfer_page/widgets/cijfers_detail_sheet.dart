@@ -48,6 +48,8 @@ void openMarksBottomSheet(BuildContext context, Map subjectMarksItem){
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Divider(),
             ),
+            subjectMarksItem['isBubble'] ? BubbleList(subjectMarksItem['bubbleSTR']) : Container(),
+            subjectMarksItem['isBubble'] ? Divider() : Container(),
             InformationListTile(leadingText: 'Weging:', titleText: subjectMarksItem['details']['Weging']),
             InformationListTile(leadingText: 'Toetssoort:', titleText: subjectMarksItem['details']['Toetssoort']),
             InformationListTile(leadingText: 'Toetscode:', titleText: subjectMarksItem['details']['Toetscode']),
@@ -57,4 +59,40 @@ void openMarksBottomSheet(BuildContext context, Map subjectMarksItem){
       );
     }
   );
+}
+
+class BubbleList extends StatelessWidget {
+
+  final String bubbleString;
+
+  BubbleList(this.bubbleString);
+
+  @override
+  Widget build(BuildContext context) {
+    List bubbleList = this.bubbleString.split(', ').toList();
+    return Container(
+      height: 60,
+      child: ListView.builder(
+        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        scrollDirection: Axis.horizontal,
+        itemCount: bubbleList.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+            child: CircleAvatar(
+              radius: 20.0,
+              child: Text(
+                bubbleList[index],
+                style: Theme.of(context)
+                    .textTheme
+                    .body1
+                    .copyWith(color: Colors.white, fontSize: 14.0),
+              ),
+              backgroundColor: circleColor(bubbleList[index])
+            ),
+          );
+        },
+      ),
+    );
+  }
 }
