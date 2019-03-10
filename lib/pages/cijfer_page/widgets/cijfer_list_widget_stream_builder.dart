@@ -5,11 +5,13 @@ import 'cijfer_list_widget.dart';
 
 import '../functions/get_cijfers.dart';
 
-Widget chooseCijferWidget(data){
-  if(data == null){
-    return LoadingAnimation();
-  }
-  if(data.isEmpty){
+import '../models/cijfer_data_model.dart';
+
+CijferDataModel cijferDataModel = CijferDataModel();
+
+Widget chooseCijferWidget(data, period){
+  if(data == null || data.isEmpty){
+    cijferDataModel.periodsLoadedThisRun.remove(period);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Text(
@@ -23,21 +25,29 @@ Widget chooseCijferWidget(data){
   return CijferList(data);
 }
 
-class CijferListStreamBuilder extends StatelessWidget {
+class CijferListStreamBuilder extends StatefulWidget {
   final int period;
   CijferListStreamBuilder(this.period);
 
   @override
+  _CijferListStreamBuilderState createState() => _CijferListStreamBuilderState();
+}
+
+class _CijferListStreamBuilderState extends State<CijferListStreamBuilder> with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: getCijfers(period),
+      stream: getCijfers(widget.period),
       builder: (BuildContext context,
           AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
         switch(snapshot.connectionState){
           case ConnectionState.none: return LoadingAnimation();
           case ConnectionState.waiting: return LoadingAnimation();
-          case ConnectionState.active: return chooseCijferWidget(snapshot.data);
-          case ConnectionState.done: return chooseCijferWidget(snapshot.data);
+          case ConnectionState.active: return chooseCijferWidget(snapshot.data, widget.period);
+          case ConnectionState.done: return chooseCijferWidget(snapshot.data, widget.period);
         }
       },
     );
