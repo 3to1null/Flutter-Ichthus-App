@@ -18,11 +18,22 @@ Stream<List> getHomework() async* {
     }
   }
 
-  List homeworkList = json.decode(await getDataFromAPI('/homework/get', {}));
-  hasHomeworkInRam = true;
-  loadedHomework = homeworkList;
-  prefs.setString("_homeworkList", json.encode(homeworkList));
-  print('yield new homeowkr');
-  yield homeworkList;
+  bool error = false;
+  List homeworkList;
+  String rawHomework = await getDataFromAPI('/homework/get', {});
+  try{
+      homeworkList = json.decode(rawHomework);
+  }catch(e){
+    print(e);
+    error = true;
+  }
+
+  if(!error){
+    hasHomeworkInRam = true;
+    loadedHomework = homeworkList;
+    prefs.setString("_homeworkList", json.encode(homeworkList));
+    yield homeworkList;
+  }
+
 
 }

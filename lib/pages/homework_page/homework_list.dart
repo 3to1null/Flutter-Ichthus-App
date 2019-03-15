@@ -11,6 +11,15 @@ class HomeworkList extends StatelessWidget {
   Widget build(BuildContext context) {
 
     Widget _createHomeworkDateSliver(Map homework){
+      dynamic generateTrailingIcon(homeworkItem){
+        if(homeworkItem['homework_made'] == true){
+          return Icon(Icons.done, color: Colors.green,);
+        }
+        if(homeworkItem['test'] == "ja"){
+          return Icon(Icons.library_books, color: Theme.of(context).accentColor);
+        }
+      }
+
       return SliverStickyHeaderBuilder(
         builder: (context, state) => Card(
           child: Container(
@@ -34,12 +43,23 @@ class HomeworkList extends StatelessWidget {
             (BuildContext context, int childIndex) {
               Map<String, dynamic> homeworkItem = homework['items'][childIndex];
               return Container(
-                margin: childIndex == 0 ? EdgeInsets.only(top: 4.0) : EdgeInsets.all(0.0),
+                margin: EdgeInsets.all(0.0),
                 child: ListTile(
+                  leading: Container(
+                    width: 32.0,
+                    height: 48.0,
+                    child: Center(
+                      child: Text(
+                        homeworkItem['hour'], 
+                        style: Theme.of(context).textTheme.body1.copyWith(fontSize: 16),
+                      ),
+                    ),
+                  ),
+                  trailing: generateTrailingIcon(homeworkItem),
                   title: Text(homeworkItem['subject']),
                   subtitle: Text(
                     homeworkItem['homework'], 
-                    maxLines: 3, 
+                    maxLines: 2, 
                     overflow: TextOverflow.ellipsis),
                 ),
               );
