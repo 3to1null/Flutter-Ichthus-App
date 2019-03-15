@@ -125,6 +125,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.7"
+  flutter_sticky_header:
+    dependency: "direct main"
+    description:
+      name: flutter_sticky_header
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.4"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -401,13 +408,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.9.3"
-  sticky_headers:
-    dependency: "direct main"
-    description:
-      name: sticky_headers
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.7"
   stream_channel:
     dependency: transitive
     description:
