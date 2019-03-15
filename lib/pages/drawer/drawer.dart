@@ -119,6 +119,14 @@ class _CompleteDrawerState extends State<CompleteDrawer> {
                 drawerDataModel.currentActivePage = "/cijfers";
               }),
           ListTile(
+              leading: Icon(Icons.line_style),
+              title: Text("Huiswerk"),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushReplacementNamed(context, '/homework');
+                drawerDataModel.currentActivePage = "/homework";
+              }),
+          ListTile(
               leading: Icon(Icons.mail_outline),
               title: Text("Feedback"),
               onTap: () {
