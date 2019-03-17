@@ -27,11 +27,11 @@ Future<Duration> _getTimeoutTime(String userCode) async {
   DateTime lastLoadedScheduleTime = DateTime.parse(lastLoadedSchedule);
   DateTime timeNow = DateTime.now();
   Duration timeSinceLastLoaded = timeNow.difference(lastLoadedScheduleTime);
-  if(timeSinceLastLoaded.inMinutes < 100){
+  if(timeSinceLastLoaded.inMinutes < 25){
     //if lower than 1 second, schedule is not called.
     return Duration(microseconds: 1);
   }else if(timeSinceLastLoaded.inHours < 4){
-    return Duration(milliseconds: 1600);
+    return Duration(milliseconds: 1800);
   }else if(timeSinceLastLoaded.inHours < 16){
     return Duration(milliseconds: 2600);
   }else if(timeSinceLastLoaded.inHours < 26){
