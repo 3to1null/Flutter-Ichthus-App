@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import '../models/appointment.dart';
 import '../schedule_widget_functions.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'subjects_map.dart';
+import '../../../functions/subjects_map.dart';
+import '../../../functions/capitalize.dart';
 
-String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
 
 
 class DetailsPage extends StatefulWidget {
@@ -40,7 +40,7 @@ class _DetailsPageState extends State<DetailsPage> {
                 padding: EdgeInsets.fromLTRB(24.0, 0, 24.0, 32.0),
                 alignment: Alignment.bottomLeft,
                 child: Text(
-                  subjectsMap[widget.appointment.subjects[0]] ?? widget.appointment.subjects[0],
+                  subjectsMap[widget.appointment.subjects[0].toLowerCase()] ?? widget.appointment.subjects[0],
                   style: Theme.of(context).textTheme.headline.copyWith(color: Colors.white),
                 )
               ),

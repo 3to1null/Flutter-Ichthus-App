@@ -1,11 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 
+import '../../functions/subjects_map.dart';
+import '../../functions/random.dart';
+import 'homework_details_page.dart';
+
 class HomeworkList extends StatelessWidget {
 
   final List homework;
 
   HomeworkList(this.homework);
+
+  String _buildUID(homeworkItem){
+    return "${homeworkItem["subject"]}-${randomString(8)}";
+  }
+
+  void _openDetailsPage(BuildContext context, Map homeworkItem, String displayDate, String heroId){
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (BuildContext context){
+        return DetailsPage(homeworkItem, displayDate, heroId);
+      }
+    ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,25 +58,32 @@ class HomeworkList extends StatelessWidget {
           delegate: SliverChildBuilderDelegate(
             (BuildContext context, int childIndex) {
               Map<String, dynamic> homeworkItem = homework['items'][childIndex];
+              String heroId =_buildUID(homeworkItem);
               return Container(
                 margin: EdgeInsets.all(0.0),
-                child: ListTile(
-                  leading: Container(
-                    width: 32.0,
-                    height: 48.0,
-                    child: Center(
-                      child: Text(
-                        homeworkItem['hour'], 
-                        style: Theme.of(context).textTheme.body1.copyWith(fontSize: 16),
+                child: Hero(
+                  tag: heroId,
+                  child: ListTile(
+                    onTap: (){
+                      _openDetailsPage(context, homeworkItem, homework['title'], heroId);
+                    },
+                    leading: Container(
+                      width: 32.0,
+                      height: 48.0,
+                      child: Center(
+                        child: Text(
+                          homeworkItem['hour'], 
+                          style: Theme.of(context).textTheme.body1.copyWith(fontSize: 16),
+                        ),
                       ),
                     ),
+                    trailing: generateTrailingIcon(homeworkItem),
+                    title: Text(subjectsMap[homeworkItem['subject'].toLowerCase()] ?? homeworkItem['subject']),
+                    subtitle: Text(
+                      homeworkItem['homework_short'], 
+                      maxLines: 2, 
+                      overflow: TextOverflow.ellipsis),
                   ),
-                  trailing: generateTrailingIcon(homeworkItem),
-                  title: Text(homeworkItem['subject']),
-                  subtitle: Text(
-                    homeworkItem['homework'], 
-                    maxLines: 2, 
-                    overflow: TextOverflow.ellipsis),
                 ),
               );
             },

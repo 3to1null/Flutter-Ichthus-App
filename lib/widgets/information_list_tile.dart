@@ -17,14 +17,14 @@ class InformationListTile extends StatelessWidget {
           Expanded(
             flex: 2,
             child: AutoSizeText(leadingText, 
-              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 15.0),
+              style: Theme.of(context).textTheme.body1.copyWith(fontSize: 14.5),
               maxLines: 1,
             ),
           ),
           Expanded(
             flex: 3,
             child: AutoSizeText(titleText,
-              style: Theme.of(context).textTheme.body2.copyWith(fontSize: 15.0),
+              style: Theme.of(context).textTheme.body2.copyWith(fontSize: 14.5),
               maxLines: 1,
             ),
           )
