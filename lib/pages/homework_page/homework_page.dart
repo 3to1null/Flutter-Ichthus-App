@@ -8,6 +8,18 @@ import 'homework_list.dart';
 
 import 'get_homework.dart';
 
+class NoHomeworkMessage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Text(
+        'Geen huiswerk gevonden op leerlingweb.\n\nHeb je wel huiswerk op leerlingweb, maar zie je het niet in deze app? Geef het dan aan op de feedback pagina!',
+      ),
+    );
+  }
+}
+
 class HomeWorkPage extends StatefulWidget {
   HomeWorkPage(this.fbAnalytics, this.fbObserver);
 
@@ -33,8 +45,8 @@ class _HomeWorkPageState extends State<HomeWorkPage> {
           switch(snapshot.connectionState){
             case ConnectionState.none: return LoadingAnimation();
             case ConnectionState.waiting: return LoadingAnimation();
-            case ConnectionState.active: return HomeworkList(snapshot.data);
-            case ConnectionState.done: return HomeworkList(snapshot.data);
+            case ConnectionState.active: return snapshot.data.isNotEmpty ? HomeworkList(snapshot.data) : NoHomeworkMessage();
+            case ConnectionState.done: return snapshot.data.isNotEmpty ? HomeworkList(snapshot.data) : NoHomeworkMessage();
           }
         },
       )
