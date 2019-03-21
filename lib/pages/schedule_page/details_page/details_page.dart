@@ -143,7 +143,7 @@ class BottomInformationCard extends StatelessWidget {
               ) : Container(),
             (appointment.teachers.isNotEmpty) ? OutlineButton(
               highlightedBorderColor: Colors.transparent,
-              child: Text("Mail leraar"),
+              child: Text("Mail docent"),
               onPressed: (){_openTeacherMail(appointment.teachers[0], appointment.teachersFullnames[0]);},
             ) :Container()
             ],
