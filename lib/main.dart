@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:intl/intl.dart';
 
 import 'functions/report_error.dart';
 import 'functions/is_in_debug_mode.dart';
@@ -42,6 +44,7 @@ class IchthusApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Intl.defaultLocale = "nl";
     return new MaterialApp(
       title: 'ICV App',
       theme: new ThemeData(
@@ -59,6 +62,11 @@ class IchthusApp extends StatelessWidget {
         '/feedback': (context) => FeedbackPage(analytics, observer),
         '/login': (context) => LoginPage(analytics, observer)
       },
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: [const Locale("nl", "NL")],
     );
   }
 }

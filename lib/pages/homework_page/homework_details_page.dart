@@ -24,7 +24,7 @@ class _DetailsPageState extends State<DetailsPage> {
         return Colors.green;
       }
       if(widget.homeworkItem['test'] == 'ja'){
-        return Theme.of(context).accentColor;
+        return Colors.redAccent;
       }
       return Theme.of(context).primaryColor;
     }

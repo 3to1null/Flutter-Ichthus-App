@@ -3,10 +3,18 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import '../drawer/drawer.dart';
 import '../../widgets/loading_animation.dart';
-
+import 'add_homework_page.dart';
 import 'homework_list.dart';
 
 import 'get_homework.dart';
+
+  void _openAddHomeworkPage(BuildContext context){
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (BuildContext context){
+        return AddHomeworkPage();
+      }
+    ));
+  }
 
 class NoHomeworkMessage extends StatelessWidget {
   @override
@@ -49,7 +57,14 @@ class _HomeWorkPageState extends State<HomeWorkPage> {
             case ConnectionState.done: return snapshot.data.isNotEmpty ? HomeworkList(snapshot.data) : NoHomeworkMessage();
           }
         },
-      )
+      ),
+      floatingActionButton: Hero(
+        tag: "_AddHomeWorkFABPageHero",
+        child: FloatingActionButton(
+          child: Icon(Icons.add, color: Colors.white),
+          onPressed: (){_openAddHomeworkPage(context);},
+        ),
+      ),
     );
   }
 }

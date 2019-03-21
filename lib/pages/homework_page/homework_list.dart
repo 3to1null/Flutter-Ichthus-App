@@ -32,7 +32,7 @@ class HomeworkList extends StatelessWidget {
           return Icon(Icons.done, color: Colors.green,);
         }
         if(homeworkItem['test'] == "ja"){
-          return Icon(Icons.library_books, color: Theme.of(context).accentColor);
+          return Icon(Icons.library_books, color: Colors.redAccent);
         }
       }
 
