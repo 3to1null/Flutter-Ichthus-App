@@ -7,7 +7,7 @@ class CheckBoxWholeClassHomework extends StatefulWidget {
 }
 
 class _CheckBoxWholeClassHomeworkState extends State<CheckBoxWholeClassHomework> {
-  bool checked = formData['is_for_group'];
+  bool checked = formData['is_for_group'] == "true" ? true : false;
   
   @override
   Widget build(BuildContext context) {
@@ -17,9 +17,9 @@ class _CheckBoxWholeClassHomeworkState extends State<CheckBoxWholeClassHomework>
       subtitle: Text("Zoja, dan wordt het huiswerk in de agenda van de hele klas geplaatst."),
       activeColor: Theme.of(context).primaryColor,
       onChanged: (bool value){
-        formData['is_for_group'] = value;
+        formData['is_for_group'] = value ? "true" : "false";
         setState(() {
-         checked = formData['is_for_group']; 
+         checked = formData['is_for_group'] == "true" ? true : false; 
         });
       },
     );

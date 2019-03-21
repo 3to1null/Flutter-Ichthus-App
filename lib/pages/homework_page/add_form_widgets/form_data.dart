@@ -1,9 +1,9 @@
-Map<String, dynamic> formDataInitial = {
+Map<String, String> formDataInitial = {
   "subject": "",
   "date": "",
   "hour": "",
   "homework": "",
-  "is_for_group": true
+  "is_for_group": "true"
 };
 
-Map<String, dynamic> formData = formDataInitial;
+Map<String, String> formData = formDataInitial;

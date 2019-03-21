@@ -6,6 +6,7 @@ import 'dateinput_date.dart';
 import 'checkbox_whole_class.dart';
 
 import 'form_data.dart';
+import '../../../functions/request.dart';
 
 class AddHomeworkForm extends StatefulWidget {
   @override
@@ -48,6 +49,7 @@ class _AddHomeworkFormState extends State<AddHomeworkForm> {
 
   void saveNewItem(){
     print(formData);
+    postDataToAPI('/homework/add', formData);
   }
 
   void validateAndSave(context){

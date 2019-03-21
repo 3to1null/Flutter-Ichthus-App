@@ -20,7 +20,7 @@ class _AddHomeworkPageState extends State<AddHomeworkPage> {
       "date": "",
       "hour": "",
       "homework": "",
-      "is_for_group": true
+      "is_for_group": "true"
     };
   }
 
