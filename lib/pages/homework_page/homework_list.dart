@@ -28,6 +28,9 @@ class HomeworkList extends StatelessWidget {
 
     Widget _createHomeworkDateSliver(Map homework){
       dynamic generateTrailingIcon(homeworkItem){
+        if(homeworkItem['is_custom'] == true){
+          return Icon(Icons.change_history, color: Theme.of(context).accentColor);
+        }
         if(homeworkItem['homework_made'] == true){
           return Icon(Icons.done, color: Colors.green,);
         }
@@ -72,7 +75,7 @@ class HomeworkList extends StatelessWidget {
                       height: 48.0,
                       child: Center(
                         child: Text(
-                          homeworkItem['hour'], 
+                          homeworkItem['hour'].toString() != '69' ? homeworkItem['hour'].toString(): '', 
                           style: Theme.of(context).textTheme.body1.copyWith(fontSize: 16),
                         ),
                       ),

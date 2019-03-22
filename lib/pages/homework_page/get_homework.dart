@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 List loadedHomework;
 bool hasHomeworkInRam = false;
+DateTime homeworkLoadedToRam;
 
 Stream<List> getHomework() async* {
 
@@ -18,21 +19,28 @@ Stream<List> getHomework() async* {
     }
   }
 
-  bool error = false;
-  List homeworkList;
-  String rawHomework = await getDataFromAPI('/homework/get', {});
-  try{
-      homeworkList = json.decode(rawHomework);
-  }catch(e){
-    print(e);
-    error = true;
-  }
+  if(!hasHomeworkInRam || (DateTime.now().difference(homeworkLoadedToRam) > Duration(minutes: 3))){
 
-  if(!error){
-    hasHomeworkInRam = true;
-    loadedHomework = homeworkList;
-    prefs.setString("_homeworkList", json.encode(homeworkList));
-    yield homeworkList;
+    print("getting homework onlineeeee");
+
+    bool error = false;
+    List homeworkList;
+    String rawHomework = await getDataFromAPI('/homework/get', {});
+    try{
+        homeworkList = json.decode(rawHomework);
+    }catch(e){
+      print(e);
+      error = true;
+    }
+
+    if(!error){
+      hasHomeworkInRam = true;
+      homeworkLoadedToRam = DateTime.now();
+      loadedHomework = homeworkList;
+      prefs.setString("_homeworkList", json.encode(homeworkList));
+      yield homeworkList;
+    }
+
   }
 
 

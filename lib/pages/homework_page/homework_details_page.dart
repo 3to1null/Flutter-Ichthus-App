@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import '../../functions/subjects_map.dart';
 import '../../functions/capitalize.dart';
 import '../../widgets/information_list_tile.dart';
+import '../../functions/request.dart';
+import 'get_homework.dart';
+import 'dart:convert';
 
 class DetailsPage extends StatefulWidget {
 
@@ -20,6 +23,9 @@ class _DetailsPageState extends State<DetailsPage> {
   @override
   Widget build(BuildContext context) {
     Color _generateBackgroundColor(){
+      if(widget.homeworkItem['is_custom'] == true){
+        return Theme.of(context).accentColor;
+      }
       if(widget.homeworkItem['homework_made'] == true){
         return Colors.green;
       }
@@ -57,7 +63,7 @@ class _DetailsPageState extends State<DetailsPage> {
                     style: Theme.of(context).textTheme.headline.copyWith(color: Colors.white),
                   ),
                   Text(
-                    capitalize(widget.displayDate) + (widget.homeworkItem['teacher'] != "" ? ", "  + capitalize(widget.homeworkItem['teacher']) : ""),
+                    capitalize(widget.displayDate) + (widget.homeworkItem['teacher'] != "" ? " - "  + capitalize(widget.homeworkItem['teacher']) : ""),
                     style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white),
                   ),
                 ],
@@ -77,14 +83,46 @@ class _DetailsPageState extends State<DetailsPage> {
   }
 }
 
-class BottomInformationCard extends StatelessWidget {
+class BottomInformationCard extends StatefulWidget {
 
   final Map homeworkItem;
   final Color bgColor;
+
   BottomInformationCard(this.homeworkItem, this.bgColor);
 
   @override
+  _BottomInformationCardState createState() => _BottomInformationCardState();
+}
+
+class _BottomInformationCardState extends State<BottomInformationCard> {
+  bool isLoading = false;
+  bool canDelete = false;
+
+  void deleteItem(context) async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try{
+      String rawHomeworkAfterAdd = await getDataFromAPI('/homework/delete', {'id': widget.homeworkItem['id']});
+      loadedHomework = json.decode(rawHomeworkAfterAdd);
+      Navigator.pop(context);
+    }catch(e){
+      setState(() {
+        isLoading = false;
+      });
+      Scaffold.of(context).showSnackBar(new SnackBar(
+        content: Text("Er is wat fout gegaan bij het verwijderen van het huiswerk. Geef dit asjeblieft aan via de Feedback pagina."),
+      ));
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+
+    if(widget.homeworkItem['is_custom'] == true && widget.homeworkItem['can_delete'] == true){
+      canDelete = true;
+    }
 
     return Card(
       shape: RoundedRectangleBorder(
@@ -105,11 +143,17 @@ class BottomInformationCard extends StatelessWidget {
           ),
           child: ListView(
             children: <Widget>[
+              isLoading ? LinearProgressIndicator() : Container(),
               Padding(padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 16.0), child: 
-                  Text(homeworkItem['homework'], style: Theme.of(context).textTheme.body1.copyWith(fontSize: 14.5),)),
+                  Text(widget.homeworkItem['homework'], style: Theme.of(context).textTheme.body1.copyWith(fontSize: 14.5),)),
               Padding(padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 16.0), child: Divider()),
-              InformationListTile(leadingText: 'Toets?', titleText: capitalize(homeworkItem['test'])),
-              InformationListTile(leadingText: 'Gemaakt?', titleText: homeworkItem['homework_made'] == true ? 'Ja' : 'Nee'),
+              widget.homeworkItem['is_custom'] != true ? InformationListTile(leadingText: 'Toets?', titleText: capitalize(widget.homeworkItem['test'])) : Container(),
+              widget.homeworkItem['is_custom'] != true ?  InformationListTile(leadingText: 'Gemaakt?', titleText: widget.homeworkItem['homework_made'] == true ? 'Ja' : 'Nee') : Container(),
+              canDelete ? OutlineButton(
+                highlightedBorderColor: Colors.transparent,
+                child: Text('Verwijder', style: TextStyle(color: Colors.red)), 
+                onPressed: isLoading ? null : () => deleteItem(context),
+              ) :Container(),
             ],
           ),
         ),

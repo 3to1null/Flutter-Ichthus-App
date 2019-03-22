@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
 
 import 'textinput_vak.dart';
 import 'textinput_desc.dart';
@@ -7,6 +8,7 @@ import 'checkbox_whole_class.dart';
 
 import 'form_data.dart';
 import '../../../functions/request.dart';
+import '../get_homework.dart';
 
 class AddHomeworkForm extends StatefulWidget {
   @override
@@ -16,6 +18,7 @@ class AddHomeworkForm extends StatefulWidget {
 class _AddHomeworkFormState extends State<AddHomeworkForm> {
 
   final _formKey = GlobalKey<FormState>();
+  bool isLoading = false;
 
   bool formIsValid(context){
     Scaffold.of(context).removeCurrentSnackBar();
@@ -47,15 +50,29 @@ class _AddHomeworkFormState extends State<AddHomeworkForm> {
     return true;
   }
 
-  void saveNewItem(){
-    print(formData);
-    postDataToAPI('/homework/add', formData);
+  void saveNewItem(context) async{
+    setState(() {
+      isLoading = true;
+    });
+
+    try{
+      String rawHomeworkAfterAdd = await postDataToAPI('/homework/add', formData);
+      loadedHomework = json.decode(rawHomeworkAfterAdd);
+      Navigator.pop(context);
+    }catch(e){
+      setState(() {
+        isLoading = false;
+      });
+      Scaffold.of(context).showSnackBar(new SnackBar(
+        content: Text("Er is wat fout gegaan bij het toevoegen van het huiswerk. Geef dit asjeblieft aan via de Feedback pagina."),
+      ));
+    }
   }
 
   void validateAndSave(context){
     FocusScope.of(context).requestFocus(FocusNode());
     if(formIsValid(context)){
-      saveNewItem();
+      saveNewItem(context);
     }
   }
 
@@ -67,6 +84,7 @@ class _AddHomeworkFormState extends State<AddHomeworkForm> {
       child: ListView(
         padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 6.0),
         children: <Widget>[
+          isLoading ? LinearProgressIndicator() : Container(),
           VakTextInput(),
           Container(height: 8.0),
           HomeworkDateInput(),
@@ -78,7 +96,7 @@ class _AddHomeworkFormState extends State<AddHomeworkForm> {
           OutlineButton(
             highlightedBorderColor: Colors.transparent,
             child: Text('Opslaan'), 
-            onPressed: () => validateAndSave(context),
+            onPressed: isLoading ? null : () => validateAndSave(context),
           )
         ],
       ),
