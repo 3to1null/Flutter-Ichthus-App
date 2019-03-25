@@ -60,22 +60,25 @@ Future getScheduleWithTimeout(userCode, timeoutTime) async {
   return response;
 }
 
-Future<List> getSchedule({String userCode: "~me", callBack}) async {
+Future<List> getSchedule({String userCode: "~me", Function callBack, bool forceRefresh: false}) async {
   if(userCode == "~me"){
     userCode = UserModel().userCode;
   }
+
   String response;
-  if(await _hasOfflineSchedule(userCode)){
+  if(await _hasOfflineSchedule(userCode) && !forceRefresh){
     final Duration timeoutTime = await _getTimeoutTime(userCode);
     if(timeoutTime.inSeconds >= 1){
       response = await getScheduleWithTimeout(userCode, timeoutTime);
+    }else if(forceRefresh){
+      response = await getScheduleWithTimeout(userCode, Duration(seconds: 3));
     }else{
       SharedPreferences prefs = await SharedPreferences.getInstance();
       response = prefs.getString("_userSchedule$userCode");
       refreshedScheduleOnline = false;
     }
   }else{
-    response = await getDataFromAPI("/schedule/get", {"userCode": userCode});
+    response = await getDataFromAPI("/schedule/get", {"userCode": userCode, "force": forceRefresh});
     refreshedScheduleOnline = true;
   }
   final List jsonResponse = json.decode(response);

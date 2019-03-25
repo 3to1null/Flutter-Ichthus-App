@@ -68,10 +68,15 @@ class _SchedulePageState extends State<SchedulePage> {
     }
   }
 
-  void setNewSchedule(Map userData) {
+  void setNewSchedule(Map userData, {bool forceRefresh: false}) {
     if (userData == null) {
       return;
     }
+
+    if (userData['userCode'] == "~me"){
+      userData['name'] = userModel.userName;
+    }
+
     setState(() {
       hasLoaded = false;
       currentUserData = userData;
@@ -88,6 +93,7 @@ class _SchedulePageState extends State<SchedulePage> {
 
     getSchedule(
             userCode: userData['userCode'],
+            forceRefresh: forceRefresh,
             callBack: getScheduleSetStateCallback)
         .catchError((e) {
       _scheduleScaffoldKey.currentState.showSnackBar(SnackBar(
@@ -97,6 +103,7 @@ class _SchedulePageState extends State<SchedulePage> {
       setNewSchedule(
           {"name": userModel.userName, "userCode": userModel.userCode});
     });
+    return;
   }
 
   @override
@@ -136,7 +143,6 @@ class _SchedulePageState extends State<SchedulePage> {
                   },
                 ),
                 actions: <Widget>[
-                  // TODO: icon to load default schedule
                   !isDefaultUser()
                       ? IconButton(
                           tooltip: 'Terug naar eigen rooster',
@@ -178,7 +184,7 @@ class _SchedulePageState extends State<SchedulePage> {
             ];
           },
           body: (hasLoaded
-              ? ScheduleTabWrapper(scheduleData)
+              ? ScheduleTabWrapper(scheduleData, setNewSchedule, currentUserData)
               : LoadingAnimation()),
         ),
       ),
