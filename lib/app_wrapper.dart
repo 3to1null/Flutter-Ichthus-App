@@ -23,7 +23,8 @@ class AppWrapper extends StatelessWidget {
     Future<List> checkIfAlreadyLoggedIn() async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       if (prefs.getBool("isLoggedIn") != null &&
-          prefs.getString("userModel") != null) {
+          prefs.getString("userModel") != null && 
+          prefs.getBool("isLoggedIn") == true) {
         return [true, prefs];
       }
       return [false];
