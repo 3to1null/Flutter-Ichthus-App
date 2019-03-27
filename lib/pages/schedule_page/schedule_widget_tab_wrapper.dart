@@ -18,11 +18,11 @@ class _ScheduleTabWrapperState extends State<ScheduleTabWrapper> {
       children: <Widget>[
         _ScheduleRefreshWrapper(widget.onRefreshCallback, child: Schedule(widget.scheduleData[0]), userData: widget.currentUserData),
         _ScheduleRefreshWrapper(widget.onRefreshCallback, child: Schedule(widget.scheduleData[1]), userData: widget.currentUserData),
-        Schedule(widget.scheduleData[2]),
-        Schedule(widget.scheduleData[3]),
-        Schedule(widget.scheduleData[4]),
-        Schedule(widget.scheduleData[5]),
-        Schedule(widget.scheduleData[6]),
+        _ScheduleRefreshWrapper(widget.onRefreshCallback, child: Schedule(widget.scheduleData[2]), userData: widget.currentUserData),
+        _ScheduleRefreshWrapper(widget.onRefreshCallback, child: Schedule(widget.scheduleData[3]), userData: widget.currentUserData),
+        _ScheduleRefreshWrapper(widget.onRefreshCallback, child: Schedule(widget.scheduleData[4]), userData: widget.currentUserData),
+        _ScheduleRefreshWrapper(widget.onRefreshCallback, child: Schedule(widget.scheduleData[5]), userData: widget.currentUserData),
+        _ScheduleRefreshWrapper(widget.onRefreshCallback, child: Schedule(widget.scheduleData[6]), userData: widget.currentUserData),
       ],
     );
   }
