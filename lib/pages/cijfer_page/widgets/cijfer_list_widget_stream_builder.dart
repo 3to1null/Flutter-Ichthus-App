@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 
 import '../../../widgets/loading_animation.dart';
 import 'cijfer_list_widget.dart';
@@ -22,6 +23,7 @@ Widget chooseCijferWidget(data, period){
   if(data[0]['data'] == false){
     return LoadingAnimation();
   }
+  //return Text(period.toString());
   return CijferList(data);
 }
 
@@ -33,14 +35,31 @@ class CijferListStreamBuilder extends StatefulWidget {
   _CijferListStreamBuilderState createState() => _CijferListStreamBuilderState();
 }
 
-class _CijferListStreamBuilderState extends State<CijferListStreamBuilder> with AutomaticKeepAliveClientMixin {
+class _CijferListStreamBuilderState extends State<CijferListStreamBuilder> with AutomaticKeepAliveClientMixin, GetCijfers{
+  
+  
   @override
   bool get wantKeepAlive => true;
 
   @override
+  void initState() {
+    cijferStreamController = StreamController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    cijferStreamController.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    cijferDataModel.setStreamController(widget.period, cijferStreamController);
+    getCijfers(widget.period);
+
     return StreamBuilder(
-      stream: getCijfers(widget.period),
+      stream: cijferStreamController.stream,
       builder: (BuildContext context,
           AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
         switch(snapshot.connectionState){

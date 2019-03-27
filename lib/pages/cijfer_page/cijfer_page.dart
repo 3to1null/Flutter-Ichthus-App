@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
-import 'package:sentry/sentry.dart';
 
 import '../drawer/drawer.dart';
 import 'widgets/cijfer_list_widget_tab_wrapper.dart';
