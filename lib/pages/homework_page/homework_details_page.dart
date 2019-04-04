@@ -23,11 +23,11 @@ class _DetailsPageState extends State<DetailsPage> {
   @override
   Widget build(BuildContext context) {
     Color _generateBackgroundColor(){
-      if(widget.homeworkItem['is_custom'] == true){
-        return Theme.of(context).accentColor;
-      }
       if(widget.homeworkItem['homework_made'] == true){
         return Colors.green;
+      }
+      if(widget.homeworkItem['is_custom'] == true){
+        return Theme.of(context).accentColor;
       }
       if(widget.homeworkItem['test'] == 'ja'){
         return Colors.redAccent;
@@ -97,6 +97,7 @@ class BottomInformationCard extends StatefulWidget {
 class _BottomInformationCardState extends State<BottomInformationCard> {
   bool isLoading = false;
   bool canDelete = false;
+  bool canEdit = false;
 
   void deleteItem(context) async {
     setState(() {
@@ -117,11 +118,18 @@ class _BottomInformationCardState extends State<BottomInformationCard> {
     }
   }
 
+  void editItem(context) async {
+
+  }
+
   @override
   Widget build(BuildContext context) {
 
     if(widget.homeworkItem['is_custom'] == true && widget.homeworkItem['can_delete'] == true){
       canDelete = true;
+    }
+    if(widget.homeworkItem['is_custom'] == true && widget.homeworkItem['can_edit'] == true){
+      canEdit = true;
     }
 
     return Card(
@@ -142,18 +150,42 @@ class _BottomInformationCardState extends State<BottomInformationCard> {
             topRight: Radius.circular(25.0),
           ),
           child: ListView(
+            padding: EdgeInsets.only(top: 8.0),
             children: <Widget>[
-              isLoading ? LinearProgressIndicator() : Container(),
-              Padding(padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 16.0), child: 
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: isLoading ? LinearProgressIndicator() : Container(),
+              ),
+              Padding(padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 24.0), child: 
                   Text(widget.homeworkItem['homework'], style: Theme.of(context).textTheme.body1.copyWith(fontSize: 14.5),)),
               Padding(padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 16.0), child: Divider()),
               widget.homeworkItem['is_custom'] != true ? InformationListTile(leadingText: 'Toets?', titleText: capitalize(widget.homeworkItem['test'])) : Container(),
-              widget.homeworkItem['is_custom'] != true ?  InformationListTile(leadingText: 'Gemaakt?', titleText: widget.homeworkItem['homework_made'] == true ? 'Ja' : 'Nee') : Container(),
-              canDelete ? OutlineButton(
-                highlightedBorderColor: Colors.transparent,
-                child: Text('Verwijder', style: TextStyle(color: Colors.red)), 
-                onPressed: isLoading ? null : () => deleteItem(context),
-              ) :Container(),
+              InformationListTile(leadingText: 'Gemaakt?', titleText: widget.homeworkItem['homework_made'] == true ? 'Ja' : 'Nee'),
+              widget.homeworkItem['is_custom'] == true ?  InformationListTile(leadingText: 'Zichtbaar voor?', titleText: widget.homeworkItem['is_for_group'] == true ? 'De hele klas (' + widget.homeworkItem['group'] + ')' : 'Alleen jijzelf') : Container(),
+              widget.homeworkItem['is_custom'] == true ? Padding(padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 16.0), child: Divider()) : Container(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  FlatButton(
+                    padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                    color: Colors.green,
+                    child: Icon(Icons.done, color: Colors.white), 
+                    onPressed: isLoading ? null : () => {},
+                  ),
+                  canEdit ? FlatButton(
+                    padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                    color: Colors.orangeAccent,
+                    child: Icon(Icons.edit, color: Colors.white), 
+                    onPressed: isLoading ? null : () => {},
+                  ) : Container(),
+                  canDelete ? FlatButton(
+                    padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                    color: Colors.red,
+                    child: Icon(Icons.delete, color: Colors.white), 
+                    onPressed: isLoading ? null : () => deleteItem(context),
+                  ) : Container(),
+                ],
+              )
             ],
           ),
         ),

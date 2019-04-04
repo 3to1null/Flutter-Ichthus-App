@@ -3,18 +3,10 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import '../drawer/drawer.dart';
 import '../../widgets/loading_animation.dart';
-import 'add_homework_page.dart';
 import 'homework_list.dart';
 
-import 'get_homework.dart';
-
-  void _openAddHomeworkPage(BuildContext context){
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (BuildContext context){
-        return AddHomeworkPage();
-      }
-    ));
-  }
+import 'functions/get_homework.dart';
+import 'functions/open_add_homework_page.dart';
 
 class NoHomeworkMessage extends StatelessWidget {
   @override
@@ -62,7 +54,7 @@ class _HomeWorkPageState extends State<HomeWorkPage> {
         tag: "_AddHomeWorkFABPageHero",
         child: FloatingActionButton(
           child: Icon(Icons.add, color: Colors.white),
-          onPressed: (){_openAddHomeworkPage(context);},
+          onPressed: (){openAddHomeworkPage(context);},
         ),
       ),
     );

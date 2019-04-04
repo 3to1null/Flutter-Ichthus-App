@@ -16,7 +16,7 @@ bool _hasThisCijferPeriodInCache(int period, SharedPreferences prefs) {
   return true;
 }
 
-Future<void> addCijfersFromServerToControllerAndCache(StreamController streamController, int period, {bool isFromRefresh: false, SharedPreferences prefs}) async {
+Future<void> addCijfersFromServerToControllerAndCache(StreamController streamController, int period, {bool isFromRefresh: false, SharedPreferences prefs, bool hasCache: true}) async {
 
   if(prefs == null){
     prefs = await SharedPreferences.getInstance();
@@ -27,15 +27,12 @@ Future<void> addCijfersFromServerToControllerAndCache(StreamController streamCon
   if (cijfersResponse != null && cijfersResponse != "" && cijfersResponse != "[]" && cijfersResponse != "false") {
     _cijferDataModel.periodsLoadedThisRun.add(period);
     List<Map<String, dynamic>> decodedResponse = List<Map<String, dynamic>>.from(json.decode(cijfersResponse));
-    streamController.add(decodedResponse);
+    if(!streamController.isClosed){streamController.add(decodedResponse);}
     _cijferDataModel.setCijfersForPeriodInRam(period, decodedResponse);
     prefs.setString("_userMarksPeriod$period", cijfersResponse);
-  }else if(!isFromRefresh){
-    streamController.add([{'data': false}]);
+  }else if(!isFromRefresh && !hasCache){
+    if(!streamController.isClosed){streamController.add([{'data': false}]);}
   }
-
-  print('test');
-
 }
 
 abstract class GetCijfers{
@@ -48,15 +45,18 @@ abstract class GetCijfers{
     }
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    bool hasCache = _hasThisCijferPeriodInCache(period, prefs);
+
     if(_cijferDataModel.periodsLoadedThisRun.contains(period) && _cijferDataModel.getCijferForPeriodFromRam(period) != null){
       cijferStreamController.add(_cijferDataModel.getCijferForPeriodFromRam(period));
-    } else if (_hasThisCijferPeriodInCache(period, prefs)) {
+    } else if (hasCache) {
       String userMarks = prefs.getString("_userMarksPeriod$period");
-      cijferStreamController.add(List<Map<String, dynamic>>.from(json.decode(userMarks)));
+      if(!cijferStreamController.isClosed){cijferStreamController.add(List<Map<String, dynamic>>.from(json.decode(userMarks)));}
     }
 
     if (!_cijferDataModel.periodsLoadedThisRun.contains(period)) {
-      addCijfersFromServerToControllerAndCache(cijferStreamController, period, prefs: prefs);
+      addCijfersFromServerToControllerAndCache(cijferStreamController, period, prefs: prefs, hasCache: hasCache);
     }
   }
 }
