@@ -59,10 +59,19 @@ class _ScheduleState extends State<Schedule>{
   }
 
   Widget _buildColumn(int dayIndex) {
+    Color bgColor;
+    if(dayIndex + 1 == DateTime.now().weekday && widget.weekIndex == 1){
+      bgColor = Colors.blueGrey.withAlpha(35);
+    }else{
+      bgColor = Colors.transparent;
+    }
     return Expanded(
       flex: 2,
-      child: Stack(
-        children: _generateCells(dayIndex),
+      child: Container(
+        color: bgColor,
+        child: Stack(
+          children: _generateCells(dayIndex),
+        ),
       ),
     );
   }
@@ -123,6 +132,24 @@ class _ScheduleState extends State<Schedule>{
         ScheduleCell(index, Appointment.fromJson(appointmentData))
       );
     }
+    DateTime now = DateTime.now();
+    int minutesSince8AM = (now.hour - 8) * 60 + now.minute;
+    if(dayIndex + 1 == now.weekday && widget.weekIndex == 1 && minutesSince8AM > 0 && minutesSince8AM < 12 * 60){
+      returnList.add(Positioned(
+        left: 2,
+        top: minutesSince8AM * hourMultiplier + offsetFromTop,
+        right: 2,
+        height: 1,
+        child: Divider(color: Colors.black87),
+      ));
+      returnList.add(Positioned(
+        left: 2,
+        top: minutesSince8AM * hourMultiplier + offsetFromTop + 1,
+        right: 2,
+        height: 1,
+        child: Divider(color: Colors.black87),
+      ));
+    }
     return returnList;
   }
 
@@ -178,31 +205,33 @@ class WeekViewHeaderDelegate extends SliverPersistentHeaderDelegate {
       'Vrijdag \n' + getDayDate(thisWeek, 'fri'),
     ];
 
+    List<Widget> buildWeekHeaders(){
+      List<Widget> returnList = [Expanded(flex: 1, child: Container())];
+      Color bgColor;
+      int dayIndex = 1;
+      for(String weekHeaderText in weekHeaderTexts){
+        if(dayIndex == DateTime.now().weekday && weekIndex == 1){
+          bgColor = Colors.blueGrey.withAlpha(35);
+        }else{
+          bgColor = Colors.transparent;
+        }
+        returnList.add(
+          Expanded(flex: 2, child: Container(
+            child: Center(child: AutoSizeText(weekHeaderText, style: TextStyle(color: Colors.black), textAlign: TextAlign.center)),
+            decoration: BoxDecoration(
+              border: Border(left: BorderSide(color: Colors.black12)),
+              color: bgColor,
+            ),
+          )),
+        );
+        dayIndex++;
+      }
+      return returnList;
+    }
+
     return Container(
       child: Row(
-        children: <Widget>[
-          Expanded(flex: 1, child: Container()),
-          Expanded(flex: 2, child: Container(
-            child: Center(child: AutoSizeText(weekHeaderTexts[0], style: TextStyle(color: Colors.black), textAlign: TextAlign.center)),
-            decoration: BoxDecoration(border: Border(left: BorderSide(color: Colors.black12))),
-          )),
-          Expanded(flex: 2, child: Container(
-            child: Center(child: AutoSizeText(weekHeaderTexts[1], style: TextStyle(color: Colors.black), textAlign: TextAlign.center)),
-            decoration: BoxDecoration(border: Border(left: BorderSide(color: Colors.black12))),
-          )),
-          Expanded(flex: 2, child: Container(
-            child: Center(child: AutoSizeText(weekHeaderTexts[2], style: TextStyle(color: Colors.black), textAlign: TextAlign.center)),
-            decoration: BoxDecoration(border: Border(left: BorderSide(color: Colors.black12))),
-          )),
-          Expanded(flex: 2, child: Container(
-            child: Center(child: AutoSizeText(weekHeaderTexts[3], style: TextStyle(color: Colors.black), textAlign: TextAlign.center)),
-            decoration: BoxDecoration(border: Border(left: BorderSide(color: Colors.black12))),
-          )),
-          Expanded(flex: 2, child: Container(
-            child: Center(child: AutoSizeText(weekHeaderTexts[4], style: TextStyle(color: Colors.black), textAlign: TextAlign.center)),
-            decoration: BoxDecoration(border: Border(left: BorderSide(color: Colors.black12))),
-          )),
-        ],
+        children: buildWeekHeaders()
       ),
     );
   }
