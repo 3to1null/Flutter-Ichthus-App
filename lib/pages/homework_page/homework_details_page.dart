@@ -3,16 +3,18 @@ import '../../functions/subjects_map.dart';
 import '../../functions/capitalize.dart';
 import '../../widgets/information_list_tile.dart';
 import '../../functions/request.dart';
-import 'get_homework.dart';
+import 'functions/get_homework.dart';
+import 'functions/open_add_homework_page.dart';
 import 'dart:convert';
 
 class DetailsPage extends StatefulWidget {
 
   final Map homeworkItem;
   final String displayDate;
+  final String dateString;
   final String uniqueId;
 
-  DetailsPage(this.homeworkItem, this.displayDate, this.uniqueId);
+  DetailsPage(this.homeworkItem, this.displayDate, this.dateString, this.uniqueId);
 
   @override
   _DetailsPageState createState() => _DetailsPageState();
@@ -73,7 +75,7 @@ class _DetailsPageState extends State<DetailsPage> {
               alignment: Alignment.bottomCenter,
               child: Theme(
                 data: Theme.of(context).copyWith(accentColor: bgColor),
-                child: BottomInformationCard(widget.homeworkItem, bgColor)
+                child: BottomInformationCard(widget.homeworkItem, bgColor, widget.dateString)
               ),
             ),
           ],
@@ -87,8 +89,9 @@ class BottomInformationCard extends StatefulWidget {
 
   final Map homeworkItem;
   final Color bgColor;
+  final String dateString;
 
-  BottomInformationCard(this.homeworkItem, this.bgColor);
+  BottomInformationCard(this.homeworkItem, this.bgColor, this.dateString);
 
   @override
   _BottomInformationCardState createState() => _BottomInformationCardState();
@@ -98,6 +101,7 @@ class _BottomInformationCardState extends State<BottomInformationCard> {
   bool isLoading = false;
   bool canDelete = false;
   bool canEdit = false;
+  bool isCustom = false;
 
   void deleteItem(context) async {
     setState(() {
@@ -119,7 +123,8 @@ class _BottomInformationCardState extends State<BottomInformationCard> {
   }
 
   void editItem(context) async {
-
+    widget.homeworkItem['date'] = widget.dateString;
+    openAddHomeworkPage(context, widget.homeworkItem, "Wijzig huiswerk");
   }
 
   @override
@@ -130,6 +135,9 @@ class _BottomInformationCardState extends State<BottomInformationCard> {
     }
     if(widget.homeworkItem['is_custom'] == true && widget.homeworkItem['can_edit'] == true){
       canEdit = true;
+    }
+    if(widget.homeworkItem['is_custom'] == true){
+      isCustom = true;
     }
 
     return Card(
@@ -166,18 +174,18 @@ class _BottomInformationCardState extends State<BottomInformationCard> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  FlatButton(
+                  isCustom ? FlatButton(
                     padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                     color: Colors.green,
                     child: Icon(Icons.done, color: Colors.white), 
                     onPressed: isLoading ? null : () => {},
-                  ),
-                  canEdit ? FlatButton(
+                  ) : Container(),
+                  canEdit ? Hero(tag: "_AddHomeWorkEditPageHero", child: FlatButton(
                     padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                     color: Colors.orangeAccent,
                     child: Icon(Icons.edit, color: Colors.white), 
-                    onPressed: isLoading ? null : () => {},
-                  ) : Container(),
+                    onPressed: isLoading ? null : () => editItem(context),
+                  )) : Container(),
                   canDelete ? FlatButton(
                     padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                     color: Colors.red,

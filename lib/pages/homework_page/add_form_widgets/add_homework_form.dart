@@ -8,7 +8,7 @@ import 'checkbox_whole_class.dart';
 
 import 'form_data.dart';
 import '../../../functions/request.dart';
-import '../get_homework.dart';
+import '../functions/get_homework.dart';
 
 class AddHomeworkForm extends StatefulWidget {
   @override

@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'form_data.dart';
 
 class DescTextInput extends StatelessWidget {
+  final _homeworkDescController = TextEditingController(text: formData['homework'] != "" ? formData['homework'] : null);
+
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: _homeworkDescController,
       textCapitalization: TextCapitalization.sentences,
       textInputAction: TextInputAction.newline,
       maxLines: null,

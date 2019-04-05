@@ -3,7 +3,7 @@ Map<String, String> formDataInitial = {
   "date": "",
   "hour": "",
   "homework": "",
-  "is_for_group": "true"
+  "is_for_group": "false"
 };
 
 Map<String, String> formData = formDataInitial;

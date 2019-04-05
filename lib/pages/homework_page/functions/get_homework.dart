@@ -1,4 +1,4 @@
-import '../../functions/request.dart';
+import '../../../functions/request.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,8 +20,6 @@ Stream<List> getHomework() async* {
   }
 
   if(!hasHomeworkInRam || (DateTime.now().difference(homeworkLoadedToRam) > Duration(minutes: 3))){
-
-    print("getting homework onlineeeee");
 
     bool error = false;
     List homeworkList;

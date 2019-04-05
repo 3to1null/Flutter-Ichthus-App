@@ -6,14 +6,19 @@ import 'form_data.dart';
 
 
 class HomeworkDateInput extends StatelessWidget {
+  final _homeworkHourController = TextEditingController(text: formData['hour'] != "" ? formData['hour'] : null);
+
   @override
   Widget build(BuildContext context) {
+    print(formData);
     return Row(
       children: <Widget>[
         Expanded(
           flex: 14,
           child: DateTimePickerFormField(
             format: DateFormat("EEEE',' d MMMM"),
+            initialDate: (formData['date'] != "" && formData['date'] != null && formData['date'] != "null") ? DateFormat("yyyy-MM-dd").parse(formData['date']) : null,
+            initialValue: (formData['date'] != "" && formData['date'] != null && formData['date'] != "null") ? DateFormat("yyyy-MM-dd").parse(formData['date']) : null,
             inputType: InputType.date,
             editable: false,
             decoration: InputDecoration(
@@ -32,6 +37,7 @@ class HomeworkDateInput extends StatelessWidget {
         Expanded(
           flex: 4,
           child: TextField(
+            controller: _homeworkHourController,
             keyboardType: TextInputType.number,
             decoration: InputDecoration(
               contentPadding: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 10.0),

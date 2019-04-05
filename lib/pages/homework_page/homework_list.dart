@@ -15,10 +15,10 @@ class HomeworkList extends StatelessWidget {
     return "${homeworkItem["subject"]}-${randomString(8)}";
   }
 
-  void _openDetailsPage(BuildContext context, Map homeworkItem, String displayDate, String heroId){
+  void _openDetailsPage(BuildContext context, Map homeworkItem, String displayDate, String dateString, String heroId){
     Navigator.of(context).push(MaterialPageRoute(
       builder: (BuildContext context){
-        return DetailsPage(homeworkItem, displayDate, heroId);
+        return DetailsPage(homeworkItem, displayDate, dateString, heroId);
       }
     ));
   }
@@ -69,7 +69,7 @@ class HomeworkList extends StatelessWidget {
                   tag: heroId,
                   child: ListTile(
                     onTap: (){
-                      _openDetailsPage(context, homeworkItem, homework['title'], heroId);
+                      _openDetailsPage(context, homeworkItem, homework['title'], homework['date'], heroId);
                     },
                     leading: Container(
                       width: 32.0,
