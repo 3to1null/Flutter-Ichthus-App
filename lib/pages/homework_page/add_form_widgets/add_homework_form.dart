@@ -21,7 +21,6 @@ class _AddHomeworkFormState extends State<AddHomeworkForm> {
   bool isLoading = false;
 
   bool formIsValid(context){
-    print(formData);
     Scaffold.of(context).removeCurrentSnackBar();
     if(formData['subject'].length < 2){
       Scaffold.of(context).showSnackBar(new SnackBar(
@@ -31,7 +30,7 @@ class _AddHomeworkFormState extends State<AddHomeworkForm> {
     }
     if(formData['date'].length < 8){
       Scaffold.of(context).showSnackBar(new SnackBar(
-        content: Text("Selecteer een datum."),
+        content: Text("Selecteer een goede datum."),
       ));
       return false;
     }
@@ -85,7 +84,7 @@ class _AddHomeworkFormState extends State<AddHomeworkForm> {
       child: ListView(
         padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 6.0),
         children: <Widget>[
-          isLoading ? LinearProgressIndicator() : Container(),
+          AnimatedCrossFade(firstChild: Container(), secondChild: LinearProgressIndicator(), duration: Duration(milliseconds: 100), crossFadeState: isLoading ? CrossFadeState.showSecond : CrossFadeState.showFirst),
           VakTextInput(),
           Container(height: 8.0),
           HomeworkDateInput(),

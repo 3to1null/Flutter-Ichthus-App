@@ -42,15 +42,14 @@ class _HomeworkDateInputState extends State<HomeworkDateInput> {
               icon: Icon(Icons.date_range)
             ),
             onChanged: (DateTime value){
-              if(value == null){
-                formData["date"] = "";
-                setState(() { });
-              }
               if(value != null && value.isAfter(DateTime.now().subtract(Duration(days: 3)))){
                 formData["date"] = DateFormat("yyyy-MM-dd").format(value);
                 setState(() {
                   hasChanged = true; 
                 });
+              }else{
+                formData["date"] = "";
+                setState(() { });
               }
             },
           ),

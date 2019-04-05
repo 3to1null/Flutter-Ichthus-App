@@ -127,6 +127,25 @@ class _BottomInformationCardState extends State<BottomInformationCard> {
     openAddHomeworkPage(context, widget.homeworkItem, "Wijzig huiswerk", true);
   }
 
+  void toggleItemDone(context) async {
+    setState(() {
+      isLoading = true;
+    });
+    try{
+      String rawHomeworkAfterAdd = await postDataToAPI('/homework/done', {'id': widget.homeworkItem['id'].toString(), 'done': (!(widget.homeworkItem['homework_made'] == true)).toString()});
+      loadedHomework = json.decode(rawHomeworkAfterAdd);
+      Navigator.pop(context);
+    }catch(e){
+      print(e);
+      setState(() {
+        isLoading = false;
+      });
+      Scaffold.of(context).showSnackBar(new SnackBar(
+        content: Text("Er is wat fout gegaan bij het updaten van het huiswerk. Geef dit asjeblieft aan via de Feedback pagina."),
+      ));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -162,31 +181,31 @@ class _BottomInformationCardState extends State<BottomInformationCard> {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: isLoading ? LinearProgressIndicator() : Container(),
+                child: AnimatedCrossFade(firstChild: Container(), secondChild: LinearProgressIndicator(), duration: Duration(milliseconds: 100), crossFadeState: isLoading ? CrossFadeState.showSecond : CrossFadeState.showFirst),
               ),
               Padding(padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 24.0), child: 
                   Text(widget.homeworkItem['homework'], style: Theme.of(context).textTheme.body1.copyWith(fontSize: 14.5),)),
               Padding(padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 16.0), child: Divider()),
-              widget.homeworkItem['is_custom'] != true ? InformationListTile(leadingText: 'Toets?', titleText: capitalize(widget.homeworkItem['test'])) : Container(),
+              isCustom != true ? InformationListTile(leadingText: 'Toets?', titleText: capitalize(widget.homeworkItem['test'])) : Container(),
               InformationListTile(leadingText: 'Gemaakt?', titleText: widget.homeworkItem['homework_made'] == true ? 'Ja' : 'Nee'),
-              widget.homeworkItem['is_custom'] == true ?  InformationListTile(leadingText: 'Zichtbaar voor?', titleText: widget.homeworkItem['is_for_group'] == true ? 'De hele klas (' + widget.homeworkItem['group'] + ')' : 'Alleen jijzelf') : Container(),
-              widget.homeworkItem['is_custom'] == true ? Padding(padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 16.0), child: Divider()) : Container(),
+              isCustom == true ?  InformationListTile(leadingText: 'Zichtbaar voor?', titleText: widget.homeworkItem['is_for_group'] == true ? 'De hele klas (' + widget.homeworkItem['group'] + ')' : 'Alleen jijzelf') : Container(),
+              isCustom == true ? Padding(padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 16.0), child: Divider()) : Container(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  isCustom ? FlatButton(
+                  isCustom ? RaisedButton(
                     padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                    color: Colors.green,
+                    color: widget.homeworkItem['homework_made'] == true ? Colors.grey : Colors.green,
                     child: Icon(Icons.done, color: Colors.white), 
-                    onPressed: isLoading ? null : () => {},
+                    onPressed: isLoading ? null : () => {toggleItemDone(context)},
                   ) : Container(),
-                  canEdit ? Hero(tag: "_AddHomeWorkEditPageHero", child: FlatButton(
+                  canEdit ? Hero(tag: "_AddHomeWorkEditPageHero", child: RaisedButton(
                     padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                     color: Colors.orangeAccent,
                     child: Icon(Icons.edit, color: Colors.white), 
                     onPressed: isLoading ? null : () => editItem(context),
                   )) : Container(),
-                  canDelete ? FlatButton(
+                  canDelete ? RaisedButton(
                     padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                     color: Colors.red,
                     child: Icon(Icons.delete, color: Colors.white), 
