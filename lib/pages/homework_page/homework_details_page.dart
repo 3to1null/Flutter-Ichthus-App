@@ -188,7 +188,7 @@ class _BottomInformationCardState extends State<BottomInformationCard> {
               Padding(padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 16.0), child: Divider()),
               isCustom != true ? InformationListTile(leadingText: 'Toets?', titleText: capitalize(widget.homeworkItem['test'])) : Container(),
               InformationListTile(leadingText: 'Gemaakt?', titleText: widget.homeworkItem['homework_made'] == true ? 'Ja' : 'Nee'),
-              isCustom == true ?  InformationListTile(leadingText: 'Zichtbaar voor?', titleText: widget.homeworkItem['is_for_group'] == true ? 'De hele klas (' + widget.homeworkItem['group'] + ')' : 'Alleen jijzelf') : Container(),
+              isCustom == true ?  InformationListTile(leadingText: 'Zichtbaar voor?', titleText: widget.homeworkItem['is_for_group'] == true ? 'De hele klas (' + widget.homeworkItem['group'] + ')' : 'Alleen jij') : Container(),
               isCustom == true ? Padding(padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 16.0), child: Divider()) : Container(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -198,20 +198,20 @@ class _BottomInformationCardState extends State<BottomInformationCard> {
                     color: widget.homeworkItem['homework_made'] == true ? Colors.grey : Colors.green,
                     child: Icon(Icons.done, color: Colors.white), 
                     onPressed: isLoading ? null : () => {toggleItemDone(context)},
-                  ) : Container(),
+                  ) : null,
                   canEdit ? Hero(tag: "_AddHomeWorkEditPageHero", child: RaisedButton(
                     padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                     color: Colors.orangeAccent,
                     child: Icon(Icons.edit, color: Colors.white), 
                     onPressed: isLoading ? null : () => editItem(context),
-                  )) : Container(),
+                  )) : null,
                   canDelete ? RaisedButton(
                     padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                     color: Colors.red,
                     child: Icon(Icons.delete, color: Colors.white), 
                     onPressed: isLoading ? null : () => deleteItem(context),
-                  ) : Container(),
-                ],
+                  ) : null
+                ].where((Object o) => o != null).toList(),
               )
             ],
           ),
