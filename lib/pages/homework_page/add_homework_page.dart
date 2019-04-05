@@ -31,7 +31,8 @@ class _AddHomeworkPageState extends State<AddHomeworkPage> {
         "date": widget.initialData["date"].toString(),
         "hour": widget.initialData["hour"].toString(),
         "homework": widget.initialData["homework"].toString(),
-        "is_for_group": widget.initialData["is_for_group"].toString()
+        "is_for_group": widget.initialData["is_for_group"].toString(),
+        "id": widget.initialData['id'].toString()
       };
     }
   }

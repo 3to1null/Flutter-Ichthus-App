@@ -124,7 +124,7 @@ class _BottomInformationCardState extends State<BottomInformationCard> {
 
   void editItem(context) async {
     widget.homeworkItem['date'] = widget.dateString;
-    openAddHomeworkPage(context, widget.homeworkItem, "Wijzig huiswerk");
+    openAddHomeworkPage(context, widget.homeworkItem, "Wijzig huiswerk", true);
   }
 
   @override

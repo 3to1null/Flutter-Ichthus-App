@@ -21,6 +21,7 @@ class _AddHomeworkFormState extends State<AddHomeworkForm> {
   bool isLoading = false;
 
   bool formIsValid(context){
+    print(formData);
     Scaffold.of(context).removeCurrentSnackBar();
     if(formData['subject'].length < 2){
       Scaffold.of(context).showSnackBar(new SnackBar(
@@ -28,7 +29,7 @@ class _AddHomeworkFormState extends State<AddHomeworkForm> {
       ));
       return false;
     }
-    if(formData['date'].length != 10){
+    if(formData['date'].length < 8){
       Scaffold.of(context).showSnackBar(new SnackBar(
         content: Text("Selecteer een datum."),
       ));
