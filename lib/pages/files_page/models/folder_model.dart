@@ -25,14 +25,14 @@ class Folder{
           name: item["name"],
           path: item["path"],
           pathTo: item["pathTo"],
-          size: item["size"] != "None" ? item["size"] : null,
+          size: item["size"] != "None" ? int.parse(item["size"]) : null,
         ));
       }else{
         tempFiles.add(File(
           name: item["name"],
           path: item["path"],
           pathTo: item["pathTo"],
-          size: item["size"],
+          size: int.parse(item["size"]),
           type: item["type"]
         ));
       }
