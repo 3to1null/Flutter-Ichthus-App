@@ -46,41 +46,38 @@ class _AddHomeworkPageState extends State<AddHomeworkPage> {
     print(widget.headerText);
     Color bgColor = _generateBackgroundColor();
     return Hero(
-      tag: "_AddHomeWorkEditPageHero",
-      child: Hero(
-        tag: "_AddHomeWorkFABPageHero",
-        child: Scaffold(
-          resizeToAvoidBottomPadding: false,
-          backgroundColor: bgColor,
-          body: Stack(
-            children: <Widget>[
-              Align(
-                alignment: Alignment.topLeft,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 24.0),
-                  child: BackButton(
-                    color: Colors.white,
-                  ),
+      tag: "_AddHomeWorkFABPageHero",
+      child: Scaffold(
+        resizeToAvoidBottomPadding: false,
+        backgroundColor: bgColor,
+        body: Stack(
+          children: <Widget>[
+            Align(
+              alignment: Alignment.topLeft,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 24.0),
+                child: BackButton(
+                  color: Colors.white,
                 ),
               ),
-              Container(
-                height: MediaQuery.of(context).size.height * 0.24,
-                padding: EdgeInsets.fromLTRB(24.0, 0, 24.0, 32.0),
-                alignment: Alignment.bottomLeft,
-                child: Text(
-                  widget.headerText != null ? widget.headerText : "Nieuw huiswerk",
-                  style: Theme.of(context).textTheme.headline.copyWith(color: Colors.white),
-                )
+            ),
+            Container(
+              height: MediaQuery.of(context).size.height * 0.24,
+              padding: EdgeInsets.fromLTRB(24.0, 0, 24.0, 32.0),
+              alignment: Alignment.bottomLeft,
+              child: Text(
+                widget.headerText != null ? widget.headerText : "Nieuw huiswerk",
+                style: Theme.of(context).textTheme.headline.copyWith(color: Colors.white),
+              )
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Theme(
+                data: Theme.of(context).copyWith(accentColor: bgColor),
+                child: BottomInformationCard(bgColor)
               ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Theme(
-                  data: Theme.of(context).copyWith(accentColor: bgColor),
-                  child: BottomInformationCard(bgColor)
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

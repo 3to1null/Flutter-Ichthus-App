@@ -50,12 +50,10 @@ class _HomeWorkPageState extends State<HomeWorkPage> {
           }
         },
       ),
-      floatingActionButton: Hero(
-        tag: "_AddHomeWorkFABPageHero",
-        child: FloatingActionButton(
-          child: Icon(Icons.add, color: Colors.white),
-          onPressed: (){openAddHomeworkPage(context);},
-        ),
+      floatingActionButton: FloatingActionButton(
+        heroTag: "_AddHomeWorkFABPageHero",
+        child: Icon(Icons.add, color: Colors.white),
+        onPressed: (){openAddHomeworkPage(context);},
       ),
     );
   }

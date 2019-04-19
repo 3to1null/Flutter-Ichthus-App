@@ -199,12 +199,12 @@ class _BottomInformationCardState extends State<BottomInformationCard> {
                     child: Icon(Icons.done, color: Colors.white), 
                     onPressed: isLoading ? null : () => {toggleItemDone(context)},
                   ) : null,
-                  canEdit ? Hero(tag: "_AddHomeWorkEditPageHero", child: RaisedButton(
+                  canEdit ? RaisedButton(
                     padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                     color: Colors.orangeAccent,
                     child: Icon(Icons.edit, color: Colors.white), 
                     onPressed: isLoading ? null : () => editItem(context),
-                  )) : null,
+                  ) : null,
                   canDelete ? RaisedButton(
                     padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                     color: Colors.red,
