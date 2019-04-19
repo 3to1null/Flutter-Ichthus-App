@@ -16,6 +16,7 @@ import 'pages/cijfer_page/cijfer_page.dart';
 import 'pages/homework_page/homework_page.dart';
 import 'pages/feedback_page/feedback_page.dart';
 import 'pages/login_page/login_page.dart';
+import 'pages/files_page/files_page.dart';
 
 void main() {
   timeDilation = 1.0;
@@ -58,6 +59,7 @@ class IchthusApp extends StatelessWidget {
         '/': (context) => AppWrapper(analytics, observer),
         '/schedule': (context) => SchedulePage(analytics, observer),
         '/cijfers': (context) => CijferPage(analytics, observer),
+        '/files': (context) => FilesPage(analytics, observer),
         '/homework': (context) => HomeWorkPage(analytics, observer),
         '/feedback': (context) => FeedbackPage(analytics, observer),
         '/login': (context) => LoginPage(analytics, observer)
