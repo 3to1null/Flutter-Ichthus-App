@@ -37,7 +37,7 @@ class _CijferPageState extends State<CijferPage> {
       length: 4,
       initialIndex: userGroupNumber > 3 ? 3 : 0,
       child: Scaffold(
-        drawer: CompleteDrawer(widget.fbAnalytics, widget.fbObserver),
+        drawer: CompleteDrawer(),
         body: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[

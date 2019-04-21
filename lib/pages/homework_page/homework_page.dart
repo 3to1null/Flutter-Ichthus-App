@@ -38,7 +38,7 @@ class _HomeWorkPageState extends State<HomeWorkPage> {
         title: Text('Huiswerk'),
         elevation: 0,
       ),
-      drawer: CompleteDrawer(widget.fbAnalytics, widget.fbObserver),
+      drawer: CompleteDrawer(),
       body: StreamBuilder(
         stream: getHomework(),
         builder: (BuildContext context, AsyncSnapshot<List> snapshot){

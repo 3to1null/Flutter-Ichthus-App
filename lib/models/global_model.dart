@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'dart:convert';
 
 
@@ -12,6 +14,9 @@ class GlobalModel {
   }
 
   GlobalModel._internal();
+
+  FirebaseAnalytics fbAnalytics;
+  FirebaseAnalyticsObserver fbObserver;
 
   double screenHeight;
   double scheduleHourMultiplier;
@@ -40,5 +45,7 @@ class GlobalModel {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("availableUserSchedulesOffline", json.encode(availableUserSchedulesOffline));
   }
+
+
 
 }

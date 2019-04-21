@@ -31,7 +31,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
   widget.fbAnalytics.logEvent(name: 'feedbackpage_open');
 
     return Scaffold(
-      drawer: CompleteDrawer(widget.fbAnalytics, widget.fbObserver),
+      drawer: CompleteDrawer(),
       appBar: AppBar(title: Text('Feedback')),
       body: ListView(
         padding: EdgeInsets.all(16.0),

@@ -7,6 +7,8 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
 
+import 'models/global_model.dart';
+
 import 'functions/report_error.dart';
 import 'functions/is_in_debug_mode.dart';
 
@@ -43,8 +45,13 @@ class IchthusApp extends StatelessWidget {
   static FirebaseAnalyticsObserver observer =
       FirebaseAnalyticsObserver(analytics: analytics);
 
+  final GlobalModel _globalModel = GlobalModel();
+
   @override
   Widget build(BuildContext context) {
+    _globalModel.fbAnalytics = analytics;
+    _globalModel.fbObserver = observer;
+
     Intl.defaultLocale = "nl";
     return new MaterialApp(
       title: 'ICV App',

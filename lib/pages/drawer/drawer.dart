@@ -3,6 +3,8 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
 
+import '../../models/global_model.dart';
+
 import '../profile_page/profile_page.dart';
 import 'get_link_profile_picture.dart';
 import '../../functions/logout_guider.dart';
@@ -10,11 +12,12 @@ import '../../functions/logout_guider.dart';
 import 'drawer_data_model.dart';
 import '../../models/user_model.dart';
 
-class CompleteDrawer extends StatefulWidget {
-  CompleteDrawer(this.fbAnalytics, this.fbObserver);
+GlobalModel globalModel = GlobalModel();
 
-  final FirebaseAnalytics fbAnalytics;
-  final FirebaseAnalyticsObserver fbObserver;
+class CompleteDrawer extends StatefulWidget {
+
+  FirebaseAnalytics fbAnalytics = globalModel.fbAnalytics;
+  FirebaseAnalyticsObserver fbObserver = globalModel.fbObserver;
 
   @override
   _CompleteDrawerState createState() => _CompleteDrawerState();

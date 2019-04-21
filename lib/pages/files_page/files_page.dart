@@ -32,7 +32,7 @@ class _FilesPageState extends State<FilesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: CompleteDrawer(widget.fbAnalytics, widget.fbObserver),
+      drawer: CompleteDrawer(),
       body: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(
