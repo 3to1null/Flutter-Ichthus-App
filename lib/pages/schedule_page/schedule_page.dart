@@ -121,7 +121,7 @@ class _SchedulePageState extends State<SchedulePage> {
       initialIndex: 1,
       child: Scaffold(
         key: _scheduleScaffoldKey,
-        drawer: CompleteDrawer(widget.fbAnalytics, widget.fbObserver),
+        drawer: CompleteDrawer(),
         body: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[

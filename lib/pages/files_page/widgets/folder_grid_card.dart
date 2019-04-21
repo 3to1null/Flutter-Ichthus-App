@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+
+import '../../../functions/random_string.dart';
+
 import '../models/folder_model.dart';
+import '../functions/open_new_page.dart';
 
 class FolderGridCard extends StatelessWidget {
 
@@ -17,16 +21,24 @@ class FolderGridCard extends StatelessWidget {
       default: icon = Icons.folder;
     }
 
-    return Card(
-      elevation: 2.0,
-      margin: EdgeInsets.all(16.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Icon(icon, size: 48.0, color: Colors.black54,),
-          SizedBox(height: 8.0),
-          Text(folder.name, textAlign: TextAlign.center,)
-        ],
+    String heroTag = folder.path + randomString(12);
+
+    return Hero(
+      tag: heroTag,
+      child: Card(
+        elevation: 2.0,
+        margin: EdgeInsets.all(16.0),
+        child: InkWell(
+            child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Icon(icon, size: 48.0, color: Colors.black54,),
+              SizedBox(height: 8.0),
+              Text(folder.name, textAlign: TextAlign.center,)
+            ],
+          ),
+          onTap: (){openFolderPage(context, folder, heroTag);},
+        ),
       ),
     );
   }

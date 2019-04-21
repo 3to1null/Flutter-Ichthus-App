@@ -6,10 +6,10 @@ import '../models/folder_model.dart';
 import '../models/files_model.dart';
 
 
-void openFolderPage(BuildContext context, Folder folder){
+void openFolderPage(BuildContext context, Folder folder, String heroTag){
     Navigator.of(context).push(MaterialPageRoute(
       builder: (BuildContext context){
-        return FolderPage(folder);
+        return FolderPage(folder, heroTag);
       }
     ));
 }
