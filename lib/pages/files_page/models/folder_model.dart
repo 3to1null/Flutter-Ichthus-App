@@ -41,11 +41,16 @@ class Folder{
     this._files = tempFiles;
   }
 
+  Future _futureVarFetchFilesAndFolders;
+
   Future<List<Folder>> get childFolders async {
     if(this._childFolders != null){
       return this._childFolders;
     }
-    await this._fetchFilesAndFolders();
+    if(this._futureVarFetchFilesAndFolders == null){
+      _futureVarFetchFilesAndFolders = this._fetchFilesAndFolders();
+    }
+    await _futureVarFetchFilesAndFolders;
     return this._childFolders;
   }
 
@@ -53,8 +58,16 @@ class Folder{
     if(this._files != null){
       return this._files;
     }
-    await this._fetchFilesAndFolders();
+    if(this._futureVarFetchFilesAndFolders == null){
+      this._futureVarFetchFilesAndFolders = this._fetchFilesAndFolders();
+    }
+    await this._futureVarFetchFilesAndFolders;
     return this._files;
+  }
+
+  Future<void> refresh() async{
+    this._futureVarFetchFilesAndFolders = this._fetchFilesAndFolders();
+    await this._futureVarFetchFilesAndFolders;
   }
 
 }
