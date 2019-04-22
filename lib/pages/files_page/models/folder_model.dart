@@ -31,9 +31,11 @@ class Folder{
         tempFiles.add(File(
           name: item["name"],
           path: item["path"],
+          isImage: item['img'],
           pathTo: item["pathTo"],
           size: int.parse(item["size"]),
-          type: item["type"]
+          type: item["type"],
+          lastModified: item['last_modified']
         ));
       }
     }

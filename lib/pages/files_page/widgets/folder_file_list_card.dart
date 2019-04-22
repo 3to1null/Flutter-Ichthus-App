@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../functions/random_string.dart';
 import '../functions/open_new_page.dart';
+import '../functions/file_icon_picker.dart';
 
 import '../models/folder_model.dart';
 import '../models/files_model.dart';
@@ -36,11 +37,15 @@ class FileListCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    IconData tileIcon = fileIconPicker(file);
+
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 2.0),
       child: ListTile(
-        leading: Icon(Icons.insert_drive_file),
-        title: Text(file.name),
+        leading: Icon(tileIcon),
+        title: Text(file.name, maxLines: 2, overflow: TextOverflow.ellipsis),
+        onTap: (){openFilePage(context, file);},
       ),
     );
   }

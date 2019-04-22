@@ -32,11 +32,11 @@ class _FolderPageState extends State<FolderPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Hero(
-      tag: widget.heroTag,
-      child: Scaffold(
-        drawer: CompleteDrawer(),
-        body: CustomScrollView(
+    return Scaffold(
+      drawer: CompleteDrawer(),
+      body: Hero(
+        tag: widget.heroTag,
+        child: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
               automaticallyImplyLeading: false,

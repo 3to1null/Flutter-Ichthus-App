@@ -42,7 +42,8 @@ Future<List> getRecentFiles() async {
       pathTo: file["pathTo"],
       isImage: file["img"],
       type: file["type"],
-      size: file["size"]
+      size: file["size"],
+      lastModified: file['last_modified']
     ));
   }
   return returnFileList;

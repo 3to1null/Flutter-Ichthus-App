@@ -17,7 +17,7 @@ class FolderGridCard extends StatelessWidget {
     IconData icon;
     switch (folder.path) {
       case "/HomeDrive (H)/": icon = Icons.laptop_windows; break;
-      case "__laad__overige__fraignt__api": icon = Icons.cloud; break;
+      case "__fraignt__api__laad_overige": icon = Icons.cloud; break;
       default: icon = Icons.folder;
     }
 
@@ -32,9 +32,9 @@ class FolderGridCard extends StatelessWidget {
             child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Icon(icon, size: 48.0, color: Colors.black54,),
-              SizedBox(height: 8.0),
-              Text(folder.name, textAlign: TextAlign.center,)
+              Icon(icon, size: 48.0, color: Colors.black54),
+              Container(height: 8.0),
+              Text(folder.name, textAlign: TextAlign.center)
             ],
           ),
           onTap: (){openFolderPage(context, folder, heroTag);},
