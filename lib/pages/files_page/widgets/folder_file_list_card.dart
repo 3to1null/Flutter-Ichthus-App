@@ -38,12 +38,11 @@ class FileListCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    IconData tileIcon = fileIconPicker(file);
 
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 2.0),
       child: ListTile(
-        leading: Icon(tileIcon),
+        leading: fileIconPicker(file, false),
         title: Text(file.name, maxLines: 2, overflow: TextOverflow.ellipsis),
         onTap: (){openFilePage(context, file);},
       ),

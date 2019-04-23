@@ -35,6 +35,7 @@ class Folder{
           pathTo: item["pathTo"],
           size: int.parse(item["size"]),
           type: item["type"],
+          fileId: item['fileId'].toString(),
           lastModified: item['last_modified']
         ));
       }

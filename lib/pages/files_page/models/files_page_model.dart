@@ -9,4 +9,14 @@ class FilesPageModel {
 
   Map<String, String> cookies;
 
+  String authToken;
+
+  String get cookieString {
+    String tempCookieString = "";
+    this.cookies.forEach((cookie, value){
+      tempCookieString += "$cookie=$value; ";
+    });
+    return tempCookieString;
+  }
+
 }

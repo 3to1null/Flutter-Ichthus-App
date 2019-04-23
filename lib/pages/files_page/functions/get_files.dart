@@ -11,6 +11,7 @@ Future<List<Map>> getFilesAndFolders(String path) async {
   Map response = json.decode(await getDataFromAPI("/files/list", {"path": path}));
 
   filesPageModel.cookies = Map<String, String>.from(response["cookies"]);
+  filesPageModel.authToken = response["auth"].toString().substring(2, response["auth"].toString().length - 1);
 
   List<Map> filesAndFolders = List<Map>.from(response["files"]);
   return filesAndFolders;
@@ -36,6 +37,7 @@ Future<List> getRecentFiles() async {
   List response = json.decode(await getDataFromAPI("/files/list/recent", {}));
   List<File> returnFileList = [];
   for(Map file in List<Map>.from(response)){
+    print(file);
     returnFileList.add(File(
       name: file["name"],
       path: file["path"],
@@ -43,6 +45,7 @@ Future<List> getRecentFiles() async {
       isImage: file["img"],
       type: file["type"],
       size: file["size"],
+      fileId: file['fileId'],
       lastModified: file['last_modified']
     ));
   }

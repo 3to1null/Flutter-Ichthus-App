@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import '../../../widgets/information_list_tile.dart';
 
 import '../functions/file_icon_picker.dart';
+import '../functions/handle_file_open.dart';
 import '../models/files_model.dart';
 
 class FileSheet extends StatelessWidget {
@@ -38,7 +39,10 @@ class FileSheetTopRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        Expanded(flex: 3, child: Icon(fileIconPicker(file), color: Colors.black45, size: 110.0)),
+        Expanded(
+          flex: 3, 
+          child: fileIconPicker(file, true)
+        ),
         Expanded(
           flex: 7,
           child: Column(
@@ -80,7 +84,7 @@ class OpenButton extends StatelessWidget {
     return RaisedButton(
       child: Icon(Icons.open_in_new, color: Colors.white,),
       color: Colors.green,
-      onPressed: (){},
+      onPressed: (){handleFileOpen(file, context);},
     );
   }
 }
