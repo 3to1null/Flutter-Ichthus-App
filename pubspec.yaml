@@ -26,6 +26,7 @@ dependencies:
   material_design_icons_flutter: ^3.2.3595
   sentry: any
   firebase_messaging: ^3.0.1
+  flutter_downloader: ^1.1.7
 
 dev_dependencies:
   flutter_test:

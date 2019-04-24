@@ -28,6 +28,15 @@ android {
 
     configurations.all {
         resolutionStrategy.force 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
+        resolutionStrategy.force 'androidx.slidingpanelayout:slidingpanelayout:1.0.0'
+        resolutionStrategy.force 'androidx.print:print:1.0.0'
+        resolutionStrategy.force 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
+        resolutionStrategy.force 'androidx.arch.core:core-runtime:2.0.0'
+        resolutionStrategy.force 'androidx.lifecycle:lifecycle-livedata-core:2.0.0'
+        resolutionStrategy.force 'androidx.loader:loader:1.0.0'
+        resolutionStrategy.force 'androidx.legacy:legacy-support-core-ui:1.0.0'
+        resolutionStrategy.force 'androidx.core:core:1.0.0'
+        resolutionStrategy.force 'androidx.fragment:fragment:1.0.0'
     }
 
     defaultConfig {
