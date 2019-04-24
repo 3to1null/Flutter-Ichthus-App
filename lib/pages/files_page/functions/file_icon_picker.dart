@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_advanced_networkimage/transition.dart';
 
@@ -7,20 +8,51 @@ import '../models/files_model.dart';
 
 FilesPageModel _filesPageModel = FilesPageModel();
 
-Widget fileIconPicker(File file, bool isBig, [bool forceUseLocalIcon=false]){
+bool isDocumentType(File file, List<String> types){
+  for(String type in types){
+    if(file.name.endsWith(type)){
+      return true;
+    }
+  }
+  return false;
+}
+
+IconData _getIcon(File file){
   if(file.isImage){
-    if(!forceUseLocalIcon){
+    return MdiIcons.fileImage;
+  }
+  if(isDocumentType(file, ['.doc', '.docx', '.xls', '.xlsx', ".ppt", ".pptx", ".pptm", ".pub", ".xps"])){
+    return MdiIcons.fileDocument;
+  }
+  if(isDocumentType(file, [".mp3", ".wav", ".ogg", ".3gp", ".flac", ".m4a", ".aac"])){
+    return MdiIcons.fileMusic;
+  }
+  if(isDocumentType(file, [".webm", ".mkv", ".gifv", ".avi", ".mov", ".qt", ".wmv", ".mp4", ".m4p", ".m4v", ".mpeg"])){
+    return MdiIcons.fileVideo;
+  }
+  if(isDocumentType(file, [".pdf"])){
+    return MdiIcons.filePdf;
+  }
+  if(isDocumentType(file, ['.accdb', '.sqlite3'])){
+    return MdiIcons.database;
+  }
+  
+
+
+  return Icons.insert_drive_file;
+}
+
+Widget fileIconPicker(File file, bool isBig, [bool forceUseLocalIcon=false]){
+  if(file.isImage && !forceUseLocalIcon){
       return SmallPreviewImage(file, isBig);
-    }
-    if(isBig){
-      return Icon(Icons.photo, color: Colors.black54, size: 72);
-    }
-    return Icon(Icons.photo, size: 24);
   }
+
+  IconData icon = _getIcon(file);
+
   if(isBig){
-    return Icon(Icons.insert_drive_file, color: Colors.black54, size: 72);
+    return Icon(icon, color: Colors.black54, size: 72);
   }
-  return Icon(Icons.insert_drive_file, size: 24);
+  return Icon(icon, size: 24);
 }
 
 class SmallPreviewImage extends StatelessWidget {

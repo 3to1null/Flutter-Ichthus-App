@@ -37,7 +37,6 @@ Future<List> getRecentFiles() async {
   List response = json.decode(await getDataFromAPI("/files/list/recent", {}));
   List<File> returnFileList = [];
   for(Map file in List<Map>.from(response)){
-    print(file);
     returnFileList.add(File(
       name: file["name"],
       path: file["path"],

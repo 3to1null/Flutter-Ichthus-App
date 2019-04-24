@@ -12,6 +12,9 @@ class FilesPageModel {
   String authToken;
 
   String get cookieString {
+    if(this.cookies == null){
+      return null;
+    }
     String tempCookieString = "";
     this.cookies.forEach((cookie, value){
       tempCookieString += "$cookie=$value; ";
