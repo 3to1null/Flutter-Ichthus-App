@@ -8,7 +8,7 @@ import '../models/files_model.dart';
 import '../models/files_page_model.dart';
 
 FilesPageModel _filesPageModel = FilesPageModel();
-const String downloadDir = "/IchthusDownloads";
+const String downloadDir = "/Download";
 
 void handleFileDownload(File file) async {
   if(!await _getPermission()){
