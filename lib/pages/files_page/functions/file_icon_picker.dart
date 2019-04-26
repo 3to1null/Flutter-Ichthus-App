@@ -50,9 +50,9 @@ Widget fileIconPicker(File file, bool isBig, [bool forceUseLocalIcon=false]){
   IconData icon = _getIcon(file);
 
   if(isBig){
-    return Icon(icon, color: Colors.black54, size: 72);
+    return SizedBox(width: 72.0, height: 72.0, child: Icon(icon, color: Colors.black54, size: 72));
   }
-  return Icon(icon, size: 24);
+  return SizedBox(width: 24.0, height: 24.0, child: Icon(icon, size: 24));
 }
 
 class SmallPreviewImage extends StatelessWidget {
