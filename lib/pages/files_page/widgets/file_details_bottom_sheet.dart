@@ -5,6 +5,7 @@ import '../../../widgets/information_list_tile.dart';
 
 import '../functions/file_icon_picker.dart';
 import '../functions/handle_file_open.dart';
+import '../functions/handle_file_download.dart';
 import '../models/files_model.dart';
 
 class FileSheet extends StatelessWidget {
@@ -98,7 +99,7 @@ class DownloadButton extends StatelessWidget {
     return RaisedButton(
       child: Icon(Icons.file_download, color: Colors.white,),
       color: Colors.green,
-      onPressed: (){},
+      onPressed: (){handleFileDownload(file);},
     );
   }
 }
