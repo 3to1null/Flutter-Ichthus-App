@@ -37,6 +37,8 @@ android {
         resolutionStrategy.force 'androidx.legacy:legacy-support-core-ui:1.0.0'
         resolutionStrategy.force 'androidx.core:core:1.0.0'
         resolutionStrategy.force 'androidx.fragment:fragment:1.0.0'
+        resolutionStrategy.force 'androidx.media:media:1.0.0'
+        resolutionStrategy.force 'androidx.legacy:legacy-support-v4:1.0.0'
     }
 
     defaultConfig {

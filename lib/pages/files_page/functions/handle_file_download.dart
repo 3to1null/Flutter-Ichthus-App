@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -11,7 +10,7 @@ import '../models/files_page_model.dart';
 FilesPageModel _filesPageModel = FilesPageModel();
 const String downloadDir = "/Download";
 
-Future<String> handleFileDownload(File file, BuildContext context) async {
+Future<String> handleFileDownload(File file) async {
   if(!await _getPermission()){
     return null;
   }

@@ -188,7 +188,7 @@ class _DownloadButtonState extends State<DownloadButton> {
       child: Icon(Icons.file_download, color: Colors.white,),
       color: Colors.green,
       onPressed: isDownloading ? null : () async {
-        String downloadId = await handleFileDownload(widget.file, context);
+        String downloadId = await handleFileDownload(widget.file);
         createCallBack(downloadId);
       },
     );
