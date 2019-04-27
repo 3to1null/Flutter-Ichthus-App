@@ -22,4 +22,6 @@ class FilesPageModel {
     return tempCookieString;
   }
 
+  Map<String, String> filesDownloading = {};
+
 }

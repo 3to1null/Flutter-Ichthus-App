@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 
 import '../../../widgets/information_list_tile.dart';
 
@@ -7,11 +8,48 @@ import '../functions/file_icon_picker.dart';
 import '../functions/handle_file_open.dart';
 import '../functions/handle_file_download.dart';
 import '../models/files_model.dart';
+import '../models/files_page_model.dart';
 
-class FileSheet extends StatelessWidget {
+FilesPageModel _filesPageModel = FilesPageModel();
+
+enum LoadingState {
+  LOADING_WAIT,
+  LOADING,
+  NOT_LOADING,
+  COMPLETE
+}
+
+class FileSheet extends StatefulWidget {
 
   final File file;
   FileSheet(this.file);
+
+  @override
+  _FileSheetState createState() => _FileSheetState();
+}
+
+class _FileSheetState extends State<FileSheet> {
+
+  LoadingState _loadingState = LoadingState.NOT_LOADING;
+  int downloadProgress = 0;
+
+  void callback(LoadingState loadingState, int process){
+    print('dab');
+    setState(() {
+      _loadingState = loadingState;
+      downloadProgress = process;
+    });
+  }
+
+  Widget loadingIndicator(){
+    if(_loadingState == LoadingState.LOADING){
+      return LinearProgressIndicator(value: downloadProgress / 100);
+    }
+    if(_loadingState == LoadingState.LOADING_WAIT){
+      return LinearProgressIndicator();
+    }
+    return Container();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,12 +57,13 @@ class FileSheet extends StatelessWidget {
       padding: EdgeInsets.all(16.0),
       child: ListView(
         children: <Widget>[
-          FileSheetTopRow(file),
+          FileSheetTopRow(widget.file),
+          loadingIndicator(),
           Divider(),
-          InformationListTile(leadingText: 'Laatst bewerkt:', titleText: file.lastModified),
-          InformationListTile(leadingText: 'Bestandsgrootte:', titleText: file.sizeString),
+          InformationListTile(leadingText: 'Laatst bewerkt:', titleText: widget.file.lastModified),
+          InformationListTile(leadingText: 'Bestandsgrootte:', titleText: widget.file.sizeString),
           Divider(),
-          ButtonRow(file)
+          ButtonRow(widget.file, callback)
         ],
       ),
     );
@@ -62,14 +101,19 @@ class FileSheetTopRow extends StatelessWidget {
 
 class ButtonRow extends StatelessWidget {
   final File file;
-  ButtonRow(this.file);
+  final parentSetStateCallback;
+  ButtonRow(this.file, this.parentSetStateCallback);
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: <Widget>[
+      children: file.canOpen ? <Widget>[
         Expanded(flex: 3, child: Padding(padding: EdgeInsets.all(4.0), child: OpenButton(file))),
-        Expanded(flex: 1, child: Padding(padding: EdgeInsets.all(4.0), child: DownloadButton(file))),
+        Expanded(flex: 1, child: Padding(padding: EdgeInsets.all(4.0), child: DownloadButton(file, parentSetStateCallback))),
+        Expanded(flex: 1, child: Padding(padding: EdgeInsets.all(4.0), child: DeleteButton(file)))
+      ] :
+      <Widget>[
+        Expanded(flex: 4, child: Padding(padding: EdgeInsets.all(4.0), child: DownloadButton(file, parentSetStateCallback))),
         Expanded(flex: 1, child: Padding(padding: EdgeInsets.all(4.0), child: DeleteButton(file)))
       ],
     );
@@ -90,16 +134,63 @@ class OpenButton extends StatelessWidget {
   }
 }
 
-class DownloadButton extends StatelessWidget {
+class DownloadButton extends StatefulWidget {
   final File file;
-  DownloadButton(this.file);
+  final Function setStateCallback;
+  DownloadButton(this.file, this.setStateCallback);
+
+  @override
+  _DownloadButtonState createState() => _DownloadButtonState();
+}
+
+class _DownloadButtonState extends State<DownloadButton> {
+  bool isDownloading = false;
+
+  void createCallBack(String downloadId){
+    Function downloadCallback = (String id, DownloadTaskStatus status, int progress){
+      if(id != downloadId){
+        return;
+      }
+      if(status == DownloadTaskStatus.enqueued || status == DownloadTaskStatus.undefined || status == DownloadTaskStatus.paused){
+        setState(() {
+         isDownloading = true; 
+        });
+        widget.setStateCallback(LoadingState.LOADING_WAIT, 0);
+        return;
+      }
+      if(status == DownloadTaskStatus.running){
+        widget.setStateCallback(LoadingState.LOADING, progress);
+        return;
+      }
+      if(status == DownloadTaskStatus.complete || status == DownloadTaskStatus.failed || status == DownloadTaskStatus.canceled){
+        setState(() {
+         isDownloading = false; 
+        });
+        widget.setStateCallback(LoadingState.COMPLETE, progress);
+        return;
+      }
+    };
+
+    FlutterDownloader.registerCallback(downloadCallback);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if(_filesPageModel.filesDownloading.containsKey(widget.file.fileId)){
+      createCallBack(_filesPageModel.filesDownloading[widget.file.fileId]);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return RaisedButton(
       child: Icon(Icons.file_download, color: Colors.white,),
       color: Colors.green,
-      onPressed: (){handleFileDownload(file);},
+      onPressed: isDownloading ? null : () async {
+        String downloadId = await handleFileDownload(widget.file, context);
+        createCallBack(downloadId);
+      },
     );
   }
 }

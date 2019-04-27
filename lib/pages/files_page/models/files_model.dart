@@ -35,4 +35,8 @@ class File{
     return this.customPreviewURL(175, 175);
   }
 
+  bool get canOpen{
+    return this.size < 25 * 1024 * 1024;
+  }
+
 }
