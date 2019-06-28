@@ -163,6 +163,15 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_uploader:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "5d367b7cf45f57e801a562afff7d1e14af873ab7"
+      url: "git://github.com/3to1null/flutter_uploader.git"
+    source: git
+    version: "1.0.2"
   front_end:
     dependency: transitive
     description:

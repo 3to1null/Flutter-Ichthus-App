@@ -53,18 +53,29 @@ class _FileSheetState extends State<FileSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(16.0),
-      child: ListView(
-        children: <Widget>[
-          FileSheetTopRow(widget.file),
-          loadingIndicator(),
-          Divider(),
-          InformationListTile(leadingText: 'Laatst bewerkt:', titleText: widget.file.lastModified),
-          InformationListTile(leadingText: 'Bestandsgrootte:', titleText: widget.file.sizeString),
-          Divider(),
-          ButtonRow(widget.file, callback)
-        ],
+    return Container(
+      color: Color(0xFF737373),
+      child: Container(
+        height: 300,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: const Radius.circular(10.0),
+            topRight: const Radius.circular(10.0)
+          )
+        ),
+        child: ListView(
+          padding: EdgeInsets.all(16.0),
+          children: <Widget>[
+            FileSheetTopRow(widget.file),
+            loadingIndicator(),
+            Divider(),
+            InformationListTile(leadingText: 'Laatst bewerkt:', titleText: widget.file.lastModified),
+            InformationListTile(leadingText: 'Bestandsgrootte:', titleText: widget.file.sizeString),
+            Divider(),
+            ButtonRow(widget.file, callback)
+          ],
+        ),
       ),
     );
   }

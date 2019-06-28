@@ -35,15 +35,19 @@ android {
         resolutionStrategy.force 'androidx.lifecycle:lifecycle-livedata-core:2.0.0'
         resolutionStrategy.force 'androidx.loader:loader:1.0.0'
         resolutionStrategy.force 'androidx.legacy:legacy-support-core-ui:1.0.0'
-        resolutionStrategy.force 'androidx.core:core:1.0.0'
+        resolutionStrategy.force 'androidx.core:core:1.0.1'
         resolutionStrategy.force 'androidx.fragment:fragment:1.0.0'
         resolutionStrategy.force 'androidx.media:media:1.0.0'
         resolutionStrategy.force 'androidx.legacy:legacy-support-v4:1.0.0'
+        resolutionStrategy.force 'com.google.code.gson:gson:2.8.5'
+        resolutionStrategy.force 'com.squareup.okhttp3:okhttp:3.13.1'
+        resolutionStrategy.force 'androidx.annotation:annotation:1.0.1'
+        resolutionStrategy.force 'com.google.guava:guava:28.0-android'
     }
 
     defaultConfig {
         applicationId "nathan.fraignt.me"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 28
         versionCode 500121
         versionName "5.01.21"
@@ -72,6 +76,7 @@ flutter {
 }
 
 dependencies {
+    implementation 'androidx.multidex:multidex:2.0.1'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'

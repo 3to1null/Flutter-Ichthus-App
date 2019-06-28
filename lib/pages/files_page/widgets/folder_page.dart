@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../drawer/drawer.dart';
 import '../../../widgets/loading_animation.dart';
 
+import '../functions/handle_new_item.dart';
 import '../widgets/folder_file_list.dart';
 import '../models/folder_model.dart';
 import '../models/files_model.dart';
@@ -34,6 +35,12 @@ class _FolderPageState extends State<FolderPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: CompleteDrawer(),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add, size: 32),
+        foregroundColor: Theme.of(context).colorScheme.secondary,
+        backgroundColor: Colors.white,
+        onPressed: (){handleNewItem(context, widget.folder);},
+      ),
       body: Hero(
         tag: widget.heroTag,
         child: CustomScrollView(
