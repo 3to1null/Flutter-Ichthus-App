@@ -21,13 +21,13 @@ class FolderPage extends StatefulWidget {
 
 class _FolderPageState extends State<FolderPage> {
 
-  Future<List<Folder>> _folderSubFoldersFuture;
-  Future<List<File>> _folderSubFilesFuture;
+  Stream<List<Folder>> _childFolderStream;
+  Stream<List<File>> _childFilesStream;
 
   @override
   void initState() {
-    _folderSubFoldersFuture = widget.folder.childFolders;
-    _folderSubFilesFuture = widget.folder.files;
+    _childFolderStream = widget.folder.childFoldersStream;
+    _childFilesStream = widget.folder.filesStream;
     super.initState();
   }
 
@@ -42,7 +42,7 @@ class _FolderPageState extends State<FolderPage> {
         onPressed: (){handleNewItem(context, widget.folder);},
       ),
       body: Hero(
-        tag: widget.heroTag,
+        tag: widget.heroTag + "ads",
         child: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
@@ -74,27 +74,61 @@ class _FolderPageState extends State<FolderPage> {
                 ),
               ),
             ),
-            FutureBuilder(
-              future: _folderSubFoldersFuture,
+            ValueListenableBuilder(
+              valueListenable: widget.folder.isLoading,
+              builder: (BuildContext context, bool isLoading, Widget child){
+                return SliverToBoxAdapter(
+                  child: AnimatedCrossFade(
+                    firstChild: Container(), 
+                    secondChild: LinearProgressIndicator(),
+                    duration: Duration(milliseconds: 100), 
+                    crossFadeState: isLoading ? CrossFadeState.showSecond : CrossFadeState.showFirst
+                  ),
+                );
+              },
+            ),
+            StreamBuilder(
+              initialData: widget.folder.hasCachedFilesAndFolders ? widget.folder.cachedChildFolders : null,
+              stream: _childFolderStream,
               builder: (BuildContext context, AsyncSnapshot<List> snapshot){
+                print(snapshot);
                 switch(snapshot.connectionState){
+                  case ConnectionState.active: return SliverPadding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    sliver: FolderFileList(snapshot.data),
+                  ); 
                   case ConnectionState.done: return SliverPadding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     sliver: FolderFileList(snapshot.data),
                   ); 
-                  default: return SliverToBoxAdapter(child: Padding(padding: EdgeInsets.only(top: 100.0), child: LoadingAnimation()));
+                  default: return snapshot.data == null ? 
+                    SliverToBoxAdapter() : 
+                    SliverPadding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      sliver: FolderFileList(snapshot.data),
+                    );
                 }
               },
             ),
-            FutureBuilder(
-              future: _folderSubFilesFuture,
+            StreamBuilder(
+              initialData: widget.folder.hasCachedFilesAndFolders ? widget.folder.cachedFiles : null,
+              stream: _childFilesStream,
               builder: (BuildContext context, AsyncSnapshot<List> snapshot){
                 switch(snapshot.connectionState){
+                  case ConnectionState.active: return SliverPadding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    sliver: FolderFileList(snapshot.data),
+                  ); 
                   case ConnectionState.done: return SliverPadding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     sliver: FolderFileList(snapshot.data),
                   ); 
-                  default: return SliverToBoxAdapter();
+                  default: return snapshot.data == null ? 
+                    SliverToBoxAdapter() : 
+                    SliverPadding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      sliver: FolderFileList(snapshot.data),
+                    );;
                 }
               },
             )

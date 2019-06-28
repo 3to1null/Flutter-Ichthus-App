@@ -40,6 +40,7 @@ class _NewFolderDialogState extends State<NewFolderDialog> {
               textColor: Theme.of(context).primaryColor,
               onPressed: () {
                 if(_folderNameTextController.text != ""){
+                  // TODO: Check if name already exists!!
                   createNewFolder(widget.folder, _folderNameTextController.text);
                   Navigator.of(context).pop();
                   Navigator.of(widget.pageContext).pop();

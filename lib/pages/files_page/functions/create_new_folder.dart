@@ -4,7 +4,8 @@ import '../models/folder_model.dart';
 import '../../../functions/request.dart';
 
 
-void createNewFolder(Folder folder, String newFolderName) async {
-  String path = folder.path;
-  json.decode(await postDataToAPI('/files/mkdir', {'path': path, 'dirName': newFolderName}));
+void createNewFolder(Folder parentFolder, String newFolderName) async {
+  String path = parentFolder.path.startsWith("__fraignt__api__") ? parentFolder.pathTo : parentFolder.path;
+  await postDataToAPI('/files/mkdir', {'path': path, 'dirName': newFolderName});
+  parentFolder.refresh();
 }
