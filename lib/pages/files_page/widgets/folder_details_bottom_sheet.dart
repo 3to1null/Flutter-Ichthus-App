@@ -92,6 +92,7 @@ class DeleteButton extends StatelessWidget {
           context: context,
           builder: (BuildContext context){
             return AlertDialog(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
               title: Center(child: Text(folder.name, style: Theme.of(context).textTheme.subhead.copyWith(fontWeight: FontWeight.w600))),
               content: Text("Weet je zeker dat je deze map en alle bestanden erin volledig wilt verwijderen?"),
               actions: <Widget>[
