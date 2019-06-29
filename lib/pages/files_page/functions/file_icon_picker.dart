@@ -33,7 +33,7 @@ IconData _getIcon(File file){
   if(isDocumentType(file, [".pdf"])){
     return MdiIcons.filePdf;
   }
-  if(isDocumentType(file, ['.accdb', '.sqlite3'])){
+  if(isDocumentType(file, ['.accdb', '.sqlite3', '.csv'])){
     return MdiIcons.database;
   }
   

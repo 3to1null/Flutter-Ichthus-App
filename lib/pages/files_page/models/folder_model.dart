@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
+import '../../../functions/request.dart';
+
 import 'files_model.dart';
 import '../functions/get_files.dart';
 
@@ -27,15 +29,11 @@ class Folder{
 
   Future<void> _fetchFilesAndFolders() async {
     if(this._fetchLock){
-      print("Already fetching -- returning!");
       return;
     }
     this._fetchLock = true;
     this.isLoading.value = this._fetchLock;
 
-    print("-"*50);
-    print("Fetching files and folders");
-    print("-"*50);
     List<Map> filesAndFoldersMap = await getFilesAndFolders(this.path);
 
     List<Folder> tempFolders = [];
@@ -48,6 +46,7 @@ class Folder{
           path: item["path"],
           pathTo: item["pathTo"],
           size: item["size"] != "None" ? int.parse(item["size"]) : null,
+          parent: this
         ));
       }else{
         tempFiles.add(File(
@@ -58,7 +57,8 @@ class Folder{
           size: int.parse(item["size"]),
           type: item["type"],
           fileId: item['fileId'].toString(),
-          lastModified: item['last_modified']
+          lastModified: item['last_modified'],
+          parent: this
         ));
       }
     }
@@ -80,6 +80,12 @@ class Folder{
       return true;
     }
     return false;
+  }
+
+  Future<void> delete() async {
+    this.parent?.isLoading?.value = true;
+    await postDataToAPI('/files/rm', {'path': this.path});
+    this.parent?.refresh();
   }
 
   Stream<List<Folder>> get childFoldersStream {

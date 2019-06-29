@@ -34,7 +34,6 @@ class _FileSheetState extends State<FileSheet> {
   int downloadProgress = 0;
 
   void callback(LoadingState loadingState, int process){
-    print('dab');
     setState(() {
       _loadingState = loadingState;
       downloadProgress = process;
@@ -215,7 +214,35 @@ class DeleteButton extends StatelessWidget {
     return RaisedButton(
       child: Icon(Icons.delete, color: Colors.white,),
       color: Colors.red,
-      onPressed: (){},
+      onPressed: (){
+        showDialog(
+          context: context,
+          builder: (BuildContext context){
+            return AlertDialog(
+              title: Center(child: Text(file.name, style: Theme.of(context).textTheme.subhead.copyWith(fontWeight: FontWeight.w600))),
+              content: Text("Weet je zeker dat je deze map en alle bestanden erin volledig wilt verwijderen?"),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Annuleer'),
+                  textColor: Theme.of(context).primaryColor,
+                  onPressed: (){
+                    Navigator.of(context).pop();
+                  },
+                ),
+                FlatButton(
+                  child: Text('Verwijder'),
+                  textColor: Colors.red,
+                  onPressed: (){
+                    file.delete();
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            );
+          }
+        );
+      },
     );
   }
 }

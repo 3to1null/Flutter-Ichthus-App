@@ -1,3 +1,6 @@
+import '../../../functions/request.dart';
+import './folder_model.dart';
+
 class File{
   String path;
   String pathTo;
@@ -7,8 +10,9 @@ class File{
   String fileId;
   String type;
   String lastModified;
+  Folder parent;
 
-  File({this.path, this.pathTo, this.name, this.isImage, this.size, this.type, this.lastModified, this.fileId});
+  File({this.path, this.pathTo, this.name, this.isImage, this.size, this.type, this.lastModified, this.fileId, this.parent});
 
   String get sizeString{
     if(this.size > 1024 * 1024){
@@ -37,6 +41,12 @@ class File{
 
   bool get canOpen{
     return this.size < 25 * 1024 * 1024;
+  }
+
+  Future<void> delete() async {
+    this.parent?.isLoading?.value = true;
+    await postDataToAPI('/files/rm', {'path': this.path});
+    this.parent?.refresh();
   }
 
 }

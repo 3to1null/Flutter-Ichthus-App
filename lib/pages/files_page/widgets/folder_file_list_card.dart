@@ -24,6 +24,7 @@ class FolderListCard extends StatelessWidget {
         leading: Icon(Icons.folder),
         title: Text(folder.name),
         onTap: (){openFolderPage(context, folder, heroTag);},
+        onLongPress: (){openFolderDetailSheet(context, folder);},
       ),
     );
   }
@@ -44,7 +45,7 @@ class FileListCard extends StatelessWidget {
       child: ListTile(
         leading: fileIconPicker(file, false),
         title: Text(file.name, maxLines: 2, overflow: TextOverflow.ellipsis),
-        onTap: (){openFilePage(context, file);},
+        onTap: (){openFileDetailSheet(context, file);},
       ),
     );
   }
