@@ -25,14 +25,18 @@ class Folder{
   List<File> _files;
 
   bool _fetchLock = false;
-  ValueNotifier<bool> isLoading = ValueNotifier<bool>(false);
+
+  /// [isLoading] will show a indeterminate loading bar if its value is 1.0,
+  /// will hide the loading bar if its set to null and will show a determinate
+  /// loading bar if its value is between 0 and 1.
+  ValueNotifier<double> isLoading = ValueNotifier<double>(null);
 
   Future<void> _fetchFilesAndFolders() async {
     if(this._fetchLock){
       return;
     }
     this._fetchLock = true;
-    this.isLoading.value = this._fetchLock;
+    this.isLoading.value = this._fetchLock ? 1.0 : null;
 
     List<Map> filesAndFoldersMap = await getFilesAndFolders(this.path);
 
@@ -66,7 +70,7 @@ class Folder{
     this._files = tempFiles;
     broadcastCachedFilesAndFolders();
     this._fetchLock = false;
-    this.isLoading.value = this._fetchLock;
+    this.isLoading.value = this._fetchLock ? 1.0 : null;
   }
 
   Future<void> refresh() async{
@@ -83,7 +87,7 @@ class Folder{
   }
 
   Future<void> delete() async {
-    this.parent?.isLoading?.value = true;
+    this.parent?.isLoading?.value = 1.0;
     await postDataToAPI('/files/rm', {'path': this.path});
     this.parent?.refresh();
   }
@@ -116,6 +120,14 @@ class Folder{
       return this._files;
     }
     return null;
+  }
+
+  set loadingPercent(double percent){
+    if(percent == 0.00 || percent == null){
+      this.isLoading.value = null;
+    }else{
+      this.isLoading.value = percent;
+    }
   }
 
   void closeAllStreams(){

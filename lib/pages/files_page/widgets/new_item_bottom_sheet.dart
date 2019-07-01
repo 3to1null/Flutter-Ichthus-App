@@ -47,6 +47,7 @@ class NewItemSheet extends StatelessWidget {
                   customBorder: CircleBorder(),
                   child: ItemCircle(itemIcon: Icons.file_upload, text: 'Upload bestand'),
                   onTap: (){
+                    Navigator.of(context).pop();
                     handleFileUpload(folder);
                   },
                 ),

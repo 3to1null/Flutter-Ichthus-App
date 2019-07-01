@@ -1,35 +1,45 @@
-import 'package:flutter_uploader/flutter_uploader.dart';
+import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 
 import '../models/files_page_model.dart';
 import '../models/folder_model.dart';
 
 FilesPageModel _filesPageModel = FilesPageModel();
-FlutterUploader uploader = FlutterUploader();
+Dio dio = Dio();
 
 Future<void> handleFileUpload(Folder parentFolder) async {
-  String filePath = await FilePicker.getFilePath(type: FileType.ANY);
-  List<String> filePathList = filePath.split('/');
-  String fileName = filePathList.removeLast();
-  String savedDir = filePathList.join('/');
-  String uploadURL = "https://drive.ichthuscollege.nl/remote.php/webdav/" + Uri.decodeComponent(parentFolder.path) + Uri.decodeComponent(fileName);
+  int rateLimiter = 0;
+  int updateRate = 1;
 
-  uploader.enqueue(
-    url: uploadURL,
-    headers: {
-      'Cookie': _filesPageModel.cookieString, 
-      'Authorization': "Basic " + _filesPageModel.authToken  
-    },
-    showNotification: true,
-    method: UplaodMethod.PUT,
-    files: [FileItem(filename: fileName, savedDir: savedDir)]
+  File fileToUpload = await FilePicker.getFile(type: FileType.ANY);
+  String fileName = fileToUpload.path.split("/").last;
+  String uploadURL = "https://drive.ichthuscollege.nl/remote.php/webdav/" + Uri.decodeComponent(parentFolder.path) + Uri.decodeComponent(fileName);
+  await dio.request(
+    uploadURL,
+    data: fileToUpload.openRead(),
+    options: Options(
+      method: "PUT",
+      contentType: ContentType("Binary", "Binary"),
+      headers: {
+        HttpHeaders.contentLengthHeader: await fileToUpload.length(),
+        'Cookie': _filesPageModel.cookieString, 
+        'Authorization': "Basic " + _filesPageModel.authToken  ,
+        'Content-Disposition': 'attachment; filename="$fileName"'
+      },
+    ),
+    onSendProgress: (int sent, int total){
+      if(rateLimiter == 0){
+        parentFolder.loadingPercent = (sent/total);
+      }
+      rateLimiter++;
+      if(rateLimiter == updateRate){
+        rateLimiter = 0;
+      }
+    }
   );
 
-  final subscription = uploader.result.listen((result) {
-      print(result);
-  }, onError: (ex, stacktrace) {
-    print(ex);
-    print(stacktrace);
-  });
+  parentFolder.loadingPercent = null;
+  parentFolder.refresh();
 }
 

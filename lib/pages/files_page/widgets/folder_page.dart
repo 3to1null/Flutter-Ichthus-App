@@ -76,13 +76,15 @@ class _FolderPageState extends State<FolderPage> {
             ),
             ValueListenableBuilder(
               valueListenable: widget.folder.isLoading,
-              builder: (BuildContext context, bool isLoading, Widget child){
+              builder: (BuildContext context, double isLoading, Widget child){
                 return SliverToBoxAdapter(
                   child: AnimatedCrossFade(
                     firstChild: Container(), 
-                    secondChild: LinearProgressIndicator(),
+                    secondChild: LinearProgressIndicator(
+                      value: isLoading == 1.0 ? null : isLoading,
+                    ),
                     duration: Duration(milliseconds: 100), 
-                    crossFadeState: isLoading ? CrossFadeState.showSecond : CrossFadeState.showFirst
+                    crossFadeState: isLoading == null ? CrossFadeState.showFirst : CrossFadeState.showSecond
                   ),
                 );
               },

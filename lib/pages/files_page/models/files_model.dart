@@ -44,7 +44,7 @@ class File{
   }
 
   Future<void> delete() async {
-    this.parent?.isLoading?.value = true;
+    this.parent?.isLoading?.value = 1.0;
     await postDataToAPI('/files/rm', {'path': this.path});
     this.parent?.refresh();
   }
