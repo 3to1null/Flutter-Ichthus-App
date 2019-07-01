@@ -62,6 +62,7 @@ class SmallPreviewImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(_filesPageModel.authToken);
     return Container(
       padding: isBig ? EdgeInsets.all(16.0) : EdgeInsets.symmetric(vertical: 8.0),
       child: ClipRRect(
@@ -72,11 +73,11 @@ class SmallPreviewImage extends StatelessWidget {
           image: AdvancedNetworkImage(
             file.previewURL,
             useDiskCache: true,
-            cacheRule: CacheRule(maxAge: Duration(days: 1)),
+            cacheRule: CacheRule(maxAge: Duration(days: 3)),
             header: {
               'Cookie': _filesPageModel.cookieString, 
-              'Authorization': "Basic " + _filesPageModel.authToken  
-            }
+              'Authorization': _filesPageModel.authToken != null ? "Basic " + _filesPageModel.authToken : ""
+               }
           ),
         ),
       ),

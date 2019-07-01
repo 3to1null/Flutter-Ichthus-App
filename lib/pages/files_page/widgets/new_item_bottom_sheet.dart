@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../functions/handle_new_item.dart';
+import '../functions/handle_file_upload.dart';
 import '../models/folder_model.dart';
 
 
@@ -45,7 +46,9 @@ class NewItemSheet extends StatelessWidget {
                 child: InkWell(
                   customBorder: CircleBorder(),
                   child: ItemCircle(itemIcon: Icons.file_upload, text: 'Upload bestand'),
-                  onTap: (){},
+                  onTap: (){
+                    handleFileUpload(folder);
+                  },
                 ),
               ),
             ],
