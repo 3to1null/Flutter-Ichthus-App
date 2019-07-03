@@ -38,7 +38,12 @@ class Folder{
     this._fetchLock = true;
     this.isLoading.value = this._fetchLock ? 1.0 : null;
 
-    List<Map> filesAndFoldersMap = await getFilesAndFolders(this.path);
+    List<Map> filesAndFoldersMap;
+    try{
+       filesAndFoldersMap = await getFilesAndFolders(this.path).timeout(const Duration(seconds: 4));
+    }on TimeoutException catch(error){
+      print(error);
+    }
 
     List<Folder> tempFolders = [];
     List<File> tempFiles = [];
