@@ -4,6 +4,7 @@ import 'package:firebase_analytics/observer.dart';
 
 import '../drawer/drawer.dart';
 import 'widgets/cijfer_list_widget_tab_wrapper.dart';
+import 'widgets/notification_consent_dialog.dart';
 
 import '../../models/user_model.dart';
 
@@ -47,6 +48,19 @@ class _CijferPageState extends State<CijferPage> {
                 pinned: true,
                 snap: false,
                 floating: true,
+                actions: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.notifications),
+                    onPressed: (){
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context){
+                            return NotificationConsentDialog(context);
+                          }
+                        );
+                    },
+                  )
+                ],
                 bottom: TabBar(
                   isScrollable: true,
                   tabs: <Widget>[

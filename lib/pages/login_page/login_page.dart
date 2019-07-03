@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 
@@ -10,7 +11,7 @@ import '../../widgets/loading_animation.dart';
 
 import '../../functions/convert_to_bool.dart';
 
-
+FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
 const String sec_msg_short = 
 """
@@ -100,17 +101,18 @@ class _ActualLoginPageState extends State<ActualLoginPage> {
     setState(() {
       isLoading = true;
     });
-    Map<String, String> credentials = {
+    Map<String, String> data = {
       "userCode": _loginData.leerlingnummer.toString(),
-      "password": _loginData.password.toString()
+      "password": _loginData.password.toString(),
+      "fcmToken": await _firebaseMessaging.getToken()
     };
     var response =
-        await postDataToAPI('/login', credentials, useSessionData: false);
+        await postDataToAPI('/login', data, useSessionData: false);
     final Map loginResponseData = json.decode(response);
     try {
       if (convertToBool(loginResponseData["success"])) {
         widget.fbAnalytics.logLogin();
-        loginResponseData["userCode"] = credentials["userCode"];
+        loginResponseData["userCode"] = data["userCode"];
         try{Navigator.pop(GlobalObjectKey("login_sec_modalBottomSheet").currentContext);}catch(e){print(e);}
         storeLoginResponseData(loginResponseData);
         Navigator.pushReplacementNamed(context, '/schedule');
